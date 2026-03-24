@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LAE101 - Quiz Ôn Tập Toàn Bộ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">LAE101</div>
+  <button class="tab-btn active" onclick="switchTab('home')">Tổng Quan</button>
+  <button class="tab-btn" onclick="switchTab('ip')"  id="tab-ip">Sở Hữu Trí Tuệ  <span class="count" id="cnt-ip">0</span></button>
+  <button class="tab-btn" onclick="switchTab('tm')"  id="tab-tm">Nhãn Hiệu        <span class="count" id="cnt-tm">0</span></button>
+  <button class="tab-btn" onclick="switchTab('cr')"  id="tab-cr">Bản Quyền        <span class="count" id="cnt-cr">0</span></button>
+  <button class="tab-btn" onclick="switchTab('dr')"  id="tab-dr">Quyền Thiết Kế   <span class="count" id="cnt-dr">0</span></button>
+  <button class="tab-btn" onclick="switchTab('sm')"  id="tab-sm">Mạng Xã Hội      <span class="count" id="cnt-sm">0</span></button>
+  <button class="tab-btn" onclick="switchTab('li')"  id="tab-li">Cấp Phép         <span class="count" id="cnt-li">0</span></button>
+  <button class="tab-btn" onclick="switchTab('pr')"  id="tab-pr">Quyền Riêng Tư   <span class="count" id="cnt-pr">0</span></button>
+</nav>
+
+<div class="main">
+
+  <!-- HOME -->
+  <div class="topic-page active" id="page-home">
+    <div style="text-align:center;padding:40px 0 32px;">
+      <div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;">LAE101 - Luật &amp; Kinh Tế</div>
+      <h1 style="font-size:clamp(28px,5vw,44px);font-weight:900;letter-spacing:-1px;line-height:1.1;background:linear-gradient(135deg,#e2e6f3 0%,#4f8ef7 50%,#7c5af0 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;">Quiz Ôn Tập Toàn Bộ</h1>
+      <p style="color:var(--muted);font-size:14px;">Chọn chủ đề bên dưới để bắt đầu ôn tập</p>
+    </div>
+    <div class="overview-grid" id="overview-grid"></div>
+  </div>
+
+  <!-- IP -->
+  <div class="topic-page" id="page-ip">
+    <div class="topic-header">
+      <div class="topic-icon" style="background:rgba(79,142,247,0.12);">&#128209;</div>
+      <div class="topic-info"><h2 style="color:#4f8ef7;">Intellectual Property Rights</h2><p>Sở Hữu Trí Tuệ - Quyền, Bảo Vệ &amp; Thực Thi</p></div>
+      <div class="topic-stats"><div class="topic-score" id="score-ip" style="color:#4f8ef7;">-</div><div class="topic-score-label">điểm</div></div>
+    </div>
+    <div class="progress-wrap"><div class="progress-info"><span id="ptext-ip">Câu 1</span><span id="ppct-ip">0%</span></div><div class="progress-track"><div class="progress-fill" id="pfill-ip" style="width:0%"></div></div></div>
+    <div class="score-row"><div class="score-badge sc"><div class="num" id="sc-ip">0</div><div class="lbl">Đúng</div></div><div class="score-badge sw"><div class="num" id="sw-ip">0</div><div class="lbl">Sai</div></div><div class="score-badge sr"><div class="num" id="sr-ip">-</div><div class="lbl">Còn Lại</div></div></div>
+    <div class="quiz-card" id="card-ip">
+      <div class="card-top"><div class="q-meta"><span class="q-num" id="qnum-ip"></span><span class="q-tag" style="background:rgba(79,142,247,0.1);color:#4f8ef7;">IPR</span></div><div class="q-en" id="qen-ip"></div><div class="q-vi" id="qvi-ip"></div></div>
+      <div class="options" id="opts-ip"></div>
+      <div class="result-box" id="rb-ip"><div class="rb-title" id="rbt-ip"></div><div class="rb-explain" id="rbe-ip"></div></div>
+      <button class="next-btn" id="nb-ip" onclick="nextQ('ip')"></button>
+    </div>
+    <div class="final-screen" id="fin-ip"><div class="final-card"><div class="final-grade" id="fg-ip" style="background:linear-gradient(135deg,var(--green),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></div><div class="final-msg" id="fm-ip"></div><div class="final-stats"><div class="fs-item fg"><div class="n" id="fsc-ip">0</div><div class="t">Đúng</div></div><div class="fs-item fr"><div class="n" id="fsw-ip">0</div><div class="t">Sai</div></div></div><button class="restart-btn" onclick="restartTopic('ip')">Làm Lại</button></div></div>
+  </div>
+
+  <!-- TM -->
+  <div class="topic-page" id="page-tm">
+    <div class="topic-header">
+      <div class="topic-icon" style="background:rgba(124,90,240,0.12);">&#174;</div>
+      <div class="topic-info"><h2 style="color:#7c5af0;">Trade Mark &amp; Get-Up</h2><p>Nhãn Hiệu, Passing-Off &amp; Bảo Vệ Thương Hiệu</p></div>
+      <div class="topic-stats"><div class="topic-score" id="score-tm" style="color:#7c5af0;">-</div><div class="topic-score-label">điểm</div></div>
+    </div>
+    <div class="progress-wrap"><div class="progress-info"><span id="ptext-tm">Câu 1</span><span id="ppct-tm">0%</span></div><div class="progress-track"><div class="progress-fill" id="pfill-tm" style="width:0%;background:linear-gradient(90deg,#7c5af0,#4f8ef7)"></div></div></div>
+    <div class="score-row"><div class="score-badge sc"><div class="num" id="sc-tm">0</div><div class="lbl">Đúng</div></div><div class="score-badge sw"><div class="num" id="sw-tm">0</div><div class="lbl">Sai</div></div><div class="score-badge sr"><div class="num" id="sr-tm">-</div><div class="lbl">Còn Lại</div></div></div>
+    <div class="quiz-card" id="card-tm">
+      <div class="card-top"><div class="q-meta"><span class="q-num" id="qnum-tm"></span><span class="q-tag" style="background:rgba(124,90,240,0.1);color:#7c5af0;">TRADE MARK</span></div><div class="q-en" id="qen-tm"></div><div class="q-vi" id="qvi-tm"></div></div>
+      <div class="options" id="opts-tm"></div>
+      <div class="result-box" id="rb-tm"><div class="rb-title" id="rbt-tm"></div><div class="rb-explain" id="rbe-tm"></div></div>
+      <button class="next-btn" id="nb-tm" onclick="nextQ('tm')"></button>
+    </div>
+    <div class="final-screen" id="fin-tm"><div class="final-card"><div class="final-grade" id="fg-tm" style="background:linear-gradient(135deg,var(--green),#7c5af0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></div><div class="final-msg" id="fm-tm"></div><div class="final-stats"><div class="fs-item fg"><div class="n" id="fsc-tm">0</div><div class="t">Đúng</div></div><div class="fs-item fr"><div class="n" id="fsw-tm">0</div><div class="t">Sai</div></div></div><button class="restart-btn" onclick="restartTopic('tm')">Làm Lại</button></div></div>
+  </div>
+
+  <!-- CR -->
+  <div class="topic-page" id="page-cr">
+    <div class="topic-header">
+      <div class="topic-icon" style="background:rgba(45,212,247,0.12);">&#169;</div>
+      <div class="topic-info"><h2 style="color:#2dd4f7;">Copyright &amp; Fair Dealing</h2><p>Bản Quyền, Sử Dụng Hợp Lý &amp; Vi Phạm</p></div>
+      <div class="topic-stats"><div class="topic-score" id="score-cr" style="color:#2dd4f7;">-</div><div class="topic-score-label">điểm</div></div>
+    </div>
+    <div class="progress-wrap"><div class="progress-info"><span id="ptext-cr">Câu 1</span><span id="ppct-cr">0%</span></div><div class="progress-track"><div class="progress-fill" id="pfill-cr" style="width:0%;background:linear-gradient(90deg,#2dd4f7,#4f8ef7)"></div></div></div>
+    <div class="score-row"><div class="score-badge sc"><div class="num" id="sc-cr">0</div><div class="lbl">Đúng</div></div><div class="score-badge sw"><div class="num" id="sw-cr">0</div><div class="lbl">Sai</div></div><div class="score-badge sr"><div class="num" id="sr-cr">-</div><div class="lbl">Còn Lại</div></div></div>
+    <div class="quiz-card" id="card-cr">
+      <div class="card-top"><div class="q-meta"><span class="q-num" id="qnum-cr"></span><span class="q-tag" style="background:rgba(45,212,247,0.1);color:#2dd4f7;">COPYRIGHT</span></div><div class="q-en" id="qen-cr"></div><div class="q-vi" id="qvi-cr"></div></div>
+      <div class="options" id="opts-cr"></div>
+      <div class="result-box" id="rb-cr"><div class="rb-title" id="rbt-cr"></div><div class="rb-explain" id="rbe-cr"></div></div>
+      <button class="next-btn" id="nb-cr" onclick="nextQ('cr')"></button>
+    </div>
+    <div class="final-screen" id="fin-cr"><div class="final-card"><div class="final-grade" id="fg-cr" style="background:linear-gradient(135deg,var(--green),#2dd4f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></div><div class="final-msg" id="fm-cr"></div><div class="final-stats"><div class="fs-item fg"><div class="n" id="fsc-cr">0</div><div class="t">Đúng</div></div><div class="fs-item fr"><div class="n" id="fsw-cr">0</div><div class="t">Sai</div></div></div><button class="restart-btn" onclick="restartTopic('cr')">Làm Lại</button></div></div>
+  </div>
+
+  <!-- DR -->
+  <div class="topic-page" id="page-dr">
+    <div class="topic-header">
+      <div class="topic-icon" style="background:rgba(247,195,72,0.12);">&#9998;</div>
+      <div class="topic-info"><h2 style="color:#f7c948;">Design Rights</h2><p>Quyền Thiết Kế - Đăng Ký &amp; Không Đăng Ký</p></div>
+      <div class="topic-stats"><div class="topic-score" id="score-dr" style="color:#f7c948;">-</div><div class="topic-score-label">điểm</div></div>
+    </div>
+    <div class="progress-wrap"><div class="progress-info"><span id="ptext-dr">Câu 1</span><span id="ppct-dr">0%</span></div><div class="progress-track"><div class="progress-fill" id="pfill-dr" style="width:0%;background:linear-gradient(90deg,#f7c948,#f79348)"></div></div></div>
+    <div class="score-row"><div class="score-badge sc"><div class="num" id="sc-dr">0</div><div class="lbl">Đúng</div></div><div class="score-badge sw"><div class="num" id="sw-dr">0</div><div class="lbl">Sai</div></div><div class="score-badge sr"><div class="num" id="sr-dr">-</div><div class="lbl">Còn Lại</div></div></div>
+    <div class="quiz-card" id="card-dr">
+      <div class="card-top"><div class="q-meta"><span class="q-num" id="qnum-dr"></span><span class="q-tag" style="background:rgba(247,195,72,0.1);color:#f7c948;">DESIGN</span></div><div class="q-en" id="qen-dr"></div><div class="q-vi" id="qvi-dr"></div></div>
+      <div class="options" id="opts-dr"></div>
+      <div class="result-box" id="rb-dr"><div class="rb-title" id="rbt-dr"></div><div class="rb-explain" id="rbe-dr"></div></div>
+      <button class="next-btn" id="nb-dr" onclick="nextQ('dr')"></button>
+    </div>
+    <div class="final-screen" id="fin-dr"><div class="final-card"><div class="final-grade" id="fg-dr" style="background:linear-gradient(135deg,var(--green),#f7c948);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></div><div class="final-msg" id="fm-dr"></div><div class="final-stats"><div class="fs-item fg"><div class="n" id="fsc-dr">0</div><div class="t">Đúng</div></div><div class="fs-item fr"><div class="n" id="fsw-dr">0</div><div class="t">Sai</div></div></div><button class="restart-btn" onclick="restartTopic('dr')">Làm Lại</button></div></div>
+  </div>
+
+  <!-- SM -->
+  <div class="topic-page" id="page-sm">
+    <div class="topic-header">
+      <div class="topic-icon" style="background:rgba(31,214,122,0.12);">&#128241;</div>
+      <div class="topic-info"><h2 style="color:#1fd67a;">Social Media Law</h2><p>Luật Mạng Xã Hội - Chính Sách &amp; Tranh Chấp</p></div>
+      <div class="topic-stats"><div class="topic-score" id="score-sm" style="color:#1fd67a;">-</div><div class="topic-score-label">điểm</div></div>
+    </div>
+    <div class="progress-wrap"><div class="progress-info"><span id="ptext-sm">Câu 1</span><span id="ppct-sm">0%</span></div><div class="progress-track"><div class="progress-fill" id="pfill-sm" style="width:0%;background:linear-gradient(90deg,#1fd67a,#2dd4f7)"></div></div></div>
+    <div class="score-row"><div class="score-badge sc"><div class="num" id="sc-sm">0</div><div class="lbl">Đúng</div></div><div class="score-badge sw"><div class="num" id="sw-sm">0</div><div class="lbl">Sai</div></div><div class="score-badge sr"><div class="num" id="sr-sm">-</div><div class="lbl">Còn Lại</div></div></div>
+    <div class="quiz-card" id="card-sm">
+      <div class="card-top"><div class="q-meta"><span class="q-num" id="qnum-sm"></span><span class="q-tag" style="background:rgba(31,214,122,0.1);color:#1fd67a;">SOCIAL MEDIA</span></div><div class="q-en" id="qen-sm"></div><div class="q-vi" id="qvi-sm"></div></div>
+      <div class="options" id="opts-sm"></div>
+      <div class="result-box" id="rb-sm"><div class="rb-title" id="rbt-sm"></div><div class="rb-explain" id="rbe-sm"></div></div>
+      <button class="next-btn" id="nb-sm" onclick="nextQ('sm')"></button>
+    </div>
+    <div class="final-screen" id="fin-sm"><div class="final-card"><div class="final-grade" id="fg-sm" style="background:linear-gradient(135deg,var(--green),#1fd67a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></div><div class="final-msg" id="fm-sm"></div><div class="final-stats"><div class="fs-item fg"><div class="n" id="fsc-sm">0</div><div class="t">Đúng</div></div><div class="fs-item fr"><div class="n" id="fsw-sm">0</div><div class="t">Sai</div></div></div><button class="restart-btn" onclick="restartTopic('sm')">Làm Lại</button></div></div>
+  </div>
+
+  <!-- LI -->
+  <div class="topic-page" id="page-li">
+    <div class="topic-header">
+      <div class="topic-icon" style="background:rgba(247,147,72,0.12);">&#128196;</div>
+      <div class="topic-info"><h2 style="color:#f79348;">Licensing &amp; Agreements</h2><p>Cấp Phép, Hợp Đồng &amp; Bồi Thường</p></div>
+      <div class="topic-stats"><div class="topic-score" id="score-li" style="color:#f79348;">-</div><div class="topic-score-label">điểm</div></div>
+    </div>
+    <div class="progress-wrap"><div class="progress-info"><span id="ptext-li">Câu 1</span><span id="ppct-li">0%</span></div><div class="progress-track"><div class="progress-fill" id="pfill-li" style="width:0%;background:linear-gradient(90deg,#f79348,#f7c948)"></div></div></div>
+    <div class="score-row"><div class="score-badge sc"><div class="num" id="sc-li">0</div><div class="lbl">Đúng</div></div><div class="score-badge sw"><div class="num" id="sw-li">0</div><div class="lbl">Sai</div></div><div class="score-badge sr"><div class="num" id="sr-li">-</div><div class="lbl">Còn Lại</div></div></div>
+    <div class="quiz-card" id="card-li">
+      <div class="card-top"><div class="q-meta"><span class="q-num" id="qnum-li"></span><span class="q-tag" style="background:rgba(247,147,72,0.1);color:#f79348;">LICENSING</span></div><div class="q-en" id="qen-li"></div><div class="q-vi" id="qvi-li"></div></div>
+      <div class="options" id="opts-li"></div>
+      <div class="result-box" id="rb-li"><div class="rb-title" id="rbt-li"></div><div class="rb-explain" id="rbe-li"></div></div>
+      <button class="next-btn" id="nb-li" onclick="nextQ('li')"></button>
+    </div>
+    <div class="final-screen" id="fin-li"><div class="final-card"><div class="final-grade" id="fg-li" style="background:linear-gradient(135deg,var(--green),#f79348);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></div><div class="final-msg" id="fm-li"></div><div class="final-stats"><div class="fs-item fg"><div class="n" id="fsc-li">0</div><div class="t">Đúng</div></div><div class="fs-item fr"><div class="n" id="fsw-li">0</div><div class="t">Sai</div></div></div><button class="restart-btn" onclick="restartTopic('li')">Làm Lại</button></div></div>
+  </div>
+
+  <!-- PR -->
+  <div class="topic-page" id="page-pr">
+    <div class="topic-header">
+      <div class="topic-icon" style="background:rgba(247,95,95,0.12);">&#128274;</div>
+      <div class="topic-info"><h2 style="color:#f75f5f;">Privacy &amp; Data Protection</h2><p>Quyền Riêng Tư, GDPR, COPPA &amp; Bảo Vệ Dữ Liệu</p></div>
+      <div class="topic-stats"><div class="topic-score" id="score-pr" style="color:#f75f5f;">-</div><div class="topic-score-label">điểm</div></div>
+    </div>
+    <div class="progress-wrap"><div class="progress-info"><span id="ptext-pr">Câu 1</span><span id="ppct-pr">0%</span></div><div class="progress-track"><div class="progress-fill" id="pfill-pr" style="width:0%;background:linear-gradient(90deg,#f75f5f,#f79348)"></div></div></div>
+    <div class="score-row"><div class="score-badge sc"><div class="num" id="sc-pr">0</div><div class="lbl">Đúng</div></div><div class="score-badge sw"><div class="num" id="sw-pr">0</div><div class="lbl">Sai</div></div><div class="score-badge sr"><div class="num" id="sr-pr">-</div><div class="lbl">Còn Lại</div></div></div>
+    <div class="quiz-card" id="card-pr">
+      <div class="card-top"><div class="q-meta"><span class="q-num" id="qnum-pr"></span><span class="q-tag" style="background:rgba(247,95,95,0.1);color:#f75f5f;">PRIVACY</span></div><div class="q-en" id="qen-pr"></div><div class="q-vi" id="qvi-pr"></div></div>
+      <div class="options" id="opts-pr"></div>
+      <div class="result-box" id="rb-pr"><div class="rb-title" id="rbt-pr"></div><div class="rb-explain" id="rbe-pr"></div></div>
+      <button class="next-btn" id="nb-pr" onclick="nextQ('pr')"></button>
+    </div>
+    <div class="final-screen" id="fin-pr"><div class="final-card"><div class="final-grade" id="fg-pr" style="background:linear-gradient(135deg,var(--green),#f75f5f);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></div><div class="final-msg" id="fm-pr"></div><div class="final-stats"><div class="fs-item fg"><div class="n" id="fsc-pr">0</div><div class="t">Đúng</div></div><div class="fs-item fr"><div class="n" id="fsw-pr">0</div><div class="t">Sai</div></div></div><button class="restart-btn" onclick="restartTopic('pr')">Làm Lại</button></div></div>
+  </div>
+
+</div><!-- /.main -->
+
+<script src="script.js"></script>
+</body>
+</html>

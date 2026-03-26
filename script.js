@@ -1,610 +1,604 @@
 // ============================================================
-// LAE101 QUIZ - DỮ LIỆU NGUỒN MỚI HOÀN TOÀN
+// LAE101 QUIZ - SCRIPT.JS (FIXED)
+// Fixes: apostrophes escaped, switchTab button selector fixed,
+//        wrapped in DOMContentLoaded, safe innerHTML for exp
 // ============================================================
 
 const TOPICS = {
-  ip:  { name:'Intellectual Property Rights', vi:'Sở Hữu Trí Tuệ',        icon:'📖', color:'#4f8ef7' },
-  tm:  { name:'Trade Mark & Get-Up',          vi:'Nhãn Hiệu & Thương Hiệu', icon:'®',  color:'#7c5af0' },
-  cr:  { name:'Copyright & Fair Dealing',     vi:'Bản Quyền & Sử Dụng Hợp Lý', icon:'©', color:'#2dd4f7' },
-  dr:  { name:'Design Rights',               vi:'Quyền Thiết Kế',          icon:'✏', color:'#f7c948' },
-  sm:  { name:'Social Media Law',            vi:'Luật Mạng Xã Hội',        icon:'📱', color:'#1fd67a' },
-  li:  { name:'Licensing & Agreements',      vi:'Cấp Phép & Hợp Đồng',     icon:'📄', color:'#f79348' },
-  pr:  { name:'Privacy & Data Protection',   vi:'Quyền Riêng Tư & Dữ Liệu', icon:'🔒', color:'#f75f5f' },
-  la:  { name:'Legal Arguments & Ethics',    vi:'Lập Luận Pháp Lý & Đạo Đức', icon:'⚖', color:'#c084fc' },
+  ip: { name:'Intellectual Property Rights', vi:'So Huu Tri Tue',          icon:'IPR',  color:'#4f8ef7' },
+  tm: { name:'Trade Mark & Get-Up',          vi:'Nhan Hieu & Thuong Hieu',  icon:'TM',   color:'#7c5af0' },
+  cr: { name:'Copyright & Fair Dealing',     vi:'Ban Quyen & Su Dung Hop Ly', icon:'CR', color:'#2dd4f7' },
+  dr: { name:'Design Rights',               vi:'Quyen Thiet Ke',            icon:'DR',   color:'#f7c948' },
+  sm: { name:'Social Media Law',            vi:'Luat Mang Xa Hoi',          icon:'SM',   color:'#1fd67a' },
+  li: { name:'Licensing & Agreements',      vi:'Cap Phep & Hop Dong',       icon:'LI',   color:'#f79348' },
+  pr: { name:'Privacy & Data Protection',   vi:'Quyen Rieng Tu & Du Lieu',  icon:'PR',   color:'#f75f5f' },
+  la: { name:'Legal Arguments & Ethics',    vi:'Lap Luan Phap Ly & Dao Duc',icon:'LA',   color:'#c084fc' },
 };
 
 // ============================================================
-// NGÂN HÀNG CÂU HỎI - NGUỒN MỚI HOÀN TOÀN
+// NGAN HANG CAU HOI
 // ============================================================
 const QDB = {
 
-  // ── SỞ HỮU TRÍ TUỆ ─────────────────────────────────────────
   ip: [
     { en:"Which international agreement aims to harmonize IP standards?",
-      vi:"Hiệp định quốc tế nào nhằm hài hòa hóa các tiêu chuẩn sở hữu trí tuệ?",
-      opts:[{k:'A',en:"Paris Convention",vi:"Công ước Paris"},{k:'B',en:"TRIPS Agreement",vi:"Hiệp định TRIPS"},{k:'C',en:"Berne Convention",vi:"Công ước Berne"},{k:'D',en:"Madrid Protocol",vi:"Nghị định thư Madrid"}],
-      ans:'B', exp:`<strong>Hiệp định TRIPS</strong> (Trade-Related Aspects of Intellectual Property Rights) là hiệp định toàn diện nhất thiết lập các tiêu chuẩn tối thiểu về bảo hộ và thực thi quyền sở hữu trí tuệ trên phạm vi toàn cầu.` },
+      vi:"Hiep dinh quoc te nao nham hai hoa hoa cac tieu chuan so huu tri tue?",
+      opts:[{k:'A',en:"Paris Convention",vi:"Cong uoc Paris"},{k:'B',en:"TRIPS Agreement",vi:"Hiep dinh TRIPS"},{k:'C',en:"Berne Convention",vi:"Cong uoc Berne"},{k:'D',en:"Madrid Protocol",vi:"Nghi dinh thu Madrid"}],
+      ans:'B', exp:"<strong>Hiep dinh TRIPS</strong> (Trade-Related Aspects of Intellectual Property Rights) la hiep dinh toan dien nhat thiet lap cac tieu chuan toi thieu ve bao ho va thuc thi quyen so huu tri tue tren pham vi toan cau." },
 
     { en:"Which organization enforces the TRIPS Agreement?",
-      vi:"Tổ chức nào thực thi Hiệp định TRIPS?",
-      opts:[{k:'A',en:"World Health Organization (WHO)",vi:"Tổ chức Y tế Thế giới (WHO)"},{k:'B',en:"World Trade Organization (WTO)",vi:"Tổ chức Thương mại Thế giới (WTO)"},{k:'C',en:"United Nations (UN)",vi:"Liên Hợp Quốc (UN)"},{k:'D',en:"World Intellectual Property Organization (WIPO)",vi:"Tổ chức Sở hữu Trí tuệ Thế giới (WIPO)"}],
-      ans:'B', exp:`<strong>WTO</strong> là cơ quan quản lý và có cơ chế giải quyết tranh chấp để đảm bảo các quốc gia thành viên tuân thủ các quy định của Hiệp định TRIPS.` },
+      vi:"To chuc nao thuc thi Hiep dinh TRIPS?",
+      opts:[{k:'A',en:"World Health Organization (WHO)",vi:"To chuc Y te The gioi (WHO)"},{k:'B',en:"World Trade Organization (WTO)",vi:"To chuc Thuong mai The gioi (WTO)"},{k:'C',en:"United Nations (UN)",vi:"Lien Hop Quoc (UN)"},{k:'D',en:"World Intellectual Property Organization (WIPO)",vi:"To chuc So huu Tri tue The gioi (WIPO)"}],
+      ans:'B', exp:"<strong>WTO</strong> la co quan quan ly va co co che giai quyet tranh chap de dam bao cac quoc gia thanh vien tuan thu cac quy dinh cua Hiep dinh TRIPS." },
 
     { en:"What do patents primarily protect?",
-      vi:"Bằng sáng chế chủ yếu bảo vệ điều gì?",
-      opts:[{k:'A',en:"Original literary works",vi:"Các tác phẩm văn học gốc"},{k:'B',en:"Brand names and logos",vi:"Tên thương hiệu và logo"},{k:'C',en:"Inventions and new technical solutions",vi:"Các phát minh và giải pháp kỹ thuật mới"},{k:'D',en:"The visual design of a product",vi:"Thiết kế trực quan của một sản phẩm"}],
-      ans:'C', exp:`<strong>Bằng sáng chế (Patents)</strong> được cấp riêng cho các phát minh, quy trình hoặc giải pháp kỹ thuật mới có khả năng áp dụng vào công nghiệp.` },
+      vi:"Bang sang che chu yeu bao ve dieu gi?",
+      opts:[{k:'A',en:"Original literary works",vi:"Cac tac pham van hoc goc"},{k:'B',en:"Brand names and logos",vi:"Ten thuong hieu va logo"},{k:'C',en:"Inventions and new technical solutions",vi:"Cac phat minh va giai phap ky thuat moi"},{k:'D',en:"The visual design of a product",vi:"Thiet ke truc quan cua mot san pham"}],
+      ans:'C', exp:"<strong>Bang sang che (Patents)</strong> duoc cap rieng cho cac phat minh, quy trinh hoac giai phap ky thuat moi co kha nang ap dung vao cong nghiep." },
 
     { en:"What do trademarks protect?",
-      vi:"Nhãn hiệu bảo vệ điều gì?",
-      opts:[{k:'A',en:"Literary works",vi:"Tác phẩm văn học"},{k:'B',en:"Brand names, logos, and symbols",vi:"Tên thương hiệu, logo và biểu tượng"},{k:'C',en:"Technical inventions",vi:"Các phát minh kỹ thuật"},{k:'D',en:"Trade secrets",vi:"Bí mật thương mại"}],
-      ans:'B', exp:`<strong>Nhãn hiệu (Trademarks)</strong> bảo vệ các dấu hiệu nhận diện giúp người tiêu dùng phân biệt hàng hóa/dịch vụ của doanh nghiệp này với doanh nghiệp khác.` },
+      vi:"Nhan hieu bao ve dieu gi?",
+      opts:[{k:'A',en:"Literary works",vi:"Tac pham van hoc"},{k:'B',en:"Brand names, logos, and symbols",vi:"Ten thuong hieu, logo va bieu tuong"},{k:'C',en:"Technical inventions",vi:"Cac phat minh ky thuat"},{k:'D',en:"Trade secrets",vi:"Bi mat thuong mai"}],
+      ans:'B', exp:"<strong>Nhan hieu (Trademarks)</strong> bao ve cac dau hieu nhan dien giup nguoi tieu dung phan biet hang hoa/dich vu cua doanh nghiep nay voi doanh nghiep khac." },
 
     { en:"What does copyright protect?",
-      vi:"Bản quyền bảo vệ điều gì?",
-      opts:[{k:'A',en:"Ideas and concepts",vi:"Ý tưởng và khái niệm"},{k:'B',en:"Original literary, artistic, and musical works",vi:"Các tác phẩm văn học, nghệ thuật và âm nhạc gốc"},{k:'C',en:"Industrial machines",vi:"Máy móc công nghiệp"},{k:'D',en:"Company names",vi:"Tên công ty"}],
-      ans:'B', exp:`<strong>Bản quyền (Copyright)</strong> bảo vệ cách thể hiện của một ý tưởng dưới dạng các tác phẩm văn học, nghệ thuật, âm nhạc, phim ảnh... chứ không bảo vệ bản thân ý tưởng đó.` },
+      vi:"Ban quyen bao ve dieu gi?",
+      opts:[{k:'A',en:"Ideas and concepts",vi:"Y tuong va khai niem"},{k:'B',en:"Original literary, artistic, and musical works",vi:"Cac tac pham van hoc, nghe thuat va am nhac goc"},{k:'C',en:"Industrial machines",vi:"May moc cong nghiep"},{k:'D',en:"Company names",vi:"Ten cong ty"}],
+      ans:'B', exp:"<strong>Ban quyen (Copyright)</strong> bao ve cach the hien cua mot y tuong duoi dang cac tac pham van hoc, nghe thuat, am nhac, phim anh... chu khong bao ve ban than y tuong do." },
 
     { en:"What is the primary function of a trademark?",
-      vi:"Chức năng chính của nhãn hiệu là gì?",
-      opts:[{k:'A',en:"To reward inventors",vi:"Để khen thưởng các nhà phát minh"},{k:'B',en:"To identify the source of goods or services and prevent consumer confusion",vi:"Để xác định nguồn gốc của hàng hóa hoặc dịch vụ và ngăn ngừa sự nhầm lẫn của người tiêu dùng"},{k:'C',en:"To protect private information",vi:"Để bảo vệ thông tin riêng tư"},{k:'D',en:"To encourage reading",vi:"Để khuyến khích việc đọc sách"}],
-      ans:'B', exp:`Mục đích cốt lõi của nhãn hiệu là giúp khách hàng nhận diện chính xác ai là người cung cấp sản phẩm/dịch vụ, từ đó tránh việc mua nhầm hàng giả, hàng nhái.` },
+      vi:"Chuc nang chinh cua nhan hieu la gi?",
+      opts:[{k:'A',en:"To reward inventors",vi:"De khen thuong cac nha phat minh"},{k:'B',en:"To identify the source of goods or services and prevent consumer confusion",vi:"De xac dinh nguon goc cua hang hoa hoac dich vu va ngan ngua su nham lan cua nguoi tieu dung"},{k:'C',en:"To protect private information",vi:"De bao ve thong tin rieng tu"},{k:'D',en:"To encourage reading",vi:"De khuyen khich viec doc sach"}],
+      ans:'B', exp:"Muc dich cot loi cua nhan hieu la giup khach hang nhan dien chinh xac ai la nguoi cung cap san pham/dich vu, tu do tranh viec mua nham hang gia, hang nhai." },
 
     { en:"What is the main purpose of the patent system?",
-      vi:"Mục đích chính của hệ thống bằng sáng chế là gì?",
-      opts:[{k:'A',en:"To keep inventions secret forever",vi:"Để giữ bí mật các phát minh mãi mãi"},{k:'B',en:"To encourage innovation by granting inventors a temporary monopoly in exchange for public disclosure",vi:"Để khuyến khích đổi mới bằng cách cấp độc quyền tạm thời để đổi lấy việc công bố công khai phát minh"},{k:'C',en:"To control the price of goods",vi:"Để kiểm soát giá cả hàng hóa"},{k:'D',en:"To replace trademarks",vi:"Để thay thế nhãn hiệu"}],
-      ans:'B', exp:`Hệ thống bằng sáng chế là một "bản hợp đồng": nhà phát minh được <strong>độc quyền khai thác (thường 20 năm)</strong>, bù lại họ phải công khai chi tiết kỹ thuật để xã hội có thể học hỏi và tiếp tục phát triển.` },
+      vi:"Muc dich chinh cua he thong bang sang che la gi?",
+      opts:[{k:'A',en:"To keep inventions secret forever",vi:"De giu bi mat cac phat minh mai mai"},{k:'B',en:"To encourage innovation by granting inventors a temporary monopoly in exchange for public disclosure",vi:"De khuyen khich doi moi bang cach cap doc quyen tam thoi de doi lay viec cong bo cong khai phat minh"},{k:'C',en:"To control the price of goods",vi:"De kiem soat gia ca hang hoa"},{k:'D',en:"To replace trademarks",vi:"De thay the nhan hieu"}],
+      ans:'B', exp:"He thong bang sang che la mot 'ban hop dong': nha phat minh duoc <strong>doc quyen khai thac (thuong 20 nam)</strong>, bu lai ho phai cong khai chi tiet ky thuat de xa hoi co the hoc hoi va tiep tuc phat trien." },
 
     { en:"What can overly strict IP enforcement lead to?",
-      vi:"Việc thực thi IP quá nghiêm ngặt có thể dẫn đến điều gì?",
-      opts:[{k:'A',en:"Creative freedom",vi:"Tự do sáng tạo"},{k:'B',en:"Stifled innovation and reduced idea sharing",vi:"Kìm hãm đổi mới và giảm chia sẻ ý tưởng"},{k:'C',en:"Economic growth",vi:"Tăng trưởng kinh tế"},{k:'D',en:"Clear fair use guidelines",vi:"Hướng dẫn sử dụng hợp lý rõ ràng"}],
-      ans:'B', exp:`Khi IP được thực thi quá cứng nhắc, nó có thể <strong>kìm hãm đổi mới</strong> vì mọi người sợ bị kiện khi sử dụng hoặc phát triển ý tưởng dựa trên ý tưởng hiện có.` },
+      vi:"Viec thuc thi IP qua nghiem ngat co the dan den dieu gi?",
+      opts:[{k:'A',en:"Creative freedom",vi:"Tu do sang tao"},{k:'B',en:"Stifled innovation and reduced idea sharing",vi:"Kim ham doi moi va giam chia se y tuong"},{k:'C',en:"Economic growth",vi:"Tang truong kinh te"},{k:'D',en:"Clear fair use guidelines",vi:"Huong dan su dung hop ly ro rang"}],
+      ans:'B', exp:"Khi IP duoc thuc thi qua cung nhac, no co the <strong>kim ham doi moi</strong> vi moi nguoi so bi kien khi su dung hoac phat trien y tuong dua tren y tuong hien co." },
 
     { en:"How does IPR affect international trade agreements?",
-      vi:"Quyền sở hữu trí tuệ ảnh hưởng đến các hiệp định thương mại quốc tế như thế nào?",
-      opts:[{k:'A',en:"It restricts tariffs",vi:"Nó hạn chế thuế quan"},{k:'B',en:"It ensures fair competition and market protection",vi:"Nó đảm bảo cạnh tranh công bằng và bảo vệ thị trường"},{k:'C',en:"It allows countries to bypass patent laws",vi:"Nó cho phép các nước bỏ qua luật sáng chế"},{k:'D',en:"It removes barriers to all product sales",vi:"Nó loại bỏ rào cản cho tất cả hàng hóa"}],
-      ans:'B', exp:`IPR trong thương mại quốc tế giúp <strong>đảm bảo cạnh tranh công bằng</strong> — ngăn chặn hàng giả, bảo vệ thương hiệu và công nghệ khi kinh doanh xuyên biên giới.` },
+      vi:"Quyen so huu tri tue anh huong den cac hiep dinh thuong mai quoc te nhu the nao?",
+      opts:[{k:'A',en:"It restricts tariffs",vi:"No han che thue quan"},{k:'B',en:"It ensures fair competition and market protection",vi:"No dam bao canh tranh cong bang va bao ve thi truong"},{k:'C',en:"It allows countries to bypass patent laws",vi:"No cho phep cac nuoc bo qua luat sang che"},{k:'D',en:"It removes barriers to all product sales",vi:"No loai bo rao can cho tat ca hang hoa"}],
+      ans:'B', exp:"IPR trong thuong mai quoc te giup <strong>dam bao canh tranh cong bang</strong> - ngan chan hang gia, bao ve thuong hieu va cong nghe khi kinh doanh xuyen bien gioi." },
 
     { en:"When is overlapping protection most advantageous?",
-      vi:"Khi nào thì việc bảo hộ chồng lấn mang lại lợi thế lớn nhất?",
-      opts:[{k:'A',en:"When a product is cheap",vi:"Khi một sản phẩm có giá rẻ"},{k:'B',en:"When a product embodies multiple intellectual assets, like design and technology",vi:"Khi một sản phẩm chứa đựng nhiều tài sản trí tuệ, chẳng hạn như thiết kế và công nghệ"},{k:'C',en:"When a product is digital only",vi:"Khi một sản phẩm chỉ có dạng kỹ thuật số"},{k:'D',en:"When it is a simple idea",vi:"Khi nó là một ý tưởng đơn giản"}],
-      ans:'B', exp:`Bảo hộ chồng lấn phát huy sức mạnh tối đa cho các sản phẩm công nghệ cao — hình dáng được bảo vệ bởi <strong>Design Right</strong>, vi mạch bởi <strong>Patent</strong>, phần mềm bởi <strong>Copyright</strong>.` },
+      vi:"Khi nao thi viec bao ho chong lan mang lai loi the lon nhat?",
+      opts:[{k:'A',en:"When a product is cheap",vi:"Khi mot san pham co gia re"},{k:'B',en:"When a product embodies multiple intellectual assets, like design and technology",vi:"Khi mot san pham chua dung nhieu tai san tri tue, chang han nhu thiet ke va cong nghe"},{k:'C',en:"When a product is digital only",vi:"Khi mot san pham chi co dang ky thuat so"},{k:'D',en:"When it is a simple idea",vi:"Khi no la mot y tuong don gian"}],
+      ans:'B', exp:"Bao ho chong lan phat huy suc manh toi da cho cac san pham cong nghe cao - hinh dang duoc bao ve boi <strong>Design Right</strong>, vi mach boi <strong>Patent</strong>, phan mem boi <strong>Copyright</strong>." },
   ],
 
-  // ── NHÃN HIỆU & GET-UP ──────────────────────────────────────
   tm: [
     { en:"Which of the following would likely NOT result in trade mark infringement?",
-      vi:"Điều nào sau đây KHÔNG dẫn đến vi phạm nhãn hiệu?",
-      opts:[{k:'A',en:"Direct copying",vi:"Sao chép trực tiếp"},{k:'B',en:"Different industries with no consumer confusion",vi:"Ngành khác nhau, người dùng không bị nhầm lẫn"},{k:'C',en:"Confusingly similar logo",vi:"Logo gây nhầm lẫn"},{k:'D',en:"Unauthorized use in ads",vi:"Sử dụng trái phép trong quảng cáo"}],
-      ans:'B', exp:`Vi phạm nhãn hiệu cần có <strong>nguy cơ gây nhầm lẫn cho người tiêu dùng</strong>. Nếu hai công ty ở ngành hoàn toàn khác và không ai bị nhầm lẫn thì không có vi phạm.` },
+      vi:"Dieu nao sau day KHONG dan den vi pham nhan hieu?",
+      opts:[{k:'A',en:"Direct copying",vi:"Sao chep truc tiep"},{k:'B',en:"Different industries with no consumer confusion",vi:"Nganh khac nhau, nguoi dung khong bi nham lan"},{k:'C',en:"Confusingly similar logo",vi:"Logo gay nham lan"},{k:'D',en:"Unauthorized use in ads",vi:"Su dung trai phep trong quang cao"}],
+      ans:'B', exp:"Vi pham nhan hieu can co <strong>nguy co gay nham lan cho nguoi tieu dung</strong>. Neu hai cong ty o nganh hoan toan khac va khong ai bi nham lan thi khong co vi pham." },
 
     { en:"Which is NOT one of the three elements required for passing-off?",
-      vi:"Điều nào KHÔNG phải là 1 trong 3 yếu tố bắt buộc của 'passing-off'?",
-      opts:[{k:'A',en:"Reputation",vi:"Danh tiếng"},{k:'B',en:"Misrepresentation",vi:"Sự gian dối/gây nhầm lẫn"},{k:'C',en:"Patentability",vi:"Khả năng được cấp bằng sáng chế"},{k:'D',en:"Damage",vi:"Thiệt hại"}],
-      ans:'C', exp:`Ba yếu tố của passing-off: <strong>Reputation</strong>, <strong>Misrepresentation</strong>, <strong>Damage</strong>. Patentability thuộc luật sáng chế, không liên quan.` },
+      vi:"Dieu nao KHONG phai la 1 trong 3 yeu to bat buoc cua 'passing-off'?",
+      opts:[{k:'A',en:"Reputation",vi:"Danh tieng"},{k:'B',en:"Misrepresentation",vi:"Su gian doi/gay nham lan"},{k:'C',en:"Patentability",vi:"Kha nang duoc cap bang sang che"},{k:'D',en:"Damage",vi:"Thiet hai"}],
+      ans:'C', exp:"Ba yeu to cua passing-off: <strong>Reputation</strong>, <strong>Misrepresentation</strong>, <strong>Damage</strong>. Patentability thuoc luat sang che, khong lien quan." },
 
     { en:"What is the purpose of the legal concept of passing-off?",
-      vi:"Mục đích của khái niệm pháp lý 'passing-off' là gì?",
-      opts:[{k:'A',en:"To allow free competition",vi:"Để cho phép cạnh tranh tự do"},{k:'B',en:"To prevent businesses from misrepresenting their goods as another's",vi:"Để ngăn chặn doanh nghiệp xuyên tạc hàng hóa của họ là của người khác"},{k:'C',en:"To register a trade mark",vi:"Để đăng ký nhãn hiệu"},{k:'D',en:"To stop copyright infringement",vi:"Để ngăn vi phạm bản quyền"}],
-      ans:'B', exp:`Mục đích cốt lõi của passing-off là <strong>bảo vệ người tiêu dùng và doanh nghiệp chân chính</strong> khỏi hành vi treo đầu dê bán thịt chó — cố tình làm khách hàng mua nhầm.` },
+      vi:"Muc dich cua khai niem phap ly 'passing-off' la gi?",
+      opts:[{k:'A',en:"To allow free competition",vi:"De cho phep canh tranh tu do"},{k:'B',en:"To prevent businesses from misrepresenting their goods as another's",vi:"De ngan chan doanh nghiep xuyen tac hang hoa cua ho la cua nguoi khac"},{k:'C',en:"To register a trade mark",vi:"De dang ky nhan hieu"},{k:'D',en:"To stop copyright infringement",vi:"De ngan vi pham ban quyen"}],
+      ans:'B', exp:"Muc dich cot loi cua passing-off la <strong>bao ve nguoi tieu dung va doanh nghiep chan chinh</strong> khoi hanh vi treo dau de ban thit cho - co tinh lam khach hang mua nham." },
 
     { en:"Which of the following is a non-traditional trade mark?",
-      vi:"Điều nào sau đây là nhãn hiệu phi truyền thống?",
-      opts:[{k:'A',en:"Product weight",vi:"Trọng lượng sản phẩm"},{k:'B',en:"Sound or smell",vi:"Âm thanh hoặc mùi hương"},{k:'C',en:"Barcode",vi:"Mã vạch"},{k:'D',en:"Business license",vi:"Giấy phép kinh doanh"}],
-      ans:'B', exp:`<strong>Nhãn hiệu phi truyền thống</strong> bao gồm âm thanh (như nhạc hiệu Intel), mùi hương, màu sắc đặc trưng — những yếu tố có thể phân biệt sản phẩm dù không phải logo hay chữ.` },
+      vi:"Dieu nao sau day la nhan hieu phi truyen thong?",
+      opts:[{k:'A',en:"Product weight",vi:"Trong luong san pham"},{k:'B',en:"Sound or smell",vi:"Am thanh hoac mui huong"},{k:'C',en:"Barcode",vi:"Ma vach"},{k:'D',en:"Business license",vi:"Giay phep kinh doanh"}],
+      ans:'B', exp:"<strong>Nhan hieu phi truyen thong</strong> bao gom am thanh (nhu nhac hieu Intel), mui huong, mau sac dac trung - nhung yeu to co the phan biet san pham du khong phai logo hay chu." },
 
     { en:"What is the term 'get-up' commonly used to describe?",
-      vi:"Thuật ngữ 'get-up' thường dùng để mô tả điều gì?",
-      opts:[{k:'A',en:"The overall visual appearance and presentation of a product",vi:"Tổng thể diện mạo trực quan và cách trình bày sản phẩm"},{k:'B',en:"Business model",vi:"Mô hình kinh doanh"},{k:'C',en:"Trade mark certificates",vi:"Chứng nhận nhãn hiệu"},{k:'D',en:"Financial structure",vi:"Cơ cấu tài chính"}],
-      ans:'A', exp:`<strong>Get-up</strong> bao gồm toàn bộ "vẻ bề ngoài" đặc trưng của sản phẩm — màu sắc bao bì, hình dáng chai lọ, font chữ — có thể được bảo vệ qua luật passing-off dù không đăng ký nhãn hiệu.` },
+      vi:"Thuat ngu 'get-up' thuong dung de mo ta dieu gi?",
+      opts:[{k:'A',en:"The overall visual appearance and presentation of a product",vi:"Tong the dien mao truc quan va cach trinh bay san pham"},{k:'B',en:"Business model",vi:"Mo hinh kinh doanh"},{k:'C',en:"Trade mark certificates",vi:"Chung nhan nhan hieu"},{k:'D',en:"Financial structure",vi:"Co cau tai chinh"}],
+      ans:'A', exp:"<strong>Get-up</strong> bao gom toan bo 've be ngoai' dac trung cua san pham - mau sac bao bi, hinh dang chai lo, font chu - co the duoc bao ve qua luat passing-off du khong dang ky nhan hieu." },
 
     { en:"What is the main difference between trade mark and get-up protection?",
-      vi:"Sự khác biệt chính giữa bảo hộ nhãn hiệu và get-up là gì?",
-      opts:[{k:'A',en:"Functionality scope",vi:"Phạm vi chức năng"},{k:'B',en:"Duration",vi:"Thời hạn"},{k:'C',en:"Get-up does not require registration",vi:"Get-up không yêu cầu đăng ký"},{k:'D',en:"Country of origin",vi:"Quốc gia xuất xứ"}],
-      ans:'C', exp:`<strong>Nhãn hiệu</strong> cần đăng ký với nhà nước. <strong>Get-up</strong> tự động phát sinh nhờ sử dụng thực tế và sự công nhận của khách hàng, hoàn toàn không cần thủ tục đăng ký.` },
+      vi:"Su khac biet chinh giua bao ho nhan hieu va get-up la gi?",
+      opts:[{k:'A',en:"Functionality scope",vi:"Pham vi chuc nang"},{k:'B',en:"Duration",vi:"Thoi han"},{k:'C',en:"Get-up does not require registration",vi:"Get-up khong yeu cau dang ky"},{k:'D',en:"Country of origin",vi:"Quoc gia xuat xu"}],
+      ans:'C', exp:"<strong>Nhan hieu</strong> can dang ky voi nha nuoc. <strong>Get-up</strong> tu dong phat sinh nho su dung thuc te va su cong nhan cua khach hang, hoan toan khong can thu tuc dang ky." },
 
     { en:"Why are non-traditional marks (e.g., smell or color) difficult to register?",
-      vi:"Tại sao nhãn hiệu phi truyền thống (mùi, màu) khó đăng ký?",
-      opts:[{k:'A',en:"They are offensive",vi:"Chúng gây khó chịu"},{k:'B',en:"They are difficult to represent graphically and prove distinctiveness",vi:"Khó biểu diễn bằng đồ họa và chứng minh sự khác biệt"},{k:'C',en:"They're expensive to file",vi:"Tốn kém khi nộp đơn"},{k:'D',en:"They don't last long",vi:"Không tồn tại lâu"}],
-      ans:'B', exp:`Cơ quan cấp nhãn hiệu yêu cầu bản mô tả rõ ràng. Việc vẽ một "mùi hương" trên giấy là điều không tưởng. Ngoài ra rất khó chứng minh một màu đơn thuần có đủ <strong>tính phân biệt</strong> trong tâm trí người tiêu dùng.` },
+      vi:"Tai sao nhan hieu phi truyen thong (mui, mau) kho dang ky?",
+      opts:[{k:'A',en:"They are offensive",vi:"Chung gay kho chiu"},{k:'B',en:"They are difficult to represent graphically and prove distinctiveness",vi:"Kho bieu dien bang do hoa va chung minh su khac biet"},{k:'C',en:"They're expensive to file",vi:"Ton kem khi nop don"},{k:'D',en:"They don't last long",vi:"Khong ton tai lau"}],
+      ans:'B', exp:"Co quan cap nhan hieu yeu cau ban mo ta ro rang. Viec ve mot 'mui huong' tren giay la dieu khong tuong. Ngoai ra rat kho chung minh mot mau don thuan co du <strong>tinh phan biet</strong> trong tam tri nguoi tieu dung." },
 
     { en:"When is passing-off unlikely to succeed?",
-      vi:"Khi nào kiện passing-off ít có khả năng thành công?",
-      opts:[{k:'A',en:"If there is no confusion between the businesses",vi:"Nếu không có sự nhầm lẫn giữa hai doanh nghiệp"},{k:'B',en:"If the brands look different",vi:"Nếu thương hiệu trông khác nhau"},{k:'C',en:"If colors match",vi:"Nếu màu sắc giống nhau"},{k:'D',en:"If slogans are similar",vi:"Nếu khẩu hiệu tương tự"}],
-      ans:'A', exp:`Cốt lõi của passing-off là <strong>nguy cơ nhầm lẫn (confusion)</strong>. Nếu không có khách hàng nào bị lú lẫn giữa hai doanh nghiệp, vụ kiện sẽ thất bại.` },
+      vi:"Khi nao kien passing-off it co kha nang thanh cong?",
+      opts:[{k:'A',en:"If there is no confusion between the businesses",vi:"Neu khong co su nham lan giua hai doanh nghiep"},{k:'B',en:"If the brands look different",vi:"Neu thuong hieu trong khac nhau"},{k:'C',en:"If colors match",vi:"Neu mau sac giong nhau"},{k:'D',en:"If slogans are similar",vi:"Neu khau hieu tuong tu"}],
+      ans:'A', exp:"Cot loi cua passing-off la <strong>nguy co nham lan (confusion)</strong>. Neu khong co khach hang nao bi lu lan giua hai doanh nghiep, vu kien se that bai." },
 
     { en:"What does 'goodwill' mean in trade mark law?",
-      vi:"'Goodwill' có nghĩa gì trong luật nhãn hiệu?",
-      opts:[{k:'A',en:"Product quantity",vi:"Số lượng sản phẩm"},{k:'B',en:"Customer loyalty and brand reputation",vi:"Lòng trung thành của khách hàng và uy tín thương hiệu"},{k:'C',en:"Trademark length",vi:"Chiều dài của nhãn hiệu"},{k:'D',en:"Employee reviews",vi:"Đánh giá của nhân viên"}],
-      ans:'B', exp:`<strong>Goodwill</strong> là tài sản vô hình — mức độ tin tưởng và trung thành mà khách hàng dành cho thương hiệu. Đây là nền móng của vụ kiện passing-off.` },
+      vi:"'Goodwill' co nghia gi trong luat nhan hieu?",
+      opts:[{k:'A',en:"Product quantity",vi:"So luong san pham"},{k:'B',en:"Customer loyalty and brand reputation",vi:"Long trung thanh cua khach hang va uy tin thuong hieu"},{k:'C',en:"Trademark length",vi:"Chieu dai cua nhan hieu"},{k:'D',en:"Employee reviews",vi:"Danh gia cua nhan vien"}],
+      ans:'B', exp:"<strong>Goodwill</strong> la tai san vo hinh - muc do tin tuong va trung thanh ma khach hang danh cho thuong hieu. Day la nen mong cua vu kien passing-off." },
 
     { en:"Consumer confusion may occur even when:",
-      vi:"Sự nhầm lẫn của người tiêu dùng có thể xảy ra ngay cả khi:",
-      opts:[{k:'A',en:"No product is sold",vi:"Không có sản phẩm nào được bán"},{k:'B',en:"Only a part of the get-up is copied",vi:"Chỉ một phần get-up bị sao chép"},{k:'C',en:"The brand is unique",vi:"Thương hiệu là độc nhất"},{k:'D',en:"The packaging color differs",vi:"Màu sắc bao bì khác nhau"}],
-      ans:'B', exp:`Ngay cả khi <strong>chỉ sao chép một phần</strong> đặc trưng (hình dạng chai, màu sắc đặc trưng), người tiêu dùng vẫn có thể bị nhầm lẫn — và điều đó đủ để kiện passing-off.` },
+      vi:"Su nham lan cua nguoi tieu dung co the xay ra ngay ca khi:",
+      opts:[{k:'A',en:"No product is sold",vi:"Khong co san pham nao duoc ban"},{k:'B',en:"Only a part of the get-up is copied",vi:"Chi mot phan get-up bi sao chep"},{k:'C',en:"The brand is unique",vi:"Thuong hieu la doc nhat"},{k:'D',en:"The packaging color differs",vi:"Mau sac bao bi khac nhau"}],
+      ans:'B', exp:"Ngay ca khi <strong>chi sao chep mot phan</strong> dac trung (hinh dang chai, mau sac dac trung), nguoi tieu dung van co the bi nham lan - va dieu do du de kien passing-off." },
 
     { en:"What is the legal standard for proving 'likelihood of confusion' in trademarks?",
-      vi:"Tiêu chuẩn pháp lý để chứng minh 'khả năng gây nhầm lẫn' trong nhãn hiệu là gì?",
-      opts:[{k:'A',en:"Consumers must actually be confused",vi:"Người tiêu dùng phải thực sự bị nhầm lẫn"},{k:'B',en:"It is enough to show that an ordinary consumer is likely to be confused",vi:"Chỉ cần chứng minh rằng một người tiêu dùng bình thường có khả năng bị nhầm lẫn là đủ"},{k:'C',en:"The infringer must admit to copying",vi:"Người vi phạm phải thừa nhận sao chép"},{k:'D',en:"Both products must be identical",vi:"Cả hai sản phẩm phải giống hệt nhau"}],
-      ans:'B', exp:`Pháp luật không yêu cầu phải tìm ra khách hàng <em>thực sự</em> mua nhầm. Chỉ cần chứng minh <strong>khả năng cao</strong> một người tiêu dùng bình thường sẽ bị nhầm lẫn là đủ để thắng kiện.` },
+      vi:"Tieu chuan phap ly de chung minh 'kha nang gay nham lan' trong nhan hieu la gi?",
+      opts:[{k:'A',en:"Consumers must actually be confused",vi:"Nguoi tieu dung phai thuc su bi nham lan"},{k:'B',en:"It is enough to show that an ordinary consumer is likely to be confused",vi:"Chi can chung minh rang mot nguoi tieu dung binh thuong co kha nang bi nham lan la du"},{k:'C',en:"The infringer must admit to copying",vi:"Nguoi vi pham phai thua nhan sao chep"},{k:'D',en:"Both products must be identical",vi:"Ca hai san pham phai giong het nhau"}],
+      ans:'B', exp:"Phap luat khong yeu cau phai tim ra khach hang thuc su mua nham. Chi can chung minh <strong>kha nang cao</strong> mot nguoi tieu dung binh thuong se bi nham lan la du de thang kien." },
 
     { en:"What does 'reputation' mean in a passing-off case?",
-      vi:"'Danh tiếng' có ý nghĩa gì trong vụ kiện passing-off?",
-      opts:[{k:'A',en:"The business is well-known globally",vi:"Doanh nghiệp nổi tiếng toàn cầu"},{k:'B',en:"The business has a specific level of goodwill among consumers in a certain territory",vi:"Doanh nghiệp có mức độ goodwill nhất định đối với người tiêu dùng trong một khu vực"},{k:'C',en:"The owner is a celebrity",vi:"Chủ sở hữu là người nổi tiếng"},{k:'D',en:"The business has many followers on Instagram",vi:"Doanh nghiệp có nhiều người theo dõi trên Instagram"}],
-      ans:'B', exp:`Không cần nổi tiếng khắp thế giới. Chỉ cần ở <strong>khu vực bạn đang kinh doanh</strong>, khách hàng nhận ra và tin tưởng thương hiệu của bạn, là đủ điều kiện kiện kẻ mạo danh.` },
+      vi:"'Danh tieng' co y nghia gi trong vu kien passing-off?",
+      opts:[{k:'A',en:"The business is well-known globally",vi:"Doanh nghiep noi tieng toan cau"},{k:'B',en:"The business has a specific level of goodwill among consumers in a certain territory",vi:"Doanh nghiep co muc do goodwill nhat dinh doi voi nguoi tieu dung trong mot khu vuc"},{k:'C',en:"The owner is a celebrity",vi:"Chu so huu la nguoi noi tieng"},{k:'D',en:"The business has many followers on Instagram",vi:"Doanh nghiep co nhieu nguoi theo doi tren Instagram"}],
+      ans:'B', exp:"Khong can noi tieng khap the gioi. Chi can o <strong>khu vuc ban dang kinh doanh</strong>, khach hang nhan ra va tin tuong thuong hieu cua ban, la du dieu kien kien ke mac danh." },
   ],
 
-  // ── BẢN QUYỀN ───────────────────────────────────────────────
   cr: [
     { en:"How long does copyright protection generally last under the Berne Convention?",
-      vi:"Thời hạn bảo hộ bản quyền thường kéo dài bao lâu theo Công ước Berne?",
-      opts:[{k:'A',en:"10 years from publication",vi:"10 năm kể từ khi xuất bản"},{k:'B',en:"20 years from application",vi:"20 năm kể từ khi nộp đơn"},{k:'C',en:"The life of the author plus 50 years",vi:"Suốt cuộc đời tác giả cộng thêm 50 năm"},{k:'D',en:"Forever",vi:"Mãi mãi"}],
-      ans:'C', exp:`Theo <strong>Công ước Berne</strong>, bản quyền tồn tại trong suốt cuộc đời tác giả và kéo dài thêm ít nhất <strong>50 năm</strong> sau khi tác giả qua đời (nhiều quốc gia quy định 70 năm).` },
+      vi:"Thoi han bao ho ban quyen thuong keo dai bao lau theo Cong uoc Berne?",
+      opts:[{k:'A',en:"10 years from publication",vi:"10 nam ke tu khi xuat ban"},{k:'B',en:"20 years from application",vi:"20 nam ke tu khi nop don"},{k:'C',en:"The life of the author plus 50 years",vi:"Suot cuoc doi tac gia cong them 50 nam"},{k:'D',en:"Forever",vi:"Mai mai"}],
+      ans:'C', exp:"Theo <strong>Cong uoc Berne</strong>, ban quyen ton tai trong suot cuoc doi tac gia va keo dai them it nhat <strong>50 nam</strong> sau khi tac gia qua doi (nhieu quoc gia quy dinh 70 nam)." },
 
     { en:"What is a prerequisite for copyright protection?",
-      vi:"Điều kiện tiên quyết để được bảo hộ bản quyền là gì?",
-      opts:[{k:'A',en:"The work must be registered with the government",vi:"Tác phẩm phải được đăng ký với chính phủ"},{k:'B',en:"The work must be fixed in a tangible medium of expression",vi:"Tác phẩm phải được định hình trong một phương tiện biểu đạt hữu hình"},{k:'C',en:"The work must be profitable",vi:"Tác phẩm phải sinh lời"},{k:'D',en:"The work must be translated into English",vi:"Tác phẩm phải được dịch sang tiếng Anh"}],
-      ans:'B', exp:`Bản quyền phát sinh tự động không cần đăng ký, nhưng ý tưởng phải được <strong>"định hình"</strong> (ghi lại, viết ra, vẽ ra, quay lại...) trên một vật mang tin cụ thể.` },
+      vi:"Dieu kien tien quyet de duoc bao ho ban quyen la gi?",
+      opts:[{k:'A',en:"The work must be registered with the government",vi:"Tac pham phai duoc dang ky voi chinh phu"},{k:'B',en:"The work must be fixed in a tangible medium of expression",vi:"Tac pham phai duoc dinh hinh trong mot phuong tien bieu dat huu hinh"},{k:'C',en:"The work must be profitable",vi:"Tac pham phai sinh loi"},{k:'D',en:"The work must be translated into English",vi:"Tac pham phai duoc dich sang tieng Anh"}],
+      ans:'B', exp:"Ban quyen phat sinh tu dong khong can dang ky, nhung y tuong phai duoc <strong>'dinh hinh'</strong> (ghi lai, viet ra, ve ra, quay lai...) tren mot vat mang tin cu the." },
 
     { en:"What is the main purpose of the 'fair dealing' exception in copyright law?",
-      vi:"Mục đích chính của ngoại lệ 'fair dealing' trong luật bản quyền là gì?",
-      opts:[{k:'A',en:"To allow unlimited copying for anyone",vi:"Để cho phép bất kỳ ai sao chép không giới hạn"},{k:'B',en:"To allow limited use of copyrighted material without permission for purposes such as research, criticism, or review",vi:"Để cho phép sử dụng giới hạn tài liệu có bản quyền mà không cần xin phép cho nghiên cứu, phê bình hoặc đánh giá"},{k:'C',en:"To permit the selling of pirated goods",vi:"Để cho phép bán hàng lậu"},{k:'D',en:"To let companies steal ideas",vi:"Để cho các công ty ăn cắp ý tưởng"}],
-      ans:'B', exp:`<strong>Fair dealing</strong> là điều khoản linh hoạt cho phép công chúng sử dụng một phần nhỏ tác phẩm có bản quyền để phục vụ giáo dục, nghiên cứu hoặc làm tin tức mà không bị coi là vi phạm.` },
+      vi:"Muc dich chinh cua ngoai le 'fair dealing' trong luat ban quyen la gi?",
+      opts:[{k:'A',en:"To allow unlimited copying for anyone",vi:"De cho phep bat ky ai sao chep khong gioi han"},{k:'B',en:"To allow limited use of copyrighted material without permission for purposes such as research, criticism, or review",vi:"De cho phep su dung gioi han tai lieu co ban quyen ma khong can xin phep cho nghien cuu, phe binh hoac danh gia"},{k:'C',en:"To permit the selling of pirated goods",vi:"De cho phep ban hang lau"},{k:'D',en:"To let companies steal ideas",vi:"De cho cac cong ty an cap y tuong"}],
+      ans:'B', exp:"<strong>Fair dealing</strong> la dieu khoan linh hoat cho phep cong chung su dung mot phan nho tac pham co ban quyen de phuc vu giao duc, nghien cuu hoac lam tin tuc ma khong bi coi la vi pham." },
 
     { en:"What is secondary infringement?",
-      vi:"Vi phạm thứ cấp là gì?",
-      opts:[{k:'A',en:"Making your own copy",vi:"Tự tạo bản sao"},{k:'B',en:"Dealing with unauthorized copies like distributing or selling them",vi:"Xử lý các bản sao trái phép như phân phối hoặc bán chúng"},{k:'C',en:"Writing about a copyrighted movie",vi:"Viết về bộ phim có bản quyền"},{k:'D',en:"Posting your work online",vi:"Đăng tác phẩm của bạn lên mạng"}],
-      ans:'B', exp:`<strong>Vi phạm thứ cấp</strong> không phải là trực tiếp sao chép mà là xử lý các bản sao trái phép — <strong>phân phối, bán hoặc nhập khẩu hàng lậu</strong>. Khác với vi phạm sơ cấp là trực tiếp tạo ra bản sao.` },
+      vi:"Vi pham thu cap la gi?",
+      opts:[{k:'A',en:"Making your own copy",vi:"Tu tao ban sao"},{k:'B',en:"Dealing with unauthorized copies like distributing or selling them",vi:"Xu ly cac ban sao trai phep nhu phan phoi hoac ban chung"},{k:'C',en:"Writing about a copyrighted movie",vi:"Viet ve bo phim co ban quyen"},{k:'D',en:"Posting your work online",vi:"Dang tac pham cua ban len mang"}],
+      ans:'B', exp:"<strong>Vi pham thu cap</strong> khong phai la truc tiep sao chep ma la xu ly cac ban sao trai phep - <strong>phan phoi, ban hoac nhap khau hang lau</strong>. Khac voi vi pham so cap la truc tiep tao ra ban sao." },
 
     { en:"What does the fair use doctrine provide?",
-      vi:"Học thuyết fair use cung cấp điều gì?",
-      opts:[{k:'A',en:"Absolute protection for corporations",vi:"Bảo vệ tuyệt đối cho doanh nghiệp"},{k:'B',en:"A way to bypass copyright",vi:"Cách để bỏ qua bản quyền"},{k:'C',en:"Flexibility in using copyrighted works",vi:"Tính linh hoạt trong việc sử dụng tác phẩm có bản quyền"},{k:'D',en:"Unrestricted commercial use",vi:"Sử dụng thương mại không giới hạn"}],
-      ans:'C', exp:`Fair use cho phép <strong>sử dụng linh hoạt</strong> tác phẩm có bản quyền trong những trường hợp như: bình luận, giảng dạy, tin tức, nghiên cứu — nhưng phải trong giới hạn hợp lý.` },
+      vi:"Hoc thuyet fair use cung cap dieu gi?",
+      opts:[{k:'A',en:"Absolute protection for corporations",vi:"Bao ve tuyet doi cho doanh nghiep"},{k:'B',en:"A way to bypass copyright",vi:"Cach de bo qua ban quyen"},{k:'C',en:"Flexibility in using copyrighted works",vi:"Tinh linh hoat trong viec su dung tac pham co ban quyen"},{k:'D',en:"Unrestricted commercial use",vi:"Su dung thuong mai khong gioi han"}],
+      ans:'C', exp:"Fair use cho phep <strong>su dung linh hoat</strong> tac pham co ban quyen trong nhung truong hop nhu: binh luan, giang day, tin tuc, nghien cuu - nhung phai trong gioi han hop ly." },
 
     { en:"What condition is most critical in determining whether parody is fair dealing?",
-      vi:"Điều kiện nào quan trọng nhất để xác định parody có phải là fair dealing không?",
-      opts:[{k:'A',en:"Author permission",vi:"Được tác giả cho phép"},{k:'B',en:"It does not substitute the original work's market",vi:"Nó không thay thế thị trường của tác phẩm gốc"},{k:'C',en:"It's uploaded to YouTube",vi:"Nó được tải lên YouTube"},{k:'D',en:"It uses music only",vi:"Nó chỉ sử dụng âm nhạc"}],
-      ans:'B', exp:`Parody được bảo vệ khi nó <strong>không tranh giành khách hàng của tác phẩm gốc</strong> — người ta xem bản nhại để cười, nhưng vẫn có nhu cầu mua/xem bản gốc.` },
+      vi:"Dieu kien nao quan trong nhat de xac dinh parody co phai la fair dealing khong?",
+      opts:[{k:'A',en:"Author permission",vi:"Duoc tac gia cho phep"},{k:'B',en:"It does not substitute the original work's market",vi:"No khong thay the thi truong cua tac pham goc"},{k:'C',en:"It's uploaded to YouTube",vi:"No duoc tai len YouTube"},{k:'D',en:"It uses music only",vi:"No chi su dung am nhac"}],
+      ans:'B', exp:"Parody duoc bao ve khi no <strong>khong tranh gianh khach hang cua tac pham goc</strong> - nguoi ta xem ban nhai de cuoi, nhung van co nhu cau mua/xem ban goc." },
 
     { en:"What types of works can be used under fair dealing for review?",
-      vi:"Loại tác phẩm nào có thể sử dụng theo fair dealing cho mục đích review?",
-      opts:[{k:'A',en:"Only news",vi:"Chỉ tin tức"},{k:'B',en:"Literary, artistic, and media works",vi:"Tác phẩm văn học, nghệ thuật và truyền thông"},{k:'C',en:"Only textbooks",vi:"Chỉ sách giáo khoa"},{k:'D',en:"Only registered works",vi:"Chỉ tác phẩm đã đăng ký"}],
-      ans:'B', exp:`Fair dealing cho mục đích review áp dụng với <strong>tác phẩm văn học, nghệ thuật, và truyền thông</strong> — bao gồm sách, phim, âm nhạc, tranh nghệ thuật.` },
+      vi:"Loai tac pham nao co the su dung theo fair dealing cho muc dich review?",
+      opts:[{k:'A',en:"Only news",vi:"Chi tin tuc"},{k:'B',en:"Literary, artistic, and media works",vi:"Tac pham van hoc, nghe thuat va truyen thong"},{k:'C',en:"Only textbooks",vi:"Chi sach giao khoa"},{k:'D',en:"Only registered works",vi:"Chi tac pham da dang ky"}],
+      ans:'B', exp:"Fair dealing cho muc dich review ap dung voi <strong>tac pham van hoc, nghe thuat, va truyen thong</strong> - bao gom sach, phim, am nhac, tranh nghe thuat." },
 
     { en:"What condition must be met for fair dealing in research?",
-      vi:"Điều kiện nào phải được đáp ứng để sử dụng hợp lý trong nghiên cứu?",
-      opts:[{k:'A',en:"Author must be credited",vi:"Phải ghi nhận tác giả"},{k:'B',en:"Work must be printed",vi:"Tác phẩm phải được in"},{k:'C',en:"Use must be fair and reasonable",vi:"Việc sử dụng phải công bằng và hợp lý"},{k:'D',en:"Work must be older than 10 years",vi:"Tác phẩm phải cũ hơn 10 năm"}],
-      ans:'C', exp:`<strong>Fair dealing</strong> trong nghiên cứu: chỉ dùng phần cần thiết, không thay thế việc mua tác phẩm gốc, và phục vụ mục đích nghiên cứu thực sự.` },
+      vi:"Dieu kien nao phai duoc dap ung de su dung hop ly trong nghien cuu?",
+      opts:[{k:'A',en:"Author must be credited",vi:"Phai ghi nhan tac gia"},{k:'B',en:"Work must be printed",vi:"Tac pham phai duoc in"},{k:'C',en:"Use must be fair and reasonable",vi:"Viec su dung phai cong bang va hop ly"},{k:'D',en:"Work must be older than 10 years",vi:"Tac pham phai cu hon 10 nam"}],
+      ans:'C', exp:"<strong>Fair dealing</strong> trong nghien cuu: chi dung phan can thiet, khong thay the viec mua tac pham goc, va phuc vu muc dich nghien cuu thuc su." },
 
     { en:"What condition is required for joint owners to license their work?",
-      vi:"Điều kiện nào cần thiết để đồng sở hữu cấp phép tác phẩm?",
-      opts:[{k:'A',en:"Any one author may license it",vi:"Bất kỳ tác giả nào cũng có thể cấp phép"},{k:'B',en:"The publisher decides",vi:"Nhà xuất bản quyết định"},{k:'C',en:"Mutual consent of all joint owners",vi:"Sự đồng ý của tất cả đồng sở hữu"},{k:'D',en:"Fair use is automatically applied",vi:"Fair use tự động áp dụng"}],
-      ans:'C', exp:`Khi tác phẩm thuộc nhiều người, <strong>tất cả chủ sở hữu phải đồng ý</strong> mới có thể cấp phép cho bên thứ ba — không ai được tự ý quyết định vượt mặt những người còn lại.` },
+      vi:"Dieu kien nao can thiet de dong so huu cap phep tac pham?",
+      opts:[{k:'A',en:"Any one author may license it",vi:"Bat ky tac gia nao cung co the cap phep"},{k:'B',en:"The publisher decides",vi:"Nha xuat ban quyet dinh"},{k:'C',en:"Mutual consent of all joint owners",vi:"Su dong y cua tat ca dong so huu"},{k:'D',en:"Fair use is automatically applied",vi:"Fair use tu dong ap dung"}],
+      ans:'C', exp:"Khi tac pham thuoc nhieu nguoi, <strong>tat ca chu so huu phai dong y</strong> moi co the cap phep cho ben thu ba - khong ai duoc tu y quyet dinh vuot mat nhung nguoi con lai." },
 
     { en:"Which of the following is a key distinction between moral and economic rights?",
-      vi:"Điểm khác biệt chính giữa quyền tinh thần và quyền kinh tế là gì?",
-      opts:[{k:'A',en:"Moral rights are non-transferable; economic rights can be assigned",vi:"Quyền tinh thần không thể chuyển nhượng; quyền kinh tế có thể chuyển nhượng"},{k:'B',en:"Both must be registered",vi:"Cả hai đều phải đăng ký"},{k:'C',en:"Economic rights are waived by default",vi:"Quyền kinh tế được từ bỏ mặc định"},{k:'D',en:"Only moral rights apply to software",vi:"Chỉ quyền tinh thần áp dụng cho phần mềm"}],
-      ans:'A', exp:`<strong>Quyền tinh thần</strong> gắn chặt với tác giả, không thể bán hay chuyển nhượng. <strong>Quyền kinh tế</strong> là tài sản có thể mua bán, cấp phép hoặc chuyển giao cho người khác.` },
+      vi:"Diem khac biet chinh giua quyen tinh than va quyen kinh te la gi?",
+      opts:[{k:'A',en:"Moral rights are non-transferable; economic rights can be assigned",vi:"Quyen tinh than khong the chuyen nhuong; quyen kinh te co the chuyen nhuong"},{k:'B',en:"Both must be registered",vi:"Ca hai deu phai dang ky"},{k:'C',en:"Economic rights are waived by default",vi:"Quyen kinh te duoc tu bo mac dinh"},{k:'D',en:"Only moral rights apply to software",vi:"Chi quyen tinh than ap dung cho phan mem"}],
+      ans:'A', exp:"<strong>Quyen tinh than</strong> gan chat voi tac gia, khong the ban hay chuyen nhuong. <strong>Quyen kinh te</strong> la tai san co the mua ban, cap phep hoac chuyen giao cho nguoi khac." },
 
     { en:"What happens to copyright after the term expires?",
-      vi:"Điều gì xảy ra với bản quyền sau khi hết thời hạn?",
-      opts:[{k:'A',en:"It enters the public domain",vi:"Nó đi vào phạm vi công cộng"},{k:'B',en:"The government takes ownership",vi:"Chính phủ giành quyền sở hữu"},{k:'C',en:"It is renewed automatically",vi:"Nó tự động được gia hạn"},{k:'D',en:"It transfers to the publisher",vi:"Nó được chuyển giao cho nhà xuất bản"}],
-      ans:'A', exp:`Khi hết thời hạn bảo hộ, tác phẩm trở thành <strong>tài sản chung của nhân loại (public domain)</strong>. Bất kỳ ai cũng có thể sử dụng, sao chép hoặc kinh doanh mà không sợ bị kiện.` },
+      vi:"Dieu gi xay ra voi ban quyen sau khi het thoi han?",
+      opts:[{k:'A',en:"It enters the public domain",vi:"No di vao pham vi cong cong"},{k:'B',en:"The government takes ownership",vi:"Chinh phu gianh quyen so huu"},{k:'C',en:"It is renewed automatically",vi:"No tu dong duoc gia han"},{k:'D',en:"It transfers to the publisher",vi:"No duoc chuyen giao cho nha xuat ban"}],
+      ans:'A', exp:"Khi het thoi han bao ho, tac pham tro thanh <strong>tai san chung cua nhan loai (public domain)</strong>. Bat ky ai cung co the su dung, sao chep hoac kinh doanh ma khong so bi kien." },
 
     { en:"Which argument best supports stronger protection for computer-generated works?",
-      vi:"Lập luận nào ủng hộ bảo vệ mạnh hơn cho tác phẩm do máy tính tạo ra?",
-      opts:[{k:'A',en:"Computers should own property",vi:"Máy tính nên được sở hữu tài sản"},{k:'B',en:"They are increasingly indistinguishable from human-authored content",vi:"Chúng ngày càng không thể phân biệt với nội dung do con người tạo"},{k:'C',en:"They must remain public domain",vi:"Chúng phải thuộc miền công cộng"},{k:'D',en:"Human creators lose value",vi:"Người sáng tạo con người mất giá trị"}],
-      ans:'B', exp:`Khi <strong>AI tạo ra tác phẩm không thể phân biệt với tác phẩm của con người</strong>, việc thiếu bảo hộ sẽ tạo ra bất công cho những người đầu tư xây dựng và lập trình hệ thống AI đó.` },
+      vi:"Lap luan nao ung ho bao ve manh hon cho tac pham do may tinh tao ra?",
+      opts:[{k:'A',en:"Computers should own property",vi:"May tinh nen duoc so huu tai san"},{k:'B',en:"They are increasingly indistinguishable from human-authored content",vi:"Chung ngay cang khong the phan biet voi noi dung do con nguoi tao"},{k:'C',en:"They must remain public domain",vi:"Chung phai thuoc mien cong cong"},{k:'D',en:"Human creators lose value",vi:"Nguoi sang tao con nguoi mat gia tri"}],
+      ans:'B', exp:"Khi <strong>AI tao ra tac pham khong the phan biet voi tac pham cua con nguoi</strong>, viec thieu bao ho se tao ra bat cong cho nhung nguoi dau tu xay dung va lap trinh he thong AI do." },
 
     { en:"What problem may arise from inconsistent copyright terms across countries?",
-      vi:"Vấn đề gì có thể phát sinh từ sự không nhất quán về thời hạn bản quyền giữa các quốc gia?",
-      opts:[{k:'A',en:"More public access",vi:"Tiếp cận công khai nhiều hơn"},{k:'B',en:"Legal uncertainty in international licensing and enforcement",vi:"Sự không chắc chắn pháp lý trong cấp phép và thực thi quốc tế"},{k:'C',en:"Easier registration",vi:"Đăng ký dễ hơn"},{k:'D',en:"Harmonized royalty collection",vi:"Thu tiền bản quyền được hài hòa hóa"}],
-      ans:'B', exp:`Sự chênh lệch luật pháp tạo ra <strong>sự không chắc chắn pháp lý</strong> — cùng một tác phẩm có thể hết hạn ở nước này nhưng vẫn còn hiệu lực ở nước khác, khiến việc cấp phép xuyên biên giới cực kỳ rối rắm.` },
+      vi:"Van de gi co the phat sinh tu su khong nhat quan ve thoi han ban quyen giua cac quoc gia?",
+      opts:[{k:'A',en:"More public access",vi:"Tiep can cong khai nhieu hon"},{k:'B',en:"Legal uncertainty in international licensing and enforcement",vi:"Su khong chac chan phap ly trong cap phep va thuc thi quoc te"},{k:'C',en:"Easier registration",vi:"Dang ky de hon"},{k:'D',en:"Harmonized royalty collection",vi:"Thu tien ban quyen duoc hai hoa hoa"}],
+      ans:'B', exp:"Su chenh lech luat phap tao ra <strong>su khong chac chan phap ly</strong> - cung mot tac pham co the het han o nuoc nay nhung van con hieu luc o nuoc khac, khien viec cap phep xuyen bien gioi cuc ky roi ram." },
   ],
 
-  // ── QUYỀN THIẾT KẾ ──────────────────────────────────────────
   dr: [
     { en:"Which of the following is most likely covered by design right?",
-      vi:"Điều nào sau đây nhiều khả năng được bảo vệ bởi design right?",
-      opts:[{k:'A',en:"A graphic user interface",vi:"Giao diện người dùng đồ họa"},{k:'B',en:"The shape of a chair",vi:"Hình dạng của chiếc ghế"},{k:'C',en:"A software license",vi:"Giấy phép phần mềm"},{k:'D',en:"A company slogan",vi:"Khẩu hiệu công ty"}],
-      ans:'B', exp:`<strong>Design right</strong> bảo vệ hình dạng và cấu hình vật lý của sản phẩm — như hình dạng chiếc ghế. GUI bảo vệ bởi bản quyền, slogan bởi nhãn hiệu.` },
+      vi:"Dieu nao sau day nhieu kha nang duoc bao ve boi design right?",
+      opts:[{k:'A',en:"A graphic user interface",vi:"Giao dien nguoi dung do hoa"},{k:'B',en:"The shape of a chair",vi:"Hinh dang cua chiec ghe"},{k:'C',en:"A software license",vi:"Giay phep phan mem"},{k:'D',en:"A company slogan",vi:"Khau hieu cong ty"}],
+      ans:'B', exp:"<strong>Design right</strong> bao ve hinh dang va cau hinh vat ly cua san pham - nhu hinh dang chiec ghe. GUI bao ve boi ban quyen, slogan boi nhan hieu." },
 
     { en:"Which of the following is considered a legal remedy for infringement?",
-      vi:"Điều nào sau đây được coi là biện pháp khắc phục pháp lý cho vi phạm?",
-      opts:[{k:'A',en:"Redesign suggestions",vi:"Gợi ý thiết kế lại"},{k:'B',en:"Registration of new design",vi:"Đăng ký thiết kế mới"},{k:'C',en:"Injunction and damages",vi:"Lệnh cấm và bồi thường thiệt hại"},{k:'D',en:"Transfer of license",vi:"Chuyển nhượng giấy phép"}],
-      ans:'C', exp:`Hai biện pháp phổ biến nhất: <strong>Injunction</strong> (lệnh tòa án buộc dừng vi phạm) và <strong>Damages</strong> (bồi thường thiệt hại tài chính).` },
+      vi:"Dieu nao sau day duoc coi la bien phap khac phuc phap ly cho vi pham?",
+      opts:[{k:'A',en:"Redesign suggestions",vi:"Goi y thiet ke lai"},{k:'B',en:"Registration of new design",vi:"Dang ky thiet ke moi"},{k:'C',en:"Injunction and damages",vi:"Lenh cam va boi thuong thiet hai"},{k:'D',en:"Transfer of license",vi:"Chuyen nhuong giay phep"}],
+      ans:'C', exp:"Hai bien phap pho bien nhat: <strong>Injunction</strong> (lenh toa an buoc dung vi pham) va <strong>Damages</strong> (boi thuong thiet hai tai chinh)." },
 
     { en:"How must a design right assignment be made to be enforceable?",
-      vi:"Chuyển nhượng design right phải được thực hiện như thế nào để có hiệu lực pháp lý?",
-      opts:[{k:'A',en:"Orally",vi:"Bằng lời nói"},{k:'B',en:"In writing",vi:"Bằng văn bản"},{k:'C',en:"On social media",vi:"Trên mạng xã hội"},{k:'D',en:"Through invoice only",vi:"Chỉ qua hóa đơn"}],
-      ans:'B', exp:`Chuyển nhượng design right <strong>phải bằng văn bản</strong> và có chữ ký để có hiệu lực pháp lý. Thỏa thuận miệng không được tòa án công nhận.` },
+      vi:"Chuyen nhuong design right phai duoc thuc hien nhu the nao de co hieu luc phap ly?",
+      opts:[{k:'A',en:"Orally",vi:"Bang loi noi"},{k:'B',en:"In writing",vi:"Bang van ban"},{k:'C',en:"On social media",vi:"Tren mang xa hoi"},{k:'D',en:"Through invoice only",vi:"Chi qua hoa don"}],
+      ans:'B', exp:"Chuyen nhuong design right <strong>phai bang van ban</strong> va co chu ky de co hieu luc phap ly. Thoa thuan mieng khong duoc toa an cong nhan." },
 
     { en:"How often must a registered design be renewed?",
-      vi:"Thiết kế đã đăng ký phải được gia hạn bao lâu một lần?",
-      opts:[{k:'A',en:"Every year",vi:"Mỗi năm"},{k:'B',en:"Every 5 years",vi:"Mỗi 5 năm"},{k:'C',en:"Once every 10 years",vi:"10 năm một lần"},{k:'D',en:"Monthly",vi:"Hàng tháng"}],
-      ans:'B', exp:`Tại UK, <strong>registered design</strong> cần được gia hạn mỗi <strong>5 năm</strong> một lần, với thời hạn bảo hộ tối đa là 25 năm (5 lần gia hạn).` },
+      vi:"Thiet ke da dang ky phai duoc gia han bao lau mot lan?",
+      opts:[{k:'A',en:"Every year",vi:"Moi nam"},{k:'B',en:"Every 5 years",vi:"Moi 5 nam"},{k:'C',en:"Once every 10 years",vi:"10 nam mot lan"},{k:'D',en:"Monthly",vi:"Hang thang"}],
+      ans:'B', exp:"Tai UK, <strong>registered design</strong> can duoc gia han moi <strong>5 nam</strong> mot lan, voi thoi han bao ho toi da la 25 nam (5 lan gia han)." },
 
     { en:"What determines ownership in commissioned design work?",
-      vi:"Điều gì quyết định quyền sở hữu trong công việc thiết kế được thuê?",
-      opts:[{k:'A',en:"Verbal agreement",vi:"Thỏa thuận miệng"},{k:'B',en:"Designer's reputation",vi:"Danh tiếng của nhà thiết kế"},{k:'C',en:"Contractual terms",vi:"Điều khoản hợp đồng"},{k:'D',en:"Trademark registration",vi:"Đăng ký nhãn hiệu"}],
-      ans:'C', exp:`Khi thiết kế theo đặt hàng, <strong>điều khoản hợp đồng</strong> quyết định ai sở hữu. Nếu không có hợp đồng rõ ràng, theo luật UK mặc định người thuê thường sở hữu.` },
+      vi:"Dieu gi quyet dinh quyen so huu trong cong viec thiet ke duoc thue?",
+      opts:[{k:'A',en:"Verbal agreement",vi:"Thoa thuan mieng"},{k:'B',en:"Designer's reputation",vi:"Danh tieng cua nha thiet ke"},{k:'C',en:"Contractual terms",vi:"Dieu khoan hop dong"},{k:'D',en:"Trademark registration",vi:"Dang ky nhan hieu"}],
+      ans:'C', exp:"Khi thiet ke theo dat hang, <strong>dieu khoan hop dong</strong> quyet dinh ai so huu. Neu khong co hop dong ro rang, theo luat UK mac dinh nguoi thue thuong so huu." },
 
     { en:"What does novelty mean in design registration?",
-      vi:"'Novelty' (tính mới) có nghĩa gì trong đăng ký thiết kế?",
-      opts:[{k:'A',en:"The design is old but reused",vi:"Thiết kế cũ nhưng được tái sử dụng"},{k:'B',en:"The design is new and not previously disclosed",vi:"Thiết kế mới và chưa từng được công bố trước đó"},{k:'C',en:"The design has no color",vi:"Thiết kế không có màu sắc"},{k:'D',en:"The design has prior use",vi:"Thiết kế đã được sử dụng trước"}],
-      ans:'B', exp:`<strong>Novelty (tính mới)</strong>: tính đến ngày nộp hồ sơ, thiết kế đó chưa từng xuất hiện, chưa từng được bày bán hay đăng lên mạng ở bất cứ đâu.` },
+      vi:"'Novelty' (tinh moi) co nghia gi trong dang ky thiet ke?",
+      opts:[{k:'A',en:"The design is old but reused",vi:"Thiet ke cu nhung duoc tai su dung"},{k:'B',en:"The design is new and not previously disclosed",vi:"Thiet ke moi va chua tung duoc cong bo truoc do"},{k:'C',en:"The design has no color",vi:"Thiet ke khong co mau sac"},{k:'D',en:"The design has prior use",vi:"Thiet ke da duoc su dung truoc"}],
+      ans:'B', exp:"<strong>Novelty (tinh moi)</strong>: tinh den ngay nop ho so, thiet ke do chua tung xuat hien, chua tung duoc bay ban hay dang len mang o bat cu dau." },
 
     { en:"What is one limitation of relying solely on design right?",
-      vi:"Một hạn chế của việc chỉ dựa vào design right là gì?",
-      opts:[{k:'A',en:"It lasts too long",vi:"Kéo dài quá lâu"},{k:'B',en:"It applies to patents",vi:"Áp dụng cho sáng chế"},{k:'C',en:"It's harder to enforce due to lack of registration",vi:"Khó thực thi hơn vì không có đăng ký"},{k:'D',en:"It must be renewed monthly",vi:"Phải gia hạn hàng tháng"}],
-      ans:'C', exp:`Design right không đăng ký <strong>khó thực thi</strong> — không có hồ sơ công khai xác nhận ngày tạo ra và quyền sở hữu. Khi tranh chấp, người giữ bản gốc phải tự chứng minh quyền của mình.` },
+      vi:"Mot han che cua viec chi dua vao design right la gi?",
+      opts:[{k:'A',en:"It lasts too long",vi:"Keo dai qua lau"},{k:'B',en:"It applies to patents",vi:"Ap dung cho sang che"},{k:'C',en:"It's harder to enforce due to lack of registration",vi:"Kho thuc thi hon vi khong co dang ky"},{k:'D',en:"It must be renewed monthly",vi:"Phai gia han hang thang"}],
+      ans:'C', exp:"Design right khong dang ky <strong>kho thuc thi</strong> - khong co ho so cong khai xac nhan ngay tao ra va quyen so huu. Khi tranh chap, nguoi giu ban goc phai tu chung minh quyen cua minh." },
 
     { en:"Which strategy increases a design's overall legal strength?",
-      vi:"Chiến lược nào tăng sức mạnh pháp lý tổng thể của một thiết kế?",
-      opts:[{k:'A',en:"Uploading it to social media",vi:"Tải lên mạng xã hội"},{k:'B',en:"Waiting for someone to copy it",vi:"Chờ ai đó sao chép"},{k:'C',en:"Combining registered design, design right, and copyright",vi:"Kết hợp registered design, design right và bản quyền"},{k:'D',en:"Posting disclaimers",vi:"Đăng tuyên bố miễn trừ trách nhiệm"}],
-      ans:'C', exp:`<strong>Bảo hộ chồng lấn</strong>: Registered Design (mạnh nhất, có hồ sơ) + Design Right (tự động) + Copyright (nếu có tính nghệ thuật) = lớp bảo vệ toàn diện.` },
+      vi:"Chien luoc nao tang suc manh phap ly tong the cua mot thiet ke?",
+      opts:[{k:'A',en:"Uploading it to social media",vi:"Tai len mang xa hoi"},{k:'B',en:"Waiting for someone to copy it",vi:"Cho ai do sao chep"},{k:'C',en:"Combining registered design, design right, and copyright",vi:"Ket hop registered design, design right va ban quyen"},{k:'D',en:"Posting disclaimers",vi:"Dang tuyen bo mien tru trach nhiem"}],
+      ans:'C', exp:"<strong>Bao ho chong lan</strong>: Registered Design (manh nhat, co ho so) + Design Right (tu dong) + Copyright (neu co tinh nghe thuat) = lop bao ve toan dien." },
 
     { en:"Under which Act was design right introduced in the UK?",
-      vi:"Design right được giới thiệu tại Anh theo Đạo luật nào?",
-      opts:[{k:'A',en:"Trademark Act 1994",vi:"Đạo luật Nhãn hiệu 1994"},{k:'B',en:"Copyright, Designs and Patents Act 1988",vi:"Đạo luật Bản quyền, Thiết kế và Sáng chế 1988"},{k:'C',en:"Intellectual Property Act 2003",vi:"Đạo luật Sở hữu Trí tuệ 2003"},{k:'D',en:"Design Protection Law 1999",vi:"Luật Bảo hộ Thiết kế 1999"}],
-      ans:'B', exp:`<strong>Copyright, Designs and Patents Act 1988 (CDPA 1988)</strong> là đạo luật tổng hợp của Anh quy định về bản quyền, design right và sáng chế — vẫn là nền tảng pháp lý IP chính tại UK.` },
+      vi:"Design right duoc gioi thieu tai Anh theo Dao luat nao?",
+      opts:[{k:'A',en:"Trademark Act 1994",vi:"Dao luat Nhan hieu 1994"},{k:'B',en:"Copyright, Designs and Patents Act 1988",vi:"Dao luat Ban quyen, Thiet ke va Sang che 1988"},{k:'C',en:"Intellectual Property Act 2003",vi:"Dao luat So huu Tri tue 2003"},{k:'D',en:"Design Protection Law 1999",vi:"Luat Bao ho Thiet ke 1999"}],
+      ans:'B', exp:"<strong>Copyright, Designs and Patents Act 1988 (CDPA 1988)</strong> la dao luat tong hop cua Anh quy dinh ve ban quyen, design right va sang che - van la nen tang phap ly IP chinh tai UK." },
 
     { en:"Why might a designer choose to register their design instead of relying on design right?",
-      vi:"Tại sao nhà thiết kế có thể chọn đăng ký thiết kế thay vì chỉ dựa vào design right?",
-      opts:[{k:'A',en:"To avoid moral rights",vi:"Để tránh quyền tinh thần"},{k:'B',en:"To limit their protection",vi:"Để hạn chế bảo hộ"},{k:'C',en:"To gain longer and stronger protection",vi:"Để được bảo hộ lâu hơn và mạnh hơn"},{k:'D',en:"Because registration is free",vi:"Vì đăng ký miễn phí"}],
-      ans:'C', exp:`<strong>Registered design</strong> bảo hộ tới 25 năm, dễ thực thi hơn (có hồ sơ công khai), và bảo vệ cả trường hợp thiết kế tương tự được tạo ra độc lập.` },
+      vi:"Tai sao nha thiet ke co the chon dang ky thiet ke thay vi chi dua vao design right?",
+      opts:[{k:'A',en:"To avoid moral rights",vi:"De tranh quyen tinh than"},{k:'B',en:"To limit their protection",vi:"De han che bao ho"},{k:'C',en:"To gain longer and stronger protection",vi:"De duoc bao ho lau hon va manh hon"},{k:'D',en:"Because registration is free",vi:"Vi dang ky mien phi"}],
+      ans:'C', exp:"<strong>Registered design</strong> bao ho toi 25 nam, de thuc thi hon (co ho so cong khai), va bao ve ca truong hop thiet ke tuong tu duoc tao ra doc lap." },
 
     { en:"What is a 'prior use' defense?",
-      vi:"'Prior use defense' (biện hộ sử dụng trước) là gì?",
-      opts:[{k:'A',en:"Using a design in future products",vi:"Sử dụng thiết kế trong sản phẩm tương lai"},{k:'B',en:"The accused was using the design before it was registered",vi:"Bị đơn đã sử dụng thiết kế trước khi nó được đăng ký"},{k:'C',en:"Refusing to register",vi:"Từ chối đăng ký"},{k:'D',en:"Blocking another's trademark",vi:"Chặn nhãn hiệu của người khác"}],
-      ans:'B', exp:`Nếu bị đơn chứng minh họ đã sử dụng thiết kế <strong>trước khi nguyên đơn đăng ký</strong>, họ có thể tiếp tục sử dụng — nhưng không được mở rộng phạm vi.` },
+      vi:"'Prior use defense' (bien ho su dung truoc) la gi?",
+      opts:[{k:'A',en:"Using a design in future products",vi:"Su dung thiet ke trong san pham tuong lai"},{k:'B',en:"The accused was using the design before it was registered",vi:"Bi don da su dung thiet ke truoc khi no duoc dang ky"},{k:'C',en:"Refusing to register",vi:"Tu choi dang ky"},{k:'D',en:"Blocking another's trademark",vi:"Chan nhan hieu cua nguoi khac"}],
+      ans:'B', exp:"Neu bi don chung minh ho da su dung thiet ke <strong>truoc khi nguyen don dang ky</strong>, ho co the tiep tuc su dung - nhung khong duoc mo rong pham vi." },
 
     { en:"A company develops a unique coffee machine shape. How can they protect it most effectively?",
-      vi:"Một công ty phát triển hình dáng máy pha cà phê độc đáo. Bảo vệ hiệu quả nhất bằng cách nào?",
-      opts:[{k:'A',en:"With a software license",vi:"Bằng giấy phép phần mềm"},{k:'B',en:"Through both design right and registered design",vi:"Thông qua cả design right và registered design"},{k:'C',en:"Using fair dealing",vi:"Bằng cách sử dụng hợp lý"},{k:'D',en:"By publishing a manual",vi:"Bằng cách xuất bản sách hướng dẫn"}],
-      ans:'B', exp:`<strong>Bảo hộ kép</strong>: Design right (tự động, ngăn sao chép trực tiếp) + Registered design (độc quyền tuyệt đối, dễ kiện tụng) = giáp pháp lý toàn diện nhất.` },
+      vi:"Mot cong ty phat trien hinh dang may pha ca phe doc dao. Bao ve hieu qua nhat bang cach nao?",
+      opts:[{k:'A',en:"With a software license",vi:"Bang giay phep phan mem"},{k:'B',en:"Through both design right and registered design",vi:"Thong qua ca design right va registered design"},{k:'C',en:"Using fair dealing",vi:"Bang cach su dung hop ly"},{k:'D',en:"By publishing a manual",vi:"Bang cach xuat ban sach huong dan"}],
+      ans:'B', exp:"<strong>Bao ho kep</strong>: Design right (tu dong, ngan sao chep truc tiep) + Registered design (doc quyen tuyet doi, de kien tung) = giap phap ly toan dien nhat." },
 
     { en:"A company imports furniture with designs similar to a UK-registered design. What might occur?",
-      vi:"Một công ty nhập khẩu đồ nội thất có thiết kế tương tự thiết kế đã đăng ký tại Anh. Điều gì có thể xảy ra?",
-      opts:[{k:'A',en:"The company gets tax benefits",vi:"Công ty nhận được ưu đãi thuế"},{k:'B',en:"They may face an infringement lawsuit",vi:"Họ có thể phải đối mặt với vụ kiện vi phạm"},{k:'C',en:"They can copyright it",vi:"Họ có thể đăng ký bản quyền cho nó"},{k:'D',en:"They own the design",vi:"Họ sở hữu thiết kế đó"}],
-      ans:'B', exp:`Registered Design cấp độc quyền cả về <strong>nhập khẩu</strong>. Việc nhập hàng sao chép thiết kế đã bảo hộ từ nước ngoài vào Anh là vi phạm rõ ràng.` },
+      vi:"Mot cong ty nhap khau do noi that co thiet ke tuong tu thiet ke da dang ky tai Anh. Dieu gi co the xay ra?",
+      opts:[{k:'A',en:"The company gets tax benefits",vi:"Cong ty nhan duoc uu dai thue"},{k:'B',en:"They may face an infringement lawsuit",vi:"Ho co the phai doi mat voi vu kien vi pham"},{k:'C',en:"They can copyright it",vi:"Ho co the dang ky ban quyen cho no"},{k:'D',en:"They own the design",vi:"Ho so huu thiet ke do"}],
+      ans:'B', exp:"Registered Design cap doc quyen ca ve <strong>nhap khau</strong>. Viec nhap hang sao chep thiet ke da bao ho tu nuoc ngoai vao Anh la vi pham ro rang." },
   ],
 
-  // ── MẠNG XÃ HỘI ─────────────────────────────────────────────
   sm: [
     { en:"What might a former employee violate if they take over a company's account?",
-      vi:"Nhân viên cũ có thể vi phạm điều gì nếu chiếm đoạt tài khoản công ty?",
-      opts:[{k:'A',en:"Do not violate",vi:"Không vi phạm"},{k:'B',en:"Social policy",vi:"Chính sách xã hội"},{k:'C',en:"CFAA (unauthorized access)",vi:"CFAA (truy cập trái phép)"},{k:'D',en:"Export control",vi:"Kiểm soát xuất khẩu"}],
-      ans:'C', exp:`<strong>CFAA (Computer Fraud and Abuse Act)</strong> cấm truy cập trái phép vào hệ thống máy tính. Nhân viên cũ chiếm quyền tài khoản công ty sau khi đã nghỉ là vi phạm CFAA.` },
+      vi:"Nhan vien cu co the vi pham dieu gi neu chiem doat tai khoan cong ty?",
+      opts:[{k:'A',en:"Do not violate",vi:"Khong vi pham"},{k:'B',en:"Social policy",vi:"Chinh sach xa hoi"},{k:'C',en:"CFAA (unauthorized access)",vi:"CFAA (truy cap trai phep)"},{k:'D',en:"Export control",vi:"Kiem soat xuat khau"}],
+      ans:'C', exp:"<strong>CFAA (Computer Fraud and Abuse Act)</strong> cam truy cap trai phep vao he thong may tinh. Nhan vien cu chiem quyen tai khoan cong ty sau khi da nghi la vi pham CFAA." },
 
     { en:"What should employees do with personal and professional social media accounts?",
-      vi:"Nhân viên nên làm gì với tài khoản mạng xã hội cá nhân và công việc?",
-      opts:[{k:'A',en:"Share all access",vi:"Chia sẻ tất cả quyền truy cập"},{k:'B',en:"Delete them",vi:"Xóa chúng đi"},{k:'C',en:"Keep them separate",vi:"Giữ chúng tách biệt"},{k:'D',en:"Merge into one",vi:"Gộp lại thành một"}],
-      ans:'C', exp:`<strong>Tách biệt tài khoản cá nhân và công việc</strong> giúp tránh nhầm lẫn về quyền sở hữu, bảo vệ bí mật kinh doanh, và ngăn ngừa tranh chấp pháp lý khi nhân viên nghỉ việc.` },
+      vi:"Nhan vien nen lam gi voi tai khoan mang xa hoi ca nhan va cong viec?",
+      opts:[{k:'A',en:"Share all access",vi:"Chia se tat ca quyen truy cap"},{k:'B',en:"Delete them",vi:"Xoa chung di"},{k:'C',en:"Keep them separate",vi:"Giu chung tach biet"},{k:'D',en:"Merge into one",vi:"Gop lai thanh mot"}],
+      ans:'C', exp:"<strong>Tach biet tai khoan ca nhan va cong viec</strong> giup tranh nham lan ve quyen so huu, bao ve bi mat kinh doanh, va ngan ngua tranh chap phap ly khi nhan vien nghi viec." },
 
     { en:"BBC revised its social media policy in:",
-      vi:"BBC sửa đổi chính sách mạng xã hội vào năm:",
+      vi:"BBC sua doi chinh sach mang xa hoi vao nam:",
       opts:[{k:'A',en:"2021",vi:"2021"},{k:'B',en:"2019",vi:"2019"},{k:'C',en:"2005",vi:"2005"},{k:'D',en:"1999",vi:"1999"}],
-      ans:'A', exp:`BBC sửa đổi chính sách vào <strong>năm 2021</strong>, yêu cầu nhân viên thận trọng hơn trên mạng xã hội để bảo vệ tính trung lập và uy tín của đài.` },
+      ans:'A', exp:"BBC sua doi chinh sach vao <strong>nam 2021</strong>, yeu cau nhan vien than trong hon tren mang xa hoi de bao ve tinh trung lap va uy tin cua dai." },
 
     { en:"Before sharing breaking news content, journalists should:",
-      vi:"Trước khi chia sẻ tin tức nóng, nhà báo nên:",
-      opts:[{k:'A',en:"Make it viral",vi:"Làm nó lan truyền"},{k:'B',en:"Verify it",vi:"Xác minh thông tin"},{k:'C',en:"Ask for donations",vi:"Xin quyên góp"},{k:'D',en:"Post quickly",vi:"Đăng nhanh nhất có thể"}],
-      ans:'B', exp:`Nguyên tắc báo chí cơ bản: <strong>xác minh trước khi đăng</strong>. Đưa tin chưa xác minh có thể dẫn đến trách nhiệm pháp lý về thông tin sai lệch.` },
+      vi:"Truoc khi chia se tin tuc nong, nha bao nen:",
+      opts:[{k:'A',en:"Make it viral",vi:"Lam no lan truyen"},{k:'B',en:"Verify it",vi:"Xac minh thong tin"},{k:'C',en:"Ask for donations",vi:"Xin quyen gop"},{k:'D',en:"Post quickly",vi:"Dang nhanh nhat co the"}],
+      ans:'B', exp:"Nguyen tac bao chi co ban: <strong>xac minh truoc khi dang</strong>. Dua tin chua xac minh co the dan den trach nhiem phap ly ve thong tin sai lech." },
 
     { en:"Which news outlet discourages discussing confidential sources online?",
-      vi:"Cơ quan truyền thông nào không khuyến khích thảo luận về nguồn tin bảo mật trực tuyến?",
+      vi:"Co quan truyen thong nao khong khuyen khich thao luan ve nguon tin bao mat truc tuyen?",
       opts:[{k:'A',en:"CNN",vi:"CNN"},{k:'B',en:"Wall Street Journal",vi:"Wall Street Journal"},{k:'C',en:"TikTok",vi:"TikTok"},{k:'D',en:"Google",vi:"Google"}],
-      ans:'B', exp:`<strong>Wall Street Journal</strong> có chính sách không khuyến khích thảo luận về nguồn tin bảo mật trên mạng xã hội để bảo vệ nguồn tin và tính độc lập báo chí.` },
+      ans:'B', exp:"<strong>Wall Street Journal</strong> co chinh sach khong khuyen khich thao luan ve nguon tin bao mat tren mang xa hoi de bao ve nguon tin va tinh doc lap bao chi." },
 
     { en:"Why do legal disputes over social media continue to rise?",
-      vi:"Tại sao tranh chấp pháp lý về mạng xã hội tiếp tục gia tăng?",
-      opts:[{k:'A',en:"Lack of hashtags",vi:"Thiếu hashtag"},{k:'B',en:"Blurring lines between personal and professional accounts",vi:"Ranh giới mờ giữa tài khoản cá nhân và công việc"},{k:'C',en:"Declining followers",vi:"Số người theo dõi giảm"},{k:'D',en:"Faster internet",vi:"Internet nhanh hơn"}],
-      ans:'B', exp:`Nguyên nhân chính: <strong>ranh giới mờ nhạt giữa tài khoản cá nhân và công việc</strong> — khi nhân viên dùng một tài khoản cho cả hai mục đích, câu hỏi về quyền sở hữu và trách nhiệm pháp lý trở nên phức tạp.` },
+      vi:"Tai sao tranh chap phap ly ve mang xa hoi tiep tuc gia tang?",
+      opts:[{k:'A',en:"Lack of hashtags",vi:"Thieu hashtag"},{k:'B',en:"Blurring lines between personal and professional accounts",vi:"Ranh gioi mo giua tai khoan ca nhan va cong viec"},{k:'C',en:"Declining followers",vi:"So nguoi theo doi giam"},{k:'D',en:"Faster internet",vi:"Internet nhanh hon"}],
+      ans:'B', exp:"Nguyen nhan chinh: <strong>ranh gioi mo nhat giua tai khoan ca nhan va cong viec</strong> - khi nhan vien dung mot tai khoan cho ca hai muc dich, cau hoi ve quyen so huu va trach nhiem phap ly tro nen phuc tap." },
 
     { en:"Social media ownership after employment should be addressed:",
-      vi:"Quyền sở hữu mạng xã hội sau khi nghỉ việc nên được giải quyết:",
-      opts:[{k:'A',en:"Through word of mouth",vi:"Bằng truyền miệng"},{k:'B',en:"In employment agreements",vi:"Trong hợp đồng lao động"},{k:'C',en:"By the IT team",vi:"Bởi bộ phận IT"},{k:'D',en:"Via brand audits",vi:"Qua kiểm toán thương hiệu"}],
-      ans:'B', exp:`<strong>Hợp đồng lao động</strong> là nơi phù hợp nhất để quy định rõ: tài khoản nào thuộc công ty, tài khoản nào thuộc cá nhân, và quy trình chuyển giao khi nhân viên rời đi.` },
+      vi:"Quyen so huu mang xa hoi sau khi nghi viec nen duoc giai quyet:",
+      opts:[{k:'A',en:"Through word of mouth",vi:"Bang truyen mieng"},{k:'B',en:"In employment agreements",vi:"Trong hop dong lao dong"},{k:'C',en:"By the IT team",vi:"Boi bo phan IT"},{k:'D',en:"Via brand audits",vi:"Qua kiem toan thuong hieu"}],
+      ans:'B', exp:"<strong>Hop dong lao dong</strong> la noi phu hop nhat de quy dinh ro: tai khoan nao thuoc cong ty, tai khoan nao thuoc ca nhan, va quy trinh chuyen giao khi nhan vien roi di." },
 
     { en:"An employment contract should define:",
-      vi:"Hợp đồng lao động nên quy định:",
-      opts:[{k:'A',en:"Hashtag trends",vi:"Xu hướng hashtag"},{k:'B',en:"Who controls the account and what happens after employment ends",vi:"Ai kiểm soát tài khoản và điều gì xảy ra sau khi hợp đồng kết thúc"},{k:'C',en:"Meeting times",vi:"Thời gian họp"},{k:'D',en:"Survey questions",vi:"Câu hỏi khảo sát"}],
-      ans:'B', exp:`Hợp đồng cần rõ ràng về <strong>ai sở hữu tài khoản, quy trình chuyển giao</strong> khi nhân viên rời đi — điều này ngăn ngừa tranh chấp tốn kém về sau.` },
+      vi:"Hop dong lao dong nen quy dinh:",
+      opts:[{k:'A',en:"Hashtag trends",vi:"Xu huong hashtag"},{k:'B',en:"Who controls the account and what happens after employment ends",vi:"Ai kiem soat tai khoan va dieu gi xay ra sau khi hop dong ket thuc"},{k:'C',en:"Meeting times",vi:"Thoi gian hop"},{k:'D',en:"Survey questions",vi:"Cau hoi khao sat"}],
+      ans:'B', exp:"Hop dong can ro rang ve <strong>ai so huu tai khoan, quy trinh chuyen giao</strong> khi nhan vien roi di - dieu nay ngan ngua tranh chap ton kem ve sau." },
 
     { en:"NPR discourages:",
-      vi:"NPR không khuyến khích:",
-      opts:[{k:'A',en:"Reporting from the field",vi:"Phóng sự thực địa"},{k:'B',en:"Sharing internal disagreements on social platforms",vi:"Chia sẻ bất đồng nội bộ trên mạng xã hội"},{k:'C',en:"Posting breaking news",vi:"Đăng tin tức nóng"},{k:'D',en:"Using photos",vi:"Sử dụng ảnh"}],
-      ans:'B', exp:`NPR yêu cầu nhân viên <strong>không chia sẻ bất đồng nội bộ lên mạng xã hội</strong> — bảo vệ uy tín tổ chức và đảm bảo các vấn đề nội bộ được giải quyết qua kênh phù hợp.` },
+      vi:"NPR khong khuyen khich:",
+      opts:[{k:'A',en:"Reporting from the field",vi:"Phong su thuc dia"},{k:'B',en:"Sharing internal disagreements on social platforms",vi:"Chia se bat dong noi bo tren mang xa hoi"},{k:'C',en:"Posting breaking news",vi:"Dang tin tuc nong"},{k:'D',en:"Using photos",vi:"Su dung anh"}],
+      ans:'B', exp:"NPR yeu cau nhan vien <strong>khong chia se bat dong noi bo len mang xa hoi</strong> - bao ve uy tin to chuc va dam bao cac van de noi bo duoc giai quyet qua kenh phu hop." },
 
     { en:"In Eagle v. Morgan, who sued whom?",
-      vi:"Trong vụ án Eagle v. Morgan, ai đã kiện ai?",
-      opts:[{k:'A',en:"A school vs. publisher",vi:"Một trường học kiện nhà xuất bản"},{k:'B',en:"An employee sued her employer",vi:"Một nhân viên kiện người sử dụng lao động của cô ấy"},{k:'C',en:"A brand sued Facebook",vi:"Một thương hiệu kiện Facebook"},{k:'D',en:"A designer sued Instagram",vi:"Một nhà thiết kế kiện Instagram"}],
-      ans:'B', exp:`Vụ Eagle v. Morgan: Bà Eagle kiện công ty cũ vì sau khi sa thải, công ty <strong>chiếm đoạt tài khoản LinkedIn cá nhân</strong> của bà để lấy danh sách khách hàng.` },
+      vi:"Trong vu an Eagle v. Morgan, ai da kien ai?",
+      opts:[{k:'A',en:"A school vs. publisher",vi:"Mot truong hoc kien nha xuat ban"},{k:'B',en:"An employee sued her employer",vi:"Mot nhan vien kien nguoi su dung lao dong cua co ay"},{k:'C',en:"A brand sued Facebook",vi:"Mot thuong hieu kien Facebook"},{k:'D',en:"A designer sued Instagram",vi:"Mot nha thiet ke kien Instagram"}],
+      ans:'B', exp:"Vu Eagle v. Morgan: Ba Eagle kien cong ty cu vi sau khi sa thai, cong ty <strong>chiem doat tai khoan LinkedIn ca nhan</strong> cua ba de lay danh sach khach hang." },
 
     { en:"What did the Christou case recognize?",
-      vi:"Vụ án Christou đã công nhận điều gì?",
-      opts:[{k:'A',en:"Meme legality",vi:"Tính hợp pháp của meme"},{k:'B',en:"That a friends list may be a trade secret",vi:"Rằng danh sách bạn bè có thể là một bí mật thương mại"},{k:'C',en:"Right to parody",vi:"Quyền được nhại lại (parody)"},{k:'D',en:"Hashtag trademarking",vi:"Đăng ký nhãn hiệu hashtag"}],
-      ans:'B', exp:`Vụ Christou v Beaties: tòa án phán quyết rằng <strong>danh sách khách hàng trên mạng xã hội của công ty</strong> có thể được coi là bí mật thương mại. Nhân viên nghỉ việc không được phép lấy danh sách này.` },
+      vi:"Vu an Christou da cong nhan dieu gi?",
+      opts:[{k:'A',en:"Meme legality",vi:"Tinh hop phap cua meme"},{k:'B',en:"That a friends list may be a trade secret",vi:"Rang danh sach ban be co the la mot bi mat thuong mai"},{k:'C',en:"Right to parody",vi:"Quyen duoc nhai lai (parody)"},{k:'D',en:"Hashtag trademarking",vi:"Dang ky nhan hieu hashtag"}],
+      ans:'B', exp:"Vu Christou v Beaties: toa an phan quyet rang <strong>danh sach khach hang tren mang xa hoi cua cong ty</strong> co the duoc coi la bi mat thuong mai. Nhan vien nghi viec khong duoc phep lay danh sach nay." },
 
     { en:"What is a common method to resolve social media ownership disputes?",
-      vi:"Phương pháp phổ biến để giải quyết tranh chấp quyền sở hữu mạng xã hội là gì?",
-      opts:[{k:'A',en:"Complaining publicly",vi:"Khiếu nại công khai"},{k:'B',en:"Mediation or legal agreement",vi:"Hòa giải hoặc thỏa thuận pháp lý"},{k:'C',en:"Changing passwords",vi:"Đổi mật khẩu"},{k:'D',en:"Hiring influencers",vi:"Thuê người có ảnh hưởng"}],
-      ans:'B', exp:`<strong>Hòa giải hoặc thỏa thuận pháp lý</strong> ít tốn kém hơn kiện tụng, bảo mật hơn, và thường đạt được kết quả nhanh hơn cho cả hai bên.` },
+      vi:"Phuong phap pho bien de giai quyet tranh chap quyen so huu mang xa hoi la gi?",
+      opts:[{k:'A',en:"Complaining publicly",vi:"Khieu nai cong khai"},{k:'B',en:"Mediation or legal agreement",vi:"Hoa giai hoac thoa thuan phap ly"},{k:'C',en:"Changing passwords",vi:"Doi mat khau"},{k:'D',en:"Hiring influencers",vi:"Thue nguoi co anh huong"}],
+      ans:'B', exp:"<strong>Hoa giai hoac thoa thuan phap ly</strong> it ton kem hon kien tung, bao mat hon, va thuong dat duoc ket qua nhanh hon cho ca hai ben." },
 
     { en:"What is one key message from this module?",
-      vi:"Thông điệp chính của chủ đề mạng xã hội là gì?",
-      opts:[{k:'A',en:"Social media is fun",vi:"Mạng xã hội thú vị"},{k:'B',en:"Persona ownership must be legally addressed in employment",vi:"Quyền sở hữu 'persona' phải được giải quyết pháp lý trong hợp đồng lao động"},{k:'C',en:"Followers mean fame",vi:"Số người theo dõi đồng nghĩa với danh tiếng"},{k:'D',en:"Emails must be private",vi:"Email phải là riêng tư"}],
-      ans:'B', exp:`Thông điệp cốt lõi: <strong>quyền sở hữu persona và tài khoản mạng xã hội</strong> phải được quy định rõ trong hợp đồng lao động để tránh tranh chấp khi nhân viên nghỉ việc.` },
+      vi:"Thong diep chinh cua chu de mang xa hoi la gi?",
+      opts:[{k:'A',en:"Social media is fun",vi:"Mang xa hoi thu vi"},{k:'B',en:"Persona ownership must be legally addressed in employment",vi:"Quyen so huu 'persona' phai duoc giai quyet phap ly trong hop dong lao dong"},{k:'C',en:"Followers mean fame",vi:"So nguoi theo doi dong nghia voi danh tieng"},{k:'D',en:"Emails must be private",vi:"Email phai la rieng tu"}],
+      ans:'B', exp:"Thong diep cot loi: <strong>quyen so huu persona va tai khoan mang xa hoi</strong> phai duoc quy dinh ro trong hop dong lao dong de tranh tranh chap khi nhan vien nghi viec." },
 
     { en:"Fake reviews are often created by:",
-      vi:"Các đánh giá giả mạo thường được tạo ra bởi:",
-      opts:[{k:'A',en:"Customers",vi:"Khách hàng"},{k:'B',en:"Employees or paid reviewers",vi:"Nhân viên hoặc những người đánh giá được trả tiền"},{k:'C',en:"Media agencies",vi:"Các cơ quan truyền thông"},{k:'D',en:"Government officials",vi:"Các quan chức chính phủ"}],
-      ans:'B', exp:`Fake reviews thường do chính <strong>nhân viên công ty giả danh khách hàng</strong> hoặc do thuê người (paid reviewers) viết bài khen mà không tiết lộ được trả tiền.` },
+      vi:"Cac danh gia gia mao thuong duoc tao ra boi:",
+      opts:[{k:'A',en:"Customers",vi:"Khach hang"},{k:'B',en:"Employees or paid reviewers",vi:"Nhan vien hoac nhung nguoi danh gia duoc tra tien"},{k:'C',en:"Media agencies",vi:"Cac co quan truyen thong"},{k:'D',en:"Government officials",vi:"Cac quan chuc chinh phu"}],
+      ans:'B', exp:"Fake reviews thuong do chinh <strong>nhan vien cong ty gia danh khach hang</strong> hoac do thue nguoi (paid reviewers) viet bai khen ma khong tiet lo duoc tra tien." },
 
     { en:"Disclosure of a material connection between the endorser and the advertiser helps prevent:",
-      vi:"Việc tiết lộ mối liên hệ vật chất giữa người chứng thực và nhà quảng cáo giúp ngăn chặn:",
-      opts:[{k:'A',en:"Trademark loss",vi:"Mất nhãn hiệu"},{k:'B',en:"Misleading consumers",vi:"Người tiêu dùng bị lừa dối"},{k:'C',en:"Product damage",vi:"Thiệt hại sản phẩm"},{k:'D',en:"Shipment errors",vi:"Lỗi vận chuyển"}],
-      ans:'B', exp:`FTC yêu cầu tiết lộ mối quan hệ thanh toán (dùng #ad, #sponsored) để <strong>ngăn người tiêu dùng bị lừa dối</strong> nghĩ rằng đây là đánh giá trung thực thay vì quảng cáo trả tiền.` },
+      vi:"Viec tiet lo moi lien he vat chat giua nguoi chung thuc va nha quang cao giup ngan chan:",
+      opts:[{k:'A',en:"Trademark loss",vi:"Mat nhan hieu"},{k:'B',en:"Misleading consumers",vi:"Nguoi tieu dung bi lua doi"},{k:'C',en:"Product damage",vi:"Thiet hai san pham"},{k:'D',en:"Shipment errors",vi:"Loi van chuyen"}],
+      ans:'B', exp:"FTC yeu cau tiet lo moi quan he thanh toan (dung #ad, #sponsored) de <strong>ngan nguoi tieu dung bi lua doi</strong> nghi rang day la danh gia trung thuc thay vi quang cao tra tien." },
 
     { en:"Proper disclosures help brands:",
-      vi:"Việc tiết lộ thông tin hợp lý giúp các thương hiệu:",
-      opts:[{k:'A',en:"Sell faster",vi:"Bán hàng nhanh hơn"},{k:'B',en:"Avoid legal trouble",vi:"Tránh rắc rối pháp lý"},{k:'C',en:"Hide mistakes",vi:"Che giấu sai lầm"},{k:'D',en:"Increase packaging",vi:"Tăng cường bao bì"}],
-      ans:'B', exp:`Tiết lộ rõ ràng (#ad, #sponsored) giúp thương hiệu và KOL <strong>tránh bị khởi kiện vì tội quảng cáo lừa dối</strong> theo quy định của FTC.` },
+      vi:"Viec tiet lo thong tin hop ly giup cac thuong hieu:",
+      opts:[{k:'A',en:"Sell faster",vi:"Ban hang nhanh hon"},{k:'B',en:"Avoid legal trouble",vi:"Tranh rac roi phap ly"},{k:'C',en:"Hide mistakes",vi:"Che giau sai lam"},{k:'D',en:"Increase packaging",vi:"Tang cuong bao bi"}],
+      ans:'B', exp:"Tiet lo ro rang (#ad, #sponsored) giup thuong hieu va KOL <strong>tranh bi khoi kien vi toi quang cao lua doi</strong> theo quy dinh cua FTC." },
 
     { en:"Public voting systems in contests must be:",
-      vi:"Hệ thống bình chọn công khai trong các cuộc thi phải được:",
-      opts:[{k:'A',en:"Paid only",vi:"Chỉ trả phí"},{k:'B',en:"Structured to avoid pure chance",vi:"Có cấu trúc để tránh sự may rủi hoàn toàn"},{k:'C',en:"Eliminated",vi:"Loại bỏ"},{k:'D',en:"Replaced",vi:"Thay thế"}],
-      ans:'B', exp:`Để tránh bị coi là cờ bạc, các thương hiệu tổ chức thi dựa trên <strong>kỹ năng</strong> và kết quả qua bình chọn — chứng minh đây là cuộc thi tài năng chứ không phải may rủi.` },
+      vi:"He thong binh chon cong khai trong cac cuoc thi phai duoc:",
+      opts:[{k:'A',en:"Paid only",vi:"Chi tra phi"},{k:'B',en:"Structured to avoid pure chance",vi:"Co cau truc de tranh su may rui hoan toan"},{k:'C',en:"Eliminated",vi:"Loai bo"},{k:'D',en:"Replaced",vi:"Thay the"}],
+      ans:'B', exp:"De tranh bi coi la co bac, cac thuong hieu to chuc thi dua tren <strong>ky nang</strong> va ket qua qua binh chon - chung minh day la cuoc thi tai nang chu khong phai may rui." },
 
     { en:"Which newspaper recommends consistent social connections?",
-      vi:"Tờ báo nào khuyến nghị duy trì kết nối xã hội nhất quán?",
+      vi:"To bao nao khuyen nghi duy tri ket noi xa hoi nhat quan?",
       opts:[{k:'A',en:"Roanoke Times",vi:"Roanoke Times"},{k:'B',en:"The Guardian",vi:"The Guardian"},{k:'C',en:"BBC",vi:"BBC"},{k:'D',en:"Forbes",vi:"Forbes"}],
-      ans:'A', exp:`<strong>Roanoke Times</strong> có chính sách khuyến nghị nhân viên duy trì kết nối xã hội nhất quán để xây dựng lòng tin và gắn kết với cộng đồng độc giả địa phương.` },
+      ans:'A', exp:"<strong>Roanoke Times</strong> co chinh sach khuyen nghi nhan vien duy tri ket noi xa hoi nhat quan de xay dung long tin va gan ket voi cong dong doc gia dia phuong." },
 
     { en:"What is a trade secret in the context of social media use?",
-      vi:"Bí mật thương mại trong bối cảnh sử dụng mạng xã hội là gì?",
-      opts:[{k:'A',en:"Publicly available information",vi:"Thông tin công khai"},{k:'B',en:"Sensitive company information like product launches, marketing strategies, or internal policies",vi:"Thông tin nhạy cảm của công ty như ra mắt sản phẩm, chiến lược tiếp thị, hoặc chính sách nội bộ"},{k:'C',en:"Employee personal opinions",vi:"Ý kiến cá nhân của nhân viên"},{k:'D',en:"Marketing slogans",vi:"Khẩu hiệu tiếp thị"}],
-      ans:'B', exp:`<strong>Bí mật thương mại</strong>: thông tin kinh doanh có giá trị, mang lại lợi thế cạnh tranh, và đang được công ty bảo vệ cẩn mật. Tiết lộ lên MXH là vi phạm nghiêm trọng.` },
+      vi:"Bi mat thuong mai trong boi canh su dung mang xa hoi la gi?",
+      opts:[{k:'A',en:"Publicly available information",vi:"Thong tin cong khai"},{k:'B',en:"Sensitive company information like product launches, marketing strategies, or internal policies",vi:"Thong tin nhay cam cua cong ty nhu ra mat san pham, chien luoc tiep thi, hoac chinh sach noi bo"},{k:'C',en:"Employee personal opinions",vi:"Y kien ca nhan cua nhan vien"},{k:'D',en:"Marketing slogans",vi:"Khau hieu tiep thi"}],
+      ans:'B', exp:"<strong>Bi mat thuong mai</strong>: thong tin kinh doanh co gia tri, mang lai loi the canh tranh, va dang duoc cong ty bao ve can mat. Tiet lo len MXH la vi pham nghiem trong." },
 
     { en:"Follower lists may be trade secrets if they:",
-      vi:"Danh sách người theo dõi có thể là bí mật thương mại nếu chúng:",
-      opts:[{k:'A',en:"Are used for decoration",vi:"Được dùng để trang trí"},{k:'B',en:"Offer business advantage and are not public",vi:"Mang lại lợi thế kinh doanh và không công khai"},{k:'C',en:"Are on Facebook",vi:"Ở trên Facebook"},{k:'D',en:"Come from interns",vi:"Đến từ thực tập sinh"}],
-      ans:'B', exp:`Danh sách chỉ là bí mật thương mại khi: (1) <strong>tạo ra lợi thế cạnh tranh thực sự</strong>, và (2) công ty đã áp dụng biện pháp bảo mật để giữ kín nó.` },
+      vi:"Danh sach nguoi theo doi co the la bi mat thuong mai neu chung:",
+      opts:[{k:'A',en:"Are used for decoration",vi:"Duoc dung de trang tri"},{k:'B',en:"Offer business advantage and are not public",vi:"Mang lai loi the kinh doanh va khong cong khai"},{k:'C',en:"Are on Facebook",vi:"O tren Facebook"},{k:'D',en:"Come from interns",vi:"Den tu thuc tap sinh"}],
+      ans:'B', exp:"Danh sach chi la bi mat thuong mai khi: (1) <strong>tao ra loi the canh tranh thuc su</strong>, va (2) cong ty da ap dung bien phap bao mat de giu kin no." },
 
     { en:"FTC mandates that brands must disclose:",
-      vi:"FTC bắt buộc các thương hiệu phải tiết lộ:",
-      opts:[{k:'A',en:"Corporate structure",vi:"Cấu trúc doanh nghiệp"},{k:'B',en:"Type of prize, number of winners, and odds of winning",vi:"Loại giải thưởng, số lượng người chiến thắng và tỷ lệ trúng thưởng"},{k:'C',en:"Customer reviews",vi:"Đánh giá của khách hàng"},{k:'D',en:"Social media plan",vi:"Kế hoạch truyền thông mạng xã hội"}],
-      ans:'B', exp:`FTC yêu cầu khi tổ chức giveaway/contest phải công khai minh bạch về <strong>giải thưởng, số lượng giải và xác suất trúng giải thực tế</strong> để bảo vệ người tiêu dùng.` },
+      vi:"FTC bat buoc cac thuong hieu phai tiet lo:",
+      opts:[{k:'A',en:"Corporate structure",vi:"Cau truc doanh nghiep"},{k:'B',en:"Type of prize, number of winners, and odds of winning",vi:"Loai giai thuong, so luong nguoi chien thang va ty le trung thuong"},{k:'C',en:"Customer reviews",vi:"Danh gia cua khach hang"},{k:'D',en:"Social media plan",vi:"Ke hoach truyen thong mang xa hoi"}],
+      ans:'B', exp:"FTC yeu cau khi to chuc giveaway/contest phai cong khai minh bach ve <strong>giai thuong, so luong giai va xac suat trung giai thuc te</strong> de bao ve nguoi tieu dung." },
   ],
 
-  // ── CẤP PHÉP & HỢP ĐỒNG ────────────────────────────────────
   li: [
     { en:"What is a common outcome of licensing settlements?",
-      vi:"Kết quả phổ biến của giải quyết tranh chấp cấp phép là gì?",
-      opts:[{k:'A',en:"Trademark registration",vi:"Đăng ký nhãn hiệu"},{k:'B',en:"Payment of royalties as compensation",vi:"Thanh toán tiền bản quyền như bồi thường"},{k:'C',en:"Creation of joint ventures",vi:"Thành lập liên doanh"},{k:'D',en:"Patent cancellation",vi:"Hủy bằng sáng chế"}],
-      ans:'B', exp:`Thay vì kiện tụng kéo dài, các bên thường hòa giải ngoài tòa. Kết quả phổ biến nhất là kẻ vi phạm trả <strong>tiền bản quyền (royalties)</strong> và ký hợp đồng cấp phép chính thức.` },
+      vi:"Ket qua pho bien cua giai quyet tranh chap cap phep la gi?",
+      opts:[{k:'A',en:"Trademark registration",vi:"Dang ky nhan hieu"},{k:'B',en:"Payment of royalties as compensation",vi:"Thanh toan tien ban quyen nhu boi thuong"},{k:'C',en:"Creation of joint ventures",vi:"Thanh lap lien doanh"},{k:'D',en:"Patent cancellation",vi:"Huy bang sang che"}],
+      ans:'B', exp:"Thay vi kien tung keo dai, cac ben thuong hoa giai ngoai toa. Ket qua pho bien nhat la ke vi pham tra <strong>tien ban quyen (royalties)</strong> va ky hop dong cap phep chinh thuc." },
 
     { en:"What are the two main forms of financial compensation in licensing?",
-      vi:"Hai hình thức bồi thường tài chính chính trong cấp phép là gì?",
-      opts:[{k:'A',en:"Rent and loan",vi:"Tiền thuê và khoản vay"},{k:'B',en:"Lump sum and royalties",vi:"Thanh toán một lần và tiền bản quyền"},{k:'C',en:"Fees and donations",vi:"Phí và quyên góp"},{k:'D',en:"Interest and bonus",vi:"Lãi suất và tiền thưởng"}],
-      ans:'B', exp:`<strong>Lump sum</strong> (trả một lần khi ký) và <strong>Royalties</strong> (trả theo tỷ lệ doanh thu). Nhiều hợp đồng kết hợp cả hai hình thức.` },
+      vi:"Hai hinh thuc boi thuong tai chinh chinh trong cap phep la gi?",
+      opts:[{k:'A',en:"Rent and loan",vi:"Tien thue va khoan vay"},{k:'B',en:"Lump sum and royalties",vi:"Thanh toan mot lan va tien ban quyen"},{k:'C',en:"Fees and donations",vi:"Phi va quyen gop"},{k:'D',en:"Interest and bonus",vi:"Lai suat va tien thuong"}],
+      ans:'B', exp:"<strong>Lump sum</strong> (tra mot lan khi ky) va <strong>Royalties</strong> (tra theo ty le doanh thu). Nhieu hop dong ket hop ca hai hinh thuc." },
 
     { en:"If a settlement is reached, what is often included?",
-      vi:"Khi đạt được thỏa thuận dàn xếp, điều gì thường được bao gồm?",
-      opts:[{k:'A',en:"Cancellation of copyright",vi:"Hủy bản quyền"},{k:'B',en:"Compensation or license terms",vi:"Bồi thường hoặc điều khoản cấp phép"},{k:'C',en:"New creation",vi:"Tạo tác phẩm mới"},{k:'D',en:"Criminal penalty",vi:"Hình phạt hình sự"}],
-      ans:'B', exp:`Dàn xếp tranh chấp IP thường bao gồm: <strong>bồi thường tài chính</strong> và/hoặc <strong>điều khoản cấp phép</strong> cho phép tiếp tục sử dụng có kiểm soát.` },
+      vi:"Khi dat duoc thoa thuan dan xep, dieu gi thuong duoc bao gom?",
+      opts:[{k:'A',en:"Cancellation of copyright",vi:"Huy ban quyen"},{k:'B',en:"Compensation or license terms",vi:"Boi thuong hoac dieu khoan cap phep"},{k:'C',en:"New creation",vi:"Tao tac pham moi"},{k:'D',en:"Criminal penalty",vi:"Hinh phat hinh su"}],
+      ans:'B', exp:"Dan xep tranh chap IP thuong bao gom: <strong>boi thuong tai chinh</strong> va/hoac <strong>dieu khoan cap phep</strong> cho phep tiep tuc su dung co kiem soat." },
 
     { en:"A well-structured license ensures:",
-      vi:"Một giấy phép được cấu trúc tốt đảm bảo:",
-      opts:[{k:'A',en:"Public access",vi:"Quyền truy cập công khai"},{k:'B',en:"Mutual benefit and long-term success",vi:"Lợi ích cho cả hai bên và thành công lâu dài"},{k:'C',en:"Lack of enforceability",vi:"Thiếu khả năng thực thi"},{k:'D',en:"Faster trademarking",vi:"Đăng ký nhãn hiệu nhanh hơn"}],
-      ans:'B', exp:`Hợp đồng cấp phép tốt tạo ra mối quan hệ <strong>win-win</strong>, bảo vệ quyền lợi của cả licensor và licensee, đảm bảo hợp tác suôn sẻ và lợi nhuận lâu dài.` },
+      vi:"Mot giay phep duoc cau truc tot dam bao:",
+      opts:[{k:'A',en:"Public access",vi:"Quyen truy cap cong khai"},{k:'B',en:"Mutual benefit and long-term success",vi:"Loi ich cho ca hai ben va thanh cong lau dai"},{k:'C',en:"Lack of enforceability",vi:"Thieu kha nang thuc thi"},{k:'D',en:"Faster trademarking",vi:"Dang ky nhan hieu nhanh hon"}],
+      ans:'B', exp:"Hop dong cap phep tot tao ra moi quan he <strong>win-win</strong>, bao ve quyen loi cua ca licensor va licensee, dam bao hop tac suon se va loi nhuan lau dai." },
 
     { en:"Improvement clauses relate to:",
-      vi:"Điều khoản cải tiến (improvement clauses) liên quan đến:",
-      opts:[{k:'A',en:"New technology or enhancements during the license period",vi:"Công nghệ mới hoặc cải tiến trong thời gian cấp phép"},{k:'B',en:"Advertising strategy",vi:"Chiến lược quảng cáo"},{k:'C',en:"Currency conversion",vi:"Quy đổi ngoại tệ"},{k:'D',en:"Employee contracts",vi:"Hợp đồng nhân viên"}],
-      ans:'A', exp:`<strong>Improvement clauses</strong> quy định điều gì xảy ra khi có cải tiến trong thời gian hợp đồng — ai sở hữu cải tiến đó và liệu cải tiến có nằm trong phạm vi cấp phép không.` },
+      vi:"Dieu khoan cai tien (improvement clauses) lien quan den:",
+      opts:[{k:'A',en:"New technology or enhancements during the license period",vi:"Cong nghe moi hoac cai tien trong thoi gian cap phep"},{k:'B',en:"Advertising strategy",vi:"Chien luoc quang cao"},{k:'C',en:"Currency conversion",vi:"Quy doi ngoai te"},{k:'D',en:"Employee contracts",vi:"Hop dong nhan vien"}],
+      ans:'A', exp:"<strong>Improvement clauses</strong> quy dinh dieu gi xay ra khi co cai tien trong thoi gian hop dong - ai so huu cai tien do va lieu cai tien co nam trong pham vi cap phep khong." },
 
     { en:"If an exclusive licensee sublicenses the work to others without permission, what is violated?",
-      vi:"Nếu người được cấp phép độc quyền tự ý cấp phép lại mà không có phép, điều gì bị vi phạm?",
-      opts:[{k:'A',en:"Fair use",vi:"Sử dụng hợp lý"},{k:'B',en:"The exclusivity clause in the licensing agreement",vi:"Điều khoản độc quyền trong hợp đồng cấp phép"},{k:'C',en:"Public performance right",vi:"Quyền biểu diễn công khai"},{k:'D',en:"Attribution right",vi:"Quyền ghi nhận"}],
-      ans:'B', exp:`Quyền sublicense phải được licensor đồng ý và ghi rõ trong hợp đồng. Tự ý cấp phép lại vi phạm <strong>điều khoản độc quyền</strong>.` },
+      vi:"Neu nguoi duoc cap phep doc quyen tu y cap phep lai ma khong co phep, dieu gi bi vi pham?",
+      opts:[{k:'A',en:"Fair use",vi:"Su dung hop ly"},{k:'B',en:"The exclusivity clause in the licensing agreement",vi:"Dieu khoan doc quyen trong hop dong cap phep"},{k:'C',en:"Public performance right",vi:"Quyen bieu dien cong khai"},{k:'D',en:"Attribution right",vi:"Quyen ghi nhan"}],
+      ans:'B', exp:"Quyen sublicense phai duoc licensor dong y va ghi ro trong hop dong. Tu y cap phep lai vi pham <strong>dieu khoan doc quyen</strong>." },
 
     { en:"Tax consequences in licensing can impact:",
-      vi:"Hậu quả thuế trong cấp phép có thể ảnh hưởng đến:",
-      opts:[{k:'A',en:"Sales performance only",vi:"Chỉ hiệu suất bán hàng"},{k:'B',en:"The net income for both parties",vi:"Thu nhập ròng của cả hai bên"},{k:'C',en:"Branding effectiveness",vi:"Hiệu quả thương hiệu"},{k:'D',en:"Use of social media",vi:"Sử dụng mạng xã hội"}],
-      ans:'B', exp:`Withholding tax, VAT, thuế thu nhập từ royalties ảnh hưởng trực tiếp đến <strong>thu nhập ròng của cả licensor và licensee</strong> — cần tính toán kỹ trong đàm phán.` },
+      vi:"Hau qua thue trong cap phep co the anh huong den:",
+      opts:[{k:'A',en:"Sales performance only",vi:"Chi hieu suat ban hang"},{k:'B',en:"The net income for both parties",vi:"Thu nhap rong cua ca hai ben"},{k:'C',en:"Branding effectiveness",vi:"Hieu qua thuong hieu"},{k:'D',en:"Use of social media",vi:"Su dung mang xa hoi"}],
+      ans:'B', exp:"Withholding tax, VAT, thue thu nhap tu royalties anh huong truc tiep den <strong>thu nhap rong cua ca licensor va licensee</strong> - can tinh toan ky trong dam phan." },
 
     { en:"In case of unauthorized use of the licensed technology, the licensee should:",
-      vi:"Trong trường hợp công nghệ được cấp phép bị sử dụng trái phép, người được cấp phép nên:",
-      opts:[{k:'A',en:"Ignore it",vi:"Bỏ qua"},{k:'B',en:"Send a newsletter",vi:"Gửi bản tin"},{k:'C',en:"Report the infringement to the licensor",vi:"Báo cáo vi phạm cho người cấp phép"},{k:'D',en:"Reduce production",vi:"Giảm sản xuất"}],
-      ans:'C', exp:`Licensee thường không có quyền trực tiếp khởi kiện. Hành động đúng là <strong>báo cáo ngay cho licensor</strong> để họ có biện pháp pháp lý can thiệp kịp thời.` },
+      vi:"Trong truong hop cong nghe duoc cap phep bi su dung trai phep, nguoi duoc cap phep nen:",
+      opts:[{k:'A',en:"Ignore it",vi:"Bo qua"},{k:'B',en:"Send a newsletter",vi:"Gui ban tin"},{k:'C',en:"Report the infringement to the licensor",vi:"Bao cao vi pham cho nguoi cap phep"},{k:'D',en:"Reduce production",vi:"Giam san xuat"}],
+      ans:'C', exp:"Licensee thuong khong co quyen truc tiep khoi kien. Hanh dong dung la <strong>bao cao ngay cho licensor</strong> de ho co bien phap phap ly can thiep kip thoi." },
 
     { en:"One benefit of unregistered get-up rights is that:",
-      vi:"Một lợi ích của quyền get-up không đăng ký là:",
-      opts:[{k:'A',en:"They require expensive filing",vi:"Chúng yêu cầu nộp phí tốn kém"},{k:'B',en:"They arise through use without formal registration",vi:"Chúng phát sinh qua việc sử dụng mà không cần đăng ký chính thức"},{k:'C',en:"They only work with trademark",vi:"Chúng chỉ hoạt động với nhãn hiệu"},{k:'D',en:"They need to be renewed annually",vi:"Cần được gia hạn hàng năm"}],
-      ans:'B', exp:`Quyền get-up <strong>phát sinh tự động</strong> khi bạn sử dụng và xây dựng danh tiếng — không cần nộp đơn, không tốn phí đăng ký.` },
+      vi:"Mot loi ich cua quyen get-up khong dang ky la:",
+      opts:[{k:'A',en:"They require expensive filing",vi:"Chung yeu cau nop phi ton kem"},{k:'B',en:"They arise through use without formal registration",vi:"Chung phat sinh qua viec su dung ma khong can dang ky chinh thuc"},{k:'C',en:"They only work with trademark",vi:"Chung chi hoat dong voi nhan hieu"},{k:'D',en:"They need to be renewed annually",vi:"Can duoc gia han hang nam"}],
+      ans:'B', exp:"Quyen get-up <strong>phat sinh tu dong</strong> khi ban su dung va xay dung danh tieng - khong can nop don, khong ton phi dang ky." },
 
     { en:"What does the Western Electric case demonstrate?",
-      vi:"Vụ Western Electric chứng minh điều gì?",
-      opts:[{k:'A',en:"Patent cancellation",vi:"Hủy bằng sáng chế"},{k:'B',en:"Global licensing of core technologies",vi:"Cấp phép toàn cầu cho công nghệ cốt lõi"},{k:'C',en:"Design outsourcing",vi:"Thuê ngoài thiết kế"},{k:'D',en:"Royalty-free systems",vi:"Hệ thống miễn tiền bản quyền"}],
-      ans:'B', exp:`Vụ <strong>Western Electric</strong> là ví dụ kinh điển chứng minh rằng cấp phép công nghệ cốt lõi có thể trở thành nguồn doanh thu chính và thúc đẩy phát triển công nghiệp toàn cầu.` },
+      vi:"Vu Western Electric chung minh dieu gi?",
+      opts:[{k:'A',en:"Patent cancellation",vi:"Huy bang sang che"},{k:'B',en:"Global licensing of core technologies",vi:"Cap phep toan cau cho cong nghe cot loi"},{k:'C',en:"Design outsourcing",vi:"Thue ngoai thiet ke"},{k:'D',en:"Royalty-free systems",vi:"He thong mien tien ban quyen"}],
+      ans:'B', exp:"Vu <strong>Western Electric</strong> la vi du kinh dien chung minh rang cap phep cong nghe cot loi co the tro thanh nguon doanh thu chinh va thuc day phat trien cong nghiep toan cau." },
 
     { en:"In passing-off, what must damage refer to?",
-      vi:"Trong passing-off, thiệt hại phải đề cập đến điều gì?",
-      opts:[{k:'A',en:"Sales profit only",vi:"Chỉ lợi nhuận bán hàng"},{k:'B',en:"Loss of business reputation or sales",vi:"Mất uy tín kinh doanh hoặc doanh số bán hàng"},{k:'C',en:"Loss of color scheme",vi:"Mất cách phối màu"},{k:'D',en:"Change of supplier",vi:"Thay đổi nhà cung cấp"}],
-      ans:'B', exp:`Thiệt hại trong passing-off: <strong>mất doanh thu thực tế</strong> (khách mua nhầm hàng đối thủ) hoặc <strong>tổn hại uy tín thương hiệu</strong> (khách xài đồ giả rởm rồi chửi thương hiệu gốc).` },
+      vi:"Trong passing-off, thiet hai phai de cap den dieu gi?",
+      opts:[{k:'A',en:"Sales profit only",vi:"Chi loi nhuan ban hang"},{k:'B',en:"Loss of business reputation or sales",vi:"Mat uy tin kinh doanh hoac doanh so ban hang"},{k:'C',en:"Loss of color scheme",vi:"Mat cach phoi mau"},{k:'D',en:"Change of supplier",vi:"Thay doi nha cung cap"}],
+      ans:'B', exp:"Thiet hai trong passing-off: <strong>mat doanh thu thuc te</strong> (khach mua nham hang doi thu) hoac <strong>ton hai uy tin thuong hieu</strong> (khach xai do gia rom roi chui thuong hieu goc)." },
 
     { en:"When can a licensor terminate a licensing agreement?",
-      vi:"Khi nào người cấp phép có thể chấm dứt thỏa thuận cấp phép?",
-      opts:[{k:'A',en:"At any time without reason",vi:"Bất cứ lúc nào mà không cần lý do"},{k:'B',en:"Only if the licensee pays more",vi:"Chỉ khi người được cấp phép trả nhiều tiền hơn"},{k:'C',en:"Upon a material breach of contract by the licensee",vi:"Khi người được cấp phép vi phạm nghiêm trọng hợp đồng"},{k:'D',en:"If the licensor changes their mind",vi:"Nếu người cấp phép đổi ý"}],
-      ans:'C', exp:`Licensor không được tự ý hủy kèo trừ khi licensee vi phạm các điều khoản quan trọng (<strong>material breach</strong>) — ví dụ: không trả tiền bản quyền hoặc sử dụng sai mục đích.` },
+      vi:"Khi nao nguoi cap phep co the cham dut thoa thuan cap phep?",
+      opts:[{k:'A',en:"At any time without reason",vi:"Bat cu luc nao ma khong can ly do"},{k:'B',en:"Only if the licensee pays more",vi:"Chi khi nguoi duoc cap phep tra nhieu tien hon"},{k:'C',en:"Upon a material breach of contract by the licensee",vi:"Khi nguoi duoc cap phep vi pham nghiem trong hop dong"},{k:'D',en:"If the licensor changes their mind",vi:"Neu nguoi cap phep doi y"}],
+      ans:'C', exp:"Licensor khong duoc tu y huy keo tru khi licensee vi pham cac dieu khoan quan trong (<strong>material breach</strong>) - vi du: khong tra tien ban quyen hoac su dung sai muc dich." },
 
     { en:"Why is defining the scope of a license crucial?",
-      vi:"Tại sao việc xác định phạm vi của một giấy phép lại quan trọng?",
-      opts:[{k:'A',en:"To limit the licensor's liability",vi:"Để giới hạn trách nhiệm pháp lý của người cấp phép"},{k:'B',en:"To specify what the licensee can and cannot do with the IP",vi:"Để xác định rõ những gì người được cấp phép có thể và không thể làm với IP"},{k:'C',en:"To increase the registration fee",vi:"Để tăng phí đăng ký"},{k:'D',en:"To make the agreement public",vi:"Để làm cho thỏa thuận trở nên công khai"}],
-      ans:'B', exp:`Xác định phạm vi cấp phép giúp đảm bảo licensee <strong>không lạm dụng tài sản</strong> của bạn để trục lợi vượt quá quyền hạn cho phép.` },
+      vi:"Tai sao viec xac dinh pham vi cua mot giay phep lai quan trong?",
+      opts:[{k:'A',en:"To limit the licensor's liability",vi:"De gioi han trach nhiem phap ly cua nguoi cap phep"},{k:'B',en:"To specify what the licensee can and cannot do with the IP",vi:"De xac dinh ro nhung gi nguoi duoc cap phep co the va khong the lam voi IP"},{k:'C',en:"To increase the registration fee",vi:"De tang phi dang ky"},{k:'D',en:"To make the agreement public",vi:"De lam cho thoa thuan tro nen cong khai"}],
+      ans:'B', exp:"Xac dinh pham vi cap phep giup dam bao licensee <strong>khong lam dung tai san</strong> cua ban de truc loi vuot qua quyen han cho phep." },
 
     { en:"What is a 'cross-license'?",
-      vi:"'Cấp phép chéo' (cross-license) là gì?",
-      opts:[{k:'A',en:"A license that is canceled",vi:"Một giấy phép bị hủy bỏ"},{k:'B',en:"An agreement where two parties grant each other licenses to their respective IP",vi:"Thỏa thuận trong đó hai bên cấp phép cho nhau sử dụng IP tương ứng của họ"},{k:'C',en:"A license for international use only",vi:"Giấy phép chỉ dành cho sử dụng quốc tế"},{k:'D',en:"A license that covers all types of IP",vi:"Giấy phép bao trùm tất cả các loại IP"}],
-      ans:'B', exp:`Thay vì kiện tụng lẫn nhau về vi phạm sáng chế, các "ông lớn" công nghệ ký <strong>cross-license</strong> để cả hai bên được quyền sử dụng phát minh của nhau.` },
+      vi:"'Cap phep cheo' (cross-license) la gi?",
+      opts:[{k:'A',en:"A license that is canceled",vi:"Mot giay phep bi huy bo"},{k:'B',en:"An agreement where two parties grant each other licenses to their respective IP",vi:"Thoa thuan trong do hai ben cap phep cho nhau su dung IP tuong ung cua ho"},{k:'C',en:"A license for international use only",vi:"Giay phep chi danh cho su dung quoc te"},{k:'D',en:"A license that covers all types of IP",vi:"Giay phep bao trum tat ca cac loai IP"}],
+      ans:'B', exp:"Thay vi kien tung lan nhau ve vi pham sang che, cac 'ong lon' cong nghe ky <strong>cross-license</strong> de ca hai ben duoc quyen su dung phat minh cua nhau." },
 
     { en:"In a licensing agreement, what does an 'indemnity' clause do?",
-      vi:"Trong thỏa thuận cấp phép, điều khoản 'bồi hoàn' (indemnity) có tác dụng gì?",
-      opts:[{k:'A',en:"Increases royalties",vi:"Tăng tiền bản quyền"},{k:'B',en:"Protects one party from liability if the other party breaches third-party rights",vi:"Bảo vệ một bên khỏi trách nhiệm pháp lý nếu bên kia vi phạm quyền của bên thứ ba"},{k:'C',en:"Cancels the contract",vi:"Hủy bỏ hợp đồng"},{k:'D',en:"Ensures product quality",vi:"Đảm bảo chất lượng sản phẩm"}],
-      ans:'B', exp:`<strong>Indemnity clause</strong>: nếu IP tôi bán cho bạn sau này bị người thứ 3 kiện vì tôi lỡ vi phạm quyền của họ, thì TÔI sẽ chịu toàn bộ chi phí kiện tụng thay cho bạn.` },
+      vi:"Trong thoa thuan cap phep, dieu khoan 'boi hoan' (indemnity) co tac dung gi?",
+      opts:[{k:'A',en:"Increases royalties",vi:"Tang tien ban quyen"},{k:'B',en:"Protects one party from liability if the other party breaches third-party rights",vi:"Bao ve mot ben khoi trach nhiem phap ly neu ben kia vi pham quyen cua ben thu ba"},{k:'C',en:"Cancels the contract",vi:"Huy bo hop dong"},{k:'D',en:"Ensures product quality",vi:"Dam bao chat luong san pham"}],
+      ans:'B', exp:"<strong>Indemnity clause</strong>: neu IP toi ban cho ban sau nay bi nguoi thu 3 kien vi toi vi pham quyen cua ho, thi TOI se chiu toan bo chi phi kien tung thay cho ban." },
 
     { en:"In licensing, what is a 'territory' clause?",
-      vi:"Trong cấp phép, điều khoản 'lãnh thổ' (territory) là gì?",
-      opts:[{k:'A',en:"The physical location of the server",vi:"Vị trí vật lý của máy chủ"},{k:'B',en:"The geographical area where the licensee is allowed to use the IP",vi:"Khu vực địa lý nơi người được cấp phép được phép sử dụng IP"},{k:'C',en:"The country of the licensor",vi:"Quốc gia của người cấp phép"},{k:'D',en:"The total space occupied by the product",vi:"Tổng diện tích mà sản phẩm chiếm dụng"}],
-      ans:'B', exp:`Điều khoản lãnh thổ quy định <strong>giới hạn không gian địa lý</strong>. Nếu vượt ra ngoài lãnh thổ đã thỏa thuận, licensee đã vi phạm hợp đồng.` },
+      vi:"Trong cap phep, dieu khoan 'lanh tho' (territory) la gi?",
+      opts:[{k:'A',en:"The physical location of the server",vi:"Vi tri vat ly cua may chu"},{k:'B',en:"The geographical area where the licensee is allowed to use the IP",vi:"Khu vuc dia ly noi nguoi duoc cap phep duoc phep su dung IP"},{k:'C',en:"The country of the licensor",vi:"Quoc gia cua nguoi cap phep"},{k:'D',en:"The total space occupied by the product",vi:"Tong dien tich ma san pham chiem dung"}],
+      ans:'B', exp:"Dieu khoan lanh tho quy dinh <strong>gioi han khong gian dia ly</strong>. Neu vuot ra ngoai lanh tho da thoa thuan, licensee da vi pham hop dong." },
   ],
 
-  // ── QUYỀN RIÊNG TƯ & DỮ LIỆU ───────────────────────────────
   pr: [
     { en:"What is a notable feature of California's privacy laws?",
-      vi:"Đặc điểm đáng chú ý của luật quyền riêng tư California là gì?",
-      opts:[{k:'A',en:"They apply only to companies based in California",vi:"Chỉ áp dụng cho công ty có trụ sở ở California"},{k:'B',en:"They regulate the collection and sale of personal data",vi:"Chúng điều chỉnh việc thu thập và bán dữ liệu cá nhân"},{k:'C',en:"They mandate privacy policies for all non-profit organizations",vi:"Bắt buộc tất cả tổ chức phi lợi nhuận có chính sách quyền riêng tư"},{k:'D',en:"They allow companies to bypass user consent for data collection",vi:"Cho phép công ty bỏ qua sự đồng ý của người dùng"}],
-      ans:'B', exp:`<strong>CCPA (California Consumer Privacy Act)</strong> quy định chặt chẽ về thu thập, sử dụng và bán dữ liệu cá nhân, cho người dùng quyền biết và từ chối.` },
+      vi:"Dac diem dang chu y cua luat quyen rieng tu California la gi?",
+      opts:[{k:'A',en:"They apply only to companies based in California",vi:"Chi ap dung cho cong ty co tru so o California"},{k:'B',en:"They regulate the collection and sale of personal data",vi:"Chung dieu chinh viec thu thap va ban du lieu ca nhan"},{k:'C',en:"They mandate privacy policies for all non-profit organizations",vi:"Bat buoc tat ca to chuc phi loi nhuan co chinh sach quyen rieng tu"},{k:'D',en:"They allow companies to bypass user consent for data collection",vi:"Cho phep cong ty bo qua su dong y cua nguoi dung"}],
+      ans:'B', exp:"<strong>CCPA (California Consumer Privacy Act)</strong> quy dinh chat che ve thu thap, su dung va ban du lieu ca nhan, cho nguoi dung quyen biet va tu choi." },
 
     { en:"What does GDPR require companies to do regarding data collection?",
-      vi:"GDPR yêu cầu công ty làm gì về thu thập dữ liệu?",
-      opts:[{k:'A',en:"Limit user data to what is necessary for business operations",vi:"Giới hạn dữ liệu người dùng chỉ ở mức cần thiết cho hoạt động kinh doanh"},{k:'B',en:"Place strict requirements on data collection and processing",vi:"Đặt ra yêu cầu nghiêm ngặt về thu thập và xử lý dữ liệu"},{k:'C',en:"Allow unlimited collection of data from users",vi:"Cho phép thu thập dữ liệu không giới hạn"},{k:'D',en:"Automatically collect data without user consent",vi:"Tự động thu thập dữ liệu mà không cần đồng ý"}],
-      ans:'B', exp:`<strong>GDPR</strong> đặt ra các yêu cầu nghiêm ngặt: cần sự đồng ý rõ ràng, data minimization, right to erasure, và privacy by design.` },
+      vi:"GDPR yeu cau cong ty lam gi ve thu thap du lieu?",
+      opts:[{k:'A',en:"Limit user data to what is necessary for business operations",vi:"Gioi han du lieu nguoi dung chi o muc can thiet cho hoat dong kinh doanh"},{k:'B',en:"Place strict requirements on data collection and processing",vi:"Dat ra yeu cau nghiem ngat ve thu thap va xu ly du lieu"},{k:'C',en:"Allow unlimited collection of data from users",vi:"Cho phep thu thap du lieu khong gioi han"},{k:'D',en:"Automatically collect data without user consent",vi:"Tu dong thu thap du lieu ma khong can dong y"}],
+      ans:'B', exp:"<strong>GDPR</strong> dat ra cac yeu cau nghiem ngat: can su dong y ro rang, data minimization, right to erasure, va privacy by design." },
 
     { en:"Which of the following is a principle of GDPR?",
-      vi:"Nguyên tắc nào sau đây là của GDPR?",
-      opts:[{k:'A',en:"Lawfulness, fairness, and transparency in data processing",vi:"Tính hợp pháp, công bằng và minh bạch trong xử lý dữ liệu"},{k:'B',en:"Data collection for any purpose without limitations",vi:"Thu thập dữ liệu cho bất kỳ mục đích nào"},{k:'C',en:"Unlimited access to user data for advertising",vi:"Truy cập không giới hạn vào dữ liệu người dùng cho quảng cáo"},{k:'D',en:"Freedom of user choice without restrictions",vi:"Tự do lựa chọn của người dùng không bị hạn chế"}],
-      ans:'A', exp:`GDPR dựa trên 7 nguyên tắc, trong đó <strong>tính hợp pháp, công bằng và minh bạch</strong> là nguyên tắc đầu tiên — mọi hoạt động xử lý dữ liệu phải có cơ sở pháp lý.` },
+      vi:"Nguyen tac nao sau day la cua GDPR?",
+      opts:[{k:'A',en:"Lawfulness, fairness, and transparency in data processing",vi:"Tinh hop phap, cong bang va minh bach trong xu ly du lieu"},{k:'B',en:"Data collection for any purpose without limitations",vi:"Thu thap du lieu cho bat ky muc dich nao"},{k:'C',en:"Unlimited access to user data for advertising",vi:"Truy cap khong gioi han vao du lieu nguoi dung cho quang cao"},{k:'D',en:"Freedom of user choice without restrictions",vi:"Tu do lua chon cua nguoi dung khong bi han che"}],
+      ans:'A', exp:"GDPR dua tren 7 nguyen tac, trong do <strong>tinh hop phap, cong bang va minh bach</strong> la nguyen tac dau tien - moi hoat dong xu ly du lieu phai co co so phap ly." },
 
     { en:"In 2013, COPPA expanded to include:",
-      vi:"Năm 2013, COPPA mở rộng để bao gồm:",
-      opts:[{k:'A',en:"School hours",vi:"Giờ học"},{k:'B',en:"TV time",vi:"Thời gian xem TV"},{k:'C',en:"IP addresses and geolocation",vi:"Địa chỉ IP và vị trí địa lý"},{k:'D',en:"Student grades",vi:"Điểm số học sinh"}],
-      ans:'C', exp:`Năm 2013, COPPA mở rộng bảo vệ thêm <strong>địa chỉ IP, dữ liệu vị trí địa lý và các định danh trực tuyến</strong> của trẻ em dưới 13 tuổi.` },
+      vi:"Nam 2013, COPPA mo rong de bao gom:",
+      opts:[{k:'A',en:"School hours",vi:"Gio hoc"},{k:'B',en:"TV time",vi:"Thoi gian xem TV"},{k:'C',en:"IP addresses and geolocation",vi:"Dia chi IP va vi tri dia ly"},{k:'D',en:"Student grades",vi:"Diem so hoc sinh"}],
+      ans:'C', exp:"Nam 2013, COPPA mo rong bao ve them <strong>dia chi IP, du lieu vi tri dia ly va cac dinh danh truc tuyen</strong> cua tre em duoi 13 tuoi." },
 
     { en:"What does CFAA stand for?",
-      vi:"CFAA là viết tắt của:",
-      opts:[{k:'A',en:"Computer Freedom Act Authority",vi:"Cơ quan Tự do Máy tính"},{k:'B',en:"Computer Fraud and Abuse Act",vi:"Đạo luật Gian lận và Lạm dụng Máy tính"},{k:'C',en:"Cyber Facial Access Agreement",vi:"Thỏa thuận Truy cập Khuôn mặt Mạng"},{k:'D',en:"Content Filtering Audit Act",vi:"Đạo luật Kiểm toán Lọc Nội dung"}],
-      ans:'B', exp:`<strong>CFAA = Computer Fraud and Abuse Act</strong> — luật liên bang Mỹ về tội phạm mạng, cấm truy cập trái phép vào hệ thống máy tính.` },
+      vi:"CFAA la viet tat cua:",
+      opts:[{k:'A',en:"Computer Freedom Act Authority",vi:"Co quan Tu do May tinh"},{k:'B',en:"Computer Fraud and Abuse Act",vi:"Dao luat Gian lan va Lam dung May tinh"},{k:'C',en:"Cyber Facial Access Agreement",vi:"Thoa thuan Truy cap Khuon mat Mang"},{k:'D',en:"Content Filtering Audit Act",vi:"Dao luat Kiem toan Loc Noi dung"}],
+      ans:'B', exp:"<strong>CFAA = Computer Fraud and Abuse Act</strong> - luat lien bang My ve toi pham mang, cam truy cap trai phep vao he thong may tinh." },
 
     { en:"What can violate the CFAA?",
-      vi:"Điều gì có thể vi phạm CFAA?",
-      opts:[{k:'A',en:"Violating a platform's terms of service",vi:"Vi phạm điều khoản dịch vụ của nền tảng"},{k:'B',en:"Posting public content on social media",vi:"Đăng nội dung công khai trên mạng xã hội"},{k:'C',en:"Sharing non-sensitive data",vi:"Chia sẻ dữ liệu không nhạy cảm"},{k:'D',en:"Allowing access to third-party applications",vi:"Cho phép truy cập vào ứng dụng bên thứ ba"}],
-      ans:'A', exp:`Theo một số án lệ, <strong>vi phạm điều khoản dịch vụ (ToS)</strong> của nền tảng có thể cấu thành vi phạm CFAA — đặc biệt khi liên quan đến truy cập vượt quá quyền hạn cho phép.` },
+      vi:"Dieu gi co the vi pham CFAA?",
+      opts:[{k:'A',en:"Violating a platform's terms of service",vi:"Vi pham dieu khoan dich vu cua nen tang"},{k:'B',en:"Posting public content on social media",vi:"Dang noi dung cong khai tren mang xa hoi"},{k:'C',en:"Sharing non-sensitive data",vi:"Chia se du lieu khong nhay cam"},{k:'D',en:"Allowing access to third-party applications",vi:"Cho phep truy cap vao ung dung ben thu ba"}],
+      ans:'A', exp:"Theo mot so an le, <strong>vi pham dieu khoan dich vu (ToS)</strong> cua nen tang co the cau thanh vi pham CFAA - dac biet khi lien quan den truy cap vuot qua quyen han cho phep." },
 
     { en:"What privacy concern arises from government surveillance of social media?",
-      vi:"Lo ngại quyền riêng tư nào phát sinh từ việc chính phủ giám sát mạng xã hội?",
-      opts:[{k:'A',en:"Government overreach and violation of privacy rights",vi:"Chính phủ vượt quyền và vi phạm quyền riêng tư"},{k:'B',en:"Limitation on freedom of speech",vi:"Giới hạn tự do ngôn luận"},{k:'C',en:"Over-monitoring of advertisements",vi:"Giám sát quá mức các quảng cáo"},{k:'D',en:"Restriction of user-generated content",vi:"Hạn chế nội dung người dùng tạo ra"}],
-      ans:'A', exp:`Lo ngại chính: <strong>chính phủ vượt quyền (government overreach)</strong> — giám sát quá rộng vi phạm quyền riêng tư của công dân, đặc biệt khi không có lệnh tòa.` },
+      vi:"Lo ngai quyen rieng tu nao phat sinh tu viec chinh phu giam sat mang xa hoi?",
+      opts:[{k:'A',en:"Government overreach and violation of privacy rights",vi:"Chinh phu vuot quyen va vi pham quyen rieng tu"},{k:'B',en:"Limitation on freedom of speech",vi:"Gioi han tu do ngon luan"},{k:'C',en:"Over-monitoring of advertisements",vi:"Giam sat qua muc cac quang cao"},{k:'D',en:"Restriction of user-generated content",vi:"Han che noi dung nguoi dung tao ra"}],
+      ans:'A', exp:"Lo ngai chinh: <strong>chinh phu vuot quyen (government overreach)</strong> - giam sat qua rong vi pham quyen rieng tu cua cong dan, dac biet khi khong co lenh toa." },
 
     { en:"Which of the following is an example of data collection done by Big Tech companies?",
-      vi:"Điều nào sau đây là ví dụ về việc thu thập dữ liệu của các công ty Big Tech?",
-      opts:[{k:'A',en:"Facial recognition",vi:"Nhận diện khuôn mặt"},{k:'B',en:"Public speech monitoring",vi:"Theo dõi phát ngôn công khai"},{k:'C',en:"Copyright infringement detection",vi:"Phát hiện vi phạm bản quyền"},{k:'D',en:"Anti-terrorism measures",vi:"Biện pháp chống khủng bố"}],
-      ans:'A', exp:`<strong>Nhận diện khuôn mặt</strong> là ví dụ điển hình nhất và gây tranh cãi nhất về việc Big Tech thu thập dữ liệu sinh trắc học mà thiếu sự đồng ý rõ ràng.` },
+      vi:"Dieu nao sau day la vi du ve viec thu thap du lieu cua cac cong ty Big Tech?",
+      opts:[{k:'A',en:"Facial recognition",vi:"Nhan dien khuon mat"},{k:'B',en:"Public speech monitoring",vi:"Theo doi phat ngon cong khai"},{k:'C',en:"Copyright infringement detection",vi:"Phat hien vi pham ban quyen"},{k:'D',en:"Anti-terrorism measures",vi:"Bien phap chong khung bo"}],
+      ans:'A', exp:"<strong>Nhan dien khuon mat</strong> la vi du dien hinh nhat va gay tranh cai nhat ve viec Big Tech thu thap du lieu sinh trac hoc ma thieu su dong y ro rang." },
 
     { en:"Most users are unaware of:",
-      vi:"Hầu hết người dùng không biết về:",
-      opts:[{k:'A',en:"Their device model",vi:"Mẫu thiết bị của họ"},{k:'B',en:"How much data is collected about them",vi:"Bao nhiêu dữ liệu được thu thập về họ"},{k:'C',en:"Who created their apps",vi:"Ai đã tạo ra ứng dụng của họ"},{k:'D',en:"Cookie expiration",vi:"Thời hạn hết hạn của cookie"}],
-      ans:'B', exp:`Khi bấm "Tôi đồng ý" vội vã, hầu hết người dùng không biết được các nền tảng đang âm thầm thu thập <strong>khối lượng dữ liệu khổng lồ</strong> đến mức nào.` },
+      vi:"Hau het nguoi dung khong biet ve:",
+      opts:[{k:'A',en:"Their device model",vi:"Mau thiet bi cua ho"},{k:'B',en:"How much data is collected about them",vi:"Bao nhieu du lieu duoc thu thap ve ho"},{k:'C',en:"Who created their apps",vi:"Ai da tao ra ung dung cua ho"},{k:'D',en:"Cookie expiration",vi:"Thoi han het han cua cookie"}],
+      ans:'B', exp:"Khi bam 'Toi dong y' voi vang, hau het nguoi dung khong biet duoc cac nen tang dang am tham thu thap <strong>khoi luong du lieu khong lo</strong> den muc nao." },
 
     { en:"Why are cross-border data transfers a challenge for privacy regulation?",
-      vi:"Tại sao việc chuyển dữ liệu xuyên biên giới là thách thức cho quy định quyền riêng tư?",
-      opts:[{k:'A',en:"They complicate the enforcement of consistent privacy protections",vi:"Chúng gây khó khăn trong việc thực thi bảo vệ quyền riêng tư nhất quán"},{k:'B',en:"They reduce the amount of data companies can collect",vi:"Chúng giảm lượng dữ liệu công ty có thể thu thập"},{k:'C',en:"They restrict international communication",vi:"Chúng hạn chế giao tiếp quốc tế"},{k:'D',en:"They simplify user consent requirements",vi:"Chúng đơn giản hóa yêu cầu đồng ý của người dùng"}],
-      ans:'A', exp:`Sự chênh lệch luật pháp giữa các nước khiến việc áp dụng một tiêu chuẩn bảo vệ nhất quán trở thành bài toán đau đầu — lý do GDPR có quy định nghiêm ngặt về <strong>chuyển dữ liệu ra ngoài EU</strong>.` },
+      vi:"Tai sao viec chuyen du lieu xuyen bien gioi la thach thuc cho quy dinh quyen rieng tu?",
+      opts:[{k:'A',en:"They complicate the enforcement of consistent privacy protections",vi:"Chung gay kho khan trong viec thuc thi bao ve quyen rieng tu nhat quan"},{k:'B',en:"They reduce the amount of data companies can collect",vi:"Chung giam luong du lieu cong ty co the thu thap"},{k:'C',en:"They restrict international communication",vi:"Chung han che giao tiep quoc te"},{k:'D',en:"They simplify user consent requirements",vi:"Chung don gian hoa yeu cau dong y cua nguoi dung"}],
+      ans:'A', exp:"Su chenh lech luat phap giua cac nuoc khien viec ap dung mot tieu chuan bao ve nhat quan tro thanh bai toan dau dau - ly do GDPR co quy dinh nghiem ngat ve <strong>chuyen du lieu ra ngoai EU</strong>." },
 
     { en:"How does the 'Right to be Forgotten' impact search engines?",
-      vi:"'Quyền được lãng quên' ảnh hưởng đến các công cụ tìm kiếm như thế nào?",
-      opts:[{k:'A',en:"They must delete all history every year",vi:"Họ phải xóa toàn bộ lịch sử hàng năm"},{k:'B',en:"They may be required to remove links to personal information that is inadequate, irrelevant, or excessive",vi:"Họ có thể bị yêu cầu xóa các liên kết dẫn đến thông tin cá nhân không đầy đủ, không liên quan hoặc quá mức"},{k:'C',en:"They must charge users for data storage",vi:"Họ phải tính phí người dùng cho việc lưu trữ dữ liệu"},{k:'D',en:"They can no longer collect cookies",vi:"Họ không còn được phép thu thập cookie"}],
-      ans:'B', exp:`Theo GDPR, cá nhân có quyền yêu cầu <strong>Google gỡ bỏ các đường link</strong> dẫn đến thông tin cá nhân quá khứ không còn đúng sự thật hoặc không còn giá trị công cộng.` },
+      vi:"'Quyen duoc lang quen' anh huong den cac cong cu tim kiem nhu the nao?",
+      opts:[{k:'A',en:"They must delete all history every year",vi:"Ho phai xoa toan bo lich su hang nam"},{k:'B',en:"They may be required to remove links to personal information that is inadequate, irrelevant, or excessive",vi:"Ho co the bi yeu cau xoa cac lien ket dan den thong tin ca nhan khong day du, khong lien quan hoac qua muc"},{k:'C',en:"They must charge users for data storage",vi:"Ho phai tinh phi nguoi dung cho viec luu tru du lieu"},{k:'D',en:"They can no longer collect cookies",vi:"Ho khong con duoc phep thu thap cookie"}],
+      ans:'B', exp:"Theo GDPR, ca nhan co quyen yeu cau <strong>Google go bo cac duong link</strong> dan den thong tin ca nhan qua khu khong con dung su that hoac khong con gia tri cong cong." },
 
     { en:"How does privacy law define personal data?",
-      vi:"Luật quyền riêng tư định nghĩa dữ liệu cá nhân như thế nào?",
-      opts:[{k:'A',en:"Only public information",vi:"Chỉ thông tin công khai"},{k:'B',en:"Any information relating to an identified or identifiable natural person",vi:"Bất kỳ thông tin nào liên quan đến một thể nhân đã được xác định hoặc có thể nhận dạng được"},{k:'C',en:"Only financial records",vi:"Chỉ hồ sơ tài chính"},{k:'D',en:"Only government IDs",vi:"Chỉ giấy tờ tùy thân do chính phủ cấp"}],
-      ans:'B', exp:`"Dữ liệu cá nhân" rộng hơn bạn tưởng — không chỉ CCCD hay thẻ ngân hàng, mà là <strong>BẤT KỲ thông tin gì có thể dùng để xác định danh tính bạn</strong>, kể cả địa chỉ IP, cookie, dữ liệu định vị.` },
+      vi:"Luat quyen rieng tu dinh nghia du lieu ca nhan nhu the nao?",
+      opts:[{k:'A',en:"Only public information",vi:"Chi thong tin cong khai"},{k:'B',en:"Any information relating to an identified or identifiable natural person",vi:"Bat ky thong tin nao lien quan den mot the nhan da duoc xac dinh hoac co the nhan dang duoc"},{k:'C',en:"Only financial records",vi:"Chi ho so tai chinh"},{k:'D',en:"Only government IDs",vi:"Chi giay to tuy than do chinh phu cap"}],
+      ans:'B', exp:"'Du lieu ca nhan' rong hon ban tuong - khong chi CCCD hay the ngan hang, ma la <strong>BAT KY thong tin gi co the dung de xac dinh danh tinh ban</strong>, ke ca dia chi IP, cookie, du lieu dinh vi." },
 
     { en:"What is the legal risk of scraping data from social media platforms?",
-      vi:"Rủi ro pháp lý của việc cào dữ liệu từ các nền tảng mạng xã hội là gì?",
-      opts:[{k:'A',en:"It violates the platforms' Terms of Service and could lead to CFAA claims",vi:"Nó vi phạm Điều khoản dịch vụ của nền tảng và có thể dẫn đến khiếu nại theo CFAA"},{k:'B',en:"It is always legal if the data is public",vi:"Nó luôn hợp pháp nếu dữ liệu là công khai"},{k:'C',en:"It increases the platform's traffic",vi:"Nó làm tăng lưu lượng truy cập của nền tảng"},{k:'D',en:"It improves the platform's algorithms",vi:"Nó cải thiện thuật toán của nền tảng"}],
-      ans:'A', exp:`Dù dữ liệu có vẻ công khai, việc dùng robot tự động <strong>scraping</strong> bị cấm trong ToS. Tại Mỹ, nền tảng có thể dùng <strong>CFAA</strong> để kiện tội truy cập trái phép hoặc vượt quá quyền hạn.` },
+      vi:"Rui ro phap ly cua viec cao du lieu tu cac nen tang mang xa hoi la gi?",
+      opts:[{k:'A',en:"It violates the platforms' Terms of Service and could lead to CFAA claims",vi:"No vi pham Dieu khoan dich vu cua nen tang va co the dan den khieu nai theo CFAA"},{k:'B',en:"It is always legal if the data is public",vi:"No luon hop phap neu du lieu la cong khai"},{k:'C',en:"It increases the platform's traffic",vi:"No lam tang luu luong truy cap cua nen tang"},{k:'D',en:"It improves the platform's algorithms",vi:"No cai thien thuat toan cua nen tang"}],
+      ans:'A', exp:"Du du lieu co ve cong khai, viec dung robot tu dong <strong>scraping</strong> bi cam trong ToS. Tai My, nen tang co the dung <strong>CFAA</strong> de kien toi truy cap trai phep hoac vuot qua quyen han." },
 
     { en:"Why are strict data retention policies important under GDPR?",
-      vi:"Tại sao các chính sách lưu giữ dữ liệu nghiêm ngặt lại quan trọng theo GDPR?",
-      opts:[{k:'A',en:"To increase server costs",vi:"Để tăng chi phí máy chủ"},{k:'B',en:"To ensure data is not kept longer than necessary for the stated purpose",vi:"Để đảm bảo dữ liệu không bị giữ lâu hơn mức cần thiết cho mục đích đã nêu"},{k:'C',en:"To allow unlimited data storage",vi:"Để cho phép lưu trữ dữ liệu không giới hạn"},{k:'D',en:"To facilitate easy data selling",vi:"Để tạo điều kiện cho việc bán dữ liệu dễ dàng"}],
-      ans:'B', exp:`Nguyên tắc <strong>"giới hạn lưu trữ"</strong> của GDPR: xóa dữ liệu cá nhân ngay khi mục đích thu thập ban đầu đã hoàn thành — giảm thiểu rủi ro rò rỉ.` },
+      vi:"Tai sao cac chinh sach luu giu du lieu nghiem ngat lai quan trong theo GDPR?",
+      opts:[{k:'A',en:"To increase server costs",vi:"De tang chi phi may chu"},{k:'B',en:"To ensure data is not kept longer than necessary for the stated purpose",vi:"De dam bao du lieu khong bi giu lau hon muc can thiet cho muc dich da neu"},{k:'C',en:"To allow unlimited data storage",vi:"De cho phep luu tru du lieu khong gioi han"},{k:'D',en:"To facilitate easy data selling",vi:"De tao dieu kien cho viec ban du lieu de dang"}],
+      ans:'B', exp:"Nguyen tac <strong>'gioi han luu tru'</strong> cua GDPR: xoa du lieu ca nhan ngay khi muc dich thu thap ban dau da hoan thanh - giam thieu rui ro ro ri." },
   ],
 
-  // ── LẬP LUẬN PHÁP LÝ & ĐẠO ĐỨC ────────────────────────────
   la: [
     { en:"What is the relationship between law and ethics when constructing a legal argument?",
-      vi:"Mối quan hệ giữa luật pháp và đạo đức khi xây dựng một lập luận pháp lý là gì?",
-      opts:[{k:'A',en:"Law provides the framework, while ethics guide the approach and fairness of the argument",vi:"Luật pháp cung cấp khuôn khổ, trong khi đạo đức định hướng cách tiếp cận và tính công bằng"},{k:'B',en:"Law supersedes ethics in all cases",vi:"Luật pháp vượt lên trên đạo đức trong mọi trường hợp"},{k:'C',en:"Ethics should be disregarded if the legal argument is strong",vi:"Nên bỏ qua đạo đức nếu lập luận pháp lý mạnh mẽ"},{k:'D',en:"Law and ethics are unrelated in legal arguments",vi:"Luật pháp và đạo đức không liên quan đến nhau"}],
-      ans:'A', exp:`Luật pháp là nền tảng cốt lõi. Đạo đức là <strong>"la bàn"</strong> giúp luật sư diễn giải và áp dụng pháp luật một cách nhân văn, công bằng thay vì máy móc và tàn nhẫn.` },
+      vi:"Moi quan he giua luat phap va dao duc khi xay dung mot lap luan phap ly la gi?",
+      opts:[{k:'A',en:"Law provides the framework, while ethics guide the approach and fairness of the argument",vi:"Luat phap cung cap khung, trong khi dao duc dinh huong cach tiep can va tinh cong bang"},{k:'B',en:"Law supersedes ethics in all cases",vi:"Luat phap vuot len tren dao duc trong moi truong hop"},{k:'C',en:"Ethics should be disregarded if the legal argument is strong",vi:"Nen bo qua dao duc neu lap luan phap ly manh me"},{k:'D',en:"Law and ethics are unrelated in legal arguments",vi:"Luat phap va dao duc khong lien quan den nhau"}],
+      ans:'A', exp:"Luat phap la nen tang cot loi. Dao duc la <strong>'la ban'</strong> giup luat su dien giai va ap dung phap luat mot cach nhan van, cong bang thay vi may moc va tan nhan." },
 
     { en:"What is the primary purpose of constructing a legal argument in a business dispute?",
-      vi:"Mục đích chính của việc xây dựng một lập luận pháp lý trong tranh chấp kinh doanh là gì?",
-      opts:[{k:'A',en:"To confuse the opposing party",vi:"Để làm đối phương bối rối"},{k:'B',en:"To justify unethical behavior",vi:"Để biện minh cho hành vi phi đạo đức"},{k:'C',en:"To present a logical and well-supported position to convince others",vi:"Để trình bày một quan điểm logic và được hỗ trợ tốt nhằm thuyết phục người khác"},{k:'D',en:"To avoid legal responsibility",vi:"Để trốn tránh trách nhiệm pháp lý"}],
-      ans:'C', exp:`Mục tiêu là <strong>xâu chuỗi dữ kiện thực tế và điều luật thành đường dây logic sắc bén</strong>, từ đó thuyết phục thẩm phán hoặc đối tác đồng ý với quan điểm của mình.` },
+      vi:"Muc dich chinh cua viec xay dung mot lap luan phap ly trong tranh chap kinh doanh la gi?",
+      opts:[{k:'A',en:"To confuse the opposing party",vi:"De lam doi phuong boi roi"},{k:'B',en:"To justify unethical behavior",vi:"De bien minh cho hanh vi phi dao duc"},{k:'C',en:"To present a logical and well-supported position to convince others",vi:"De trinh bay mot quan diem logic va duoc ho tro tot nham thuyet phuc nguoi khac"},{k:'D',en:"To avoid legal responsibility",vi:"De tron tranh trach nhiem phap ly"}],
+      ans:'C', exp:"Muc tieu la <strong>xau chuoi du kien thuc te va dieu luat thanh duong day logic sac ben</strong>, tu do thuyet phuc tham phan hoac doi tac dong y voi quan diem cua minh." },
 
     { en:"What is the importance of clarity when constructing a legal argument?",
-      vi:"Tầm quan trọng của tính rõ ràng khi xây dựng một lập luận pháp lý là gì?",
-      opts:[{k:'A',en:"Clarity ensures that the argument is easily understood and persuasive, reducing ambiguity",vi:"Tính rõ ràng đảm bảo lập luận dễ hiểu và mang tính thuyết phục, giảm thiểu sự mơ hồ"},{k:'B',en:"It allows for more complex legal terms that might confuse the opponent",vi:"Nó cho phép sử dụng thuật ngữ pháp lý phức tạp hơn có thể làm đối thủ bối rối"},{k:'C',en:"It makes the argument appear less strong",vi:"Nó làm cho lập luận có vẻ kém mạnh mẽ hơn"},{k:'D',en:"It helps the opposing party find loopholes",vi:"Nó giúp đối phương tìm ra sơ hở"}],
-      ans:'A', exp:`Trong nghề luật, <strong>nói mơ hồ không làm bạn nguy hiểm</strong> — chỉ làm lập luận yếu đi. Một lập luận rõ ràng giúp thẩm phán nắm bắt logic dễ dàng hơn.` },
+      vi:"Tam quan trong cua tinh ro rang khi xay dung mot lap luan phap ly la gi?",
+      opts:[{k:'A',en:"Clarity ensures that the argument is easily understood and persuasive, reducing ambiguity",vi:"Tinh ro rang dam bao lap luan de hieu va mang tinh thuyet phuc, giam thieu su mo ho"},{k:'B',en:"It allows for more complex legal terms that might confuse the opponent",vi:"No cho phep su dung thuat ngu phap ly phuc tap hon co the lam doi thu boi roi"},{k:'C',en:"It makes the argument appear less strong",vi:"No lam cho lap luan co ve kem manh me hon"},{k:'D',en:"It helps the opposing party find loopholes",vi:"No giup doi phuong tim ra so ho"}],
+      ans:'A', exp:"Trong nghe luat, <strong>noi mo ho khong lam ban nguy hiem</strong> - chi lam lap luan yeu di. Mot lap luan ro rang giup tham phan nam bat logic de dang hon." },
 
     { en:"What is the impact of presenting an ethically questionable argument in a legal case?",
-      vi:"Tác động của việc đưa ra một lập luận có vấn đề về mặt đạo đức trong vụ án pháp lý là gì?",
-      opts:[{k:'A',en:"It can increase the chances of winning",vi:"Nó có thể làm tăng cơ hội chiến thắng"},{k:'B',en:"It can damage your reputation, cause legal consequences, and undermine the integrity of the case",vi:"Nó có thể làm tổn hại danh tiếng, gây ra hậu quả pháp lý, và làm suy yếu tính liêm chính của vụ án"},{k:'C',en:"It will lead to a faster resolution",vi:"Nó sẽ dẫn đến giải quyết nhanh hơn"},{k:'D',en:"It makes the argument appear more persuasive",vi:"Nó làm cho lập luận có vẻ thuyết phục hơn"}],
-      ans:'B', exp:`Sử dụng bằng chứng ngụy tạo hoặc lập luận vi phạm đạo đức không chỉ <strong>làm suy yếu niềm tin của thẩm phán</strong>, mà còn có thể khiến luật sư bị tước giấy phép hành nghề.` },
+      vi:"Tac dong cua viec dua ra mot lap luan co van de ve mat dao duc trong vu an phap ly la gi?",
+      opts:[{k:'A',en:"It can increase the chances of winning",vi:"No co the lam tang co hoi chien thang"},{k:'B',en:"It can damage your reputation, cause legal consequences, and undermine the integrity of the case",vi:"No co the lam ton hai danh tieng, gay ra hau qua phap ly, va lam suy yeu tinh liem chinh cua vu an"},{k:'C',en:"It will lead to a faster resolution",vi:"No se dan den giai quyet nhanh hon"},{k:'D',en:"It makes the argument appear more persuasive",vi:"No lam cho lap luan co ve thuyet phuc hon"}],
+      ans:'B', exp:"Su dung bang chung nguy tao hoac lap luan vi pham dao duc khong chi <strong>lam suy yeu niem tin cua tham phan</strong>, ma con co the khien luat su bi tuoc giay phep hanh nghe." },
 
     { en:"What is a challenge of enforcing moral rights online across jurisdictions?",
-      vi:"Thách thức của việc thực thi quyền nhân thân trực tuyến xuyên quốc gia là gì?",
-      opts:[{k:'A',en:"Lack of fair use law",vi:"Thiếu luật sử dụng hợp lý"},{k:'B',en:"Different recognition and scope of moral rights in different countries",vi:"Sự công nhận và phạm vi khác nhau của quyền nhân thân ở các quốc gia"},{k:'C',en:"Overlap with patent law",vi:"Chồng chéo với luật sáng chế"},{k:'D',en:"Ban on Creative Commons",vi:"Lệnh cấm đối với Creative Commons"}],
-      ans:'B', exp:`Châu Âu bảo vệ quyền nhân thân rất mạnh nhưng Mỹ thì yếu hơn. Sự <strong>xung đột pháp lý giữa các nước</strong> khiến việc giải quyết tranh chấp trên môi trường Internet cực kỳ khó khăn.` },
+      vi:"Thach thuc cua viec thuc thi quyen nhan than truc tuyen xuyen quoc gia la gi?",
+      opts:[{k:'A',en:"Lack of fair use law",vi:"Thieu luat su dung hop ly"},{k:'B',en:"Different recognition and scope of moral rights in different countries",vi:"Su cong nhan va pham vi khac nhau cua quyen nhan than o cac quoc gia"},{k:'C',en:"Overlap with patent law",vi:"Chong cheo voi luat sang che"},{k:'D',en:"Ban on Creative Commons",vi:"Lenh cam doi voi Creative Commons"}],
+      ans:'B', exp:"Chau Au bao ve quyen nhan than rat manh nhung My thi yeu hon. Su <strong>xung dot phap ly giua cac nuoc</strong> khien viec giai quyet tranh chap tren moi truong Internet cuc ky kho khan." },
 
     { en:"What is the primary legal challenge when government agencies request data from social media platforms?",
-      vi:"Thách thức pháp lý chính khi cơ quan chính phủ yêu cầu dữ liệu từ nền tảng mạng xã hội là gì?",
-      opts:[{k:'A',en:"Ensuring that the data request complies with privacy laws while balancing the need for security",vi:"Đảm bảo yêu cầu dữ liệu tuân thủ luật quyền riêng tư đồng thời cân bằng với nhu cầu an ninh"},{k:'B',en:"Protecting intellectual property rights of the social media platforms",vi:"Bảo vệ quyền sở hữu trí tuệ của nền tảng mạng xã hội"},{k:'C',en:"Making sure the social media platforms are compensated for data access",vi:"Đảm bảo nền tảng được bồi thường cho việc truy cập dữ liệu"},{k:'D',en:"Ensuring that data is shared only with law enforcement and not third parties",vi:"Đảm bảo dữ liệu chỉ được chia sẻ với lực lượng thực thi pháp luật"}],
-      ans:'A', exp:`Bài toán hóc búa: vừa lấy thông tin phục vụ điều tra (<strong>an ninh</strong>), mà lại không xâm phạm quá sâu vào quyền riêng tư (<strong>privacy laws</strong>) của những người dùng vô tội.` },
+      vi:"Thach thuc phap ly chinh khi co quan chinh phu yeu cau du lieu tu nen tang mang xa hoi la gi?",
+      opts:[{k:'A',en:"Ensuring that the data request complies with privacy laws while balancing the need for security",vi:"Dam bao yeu cau du lieu tuan thu luat quyen rieng tu dong thoi can bang voi nhu cau an ninh"},{k:'B',en:"Protecting intellectual property rights of the social media platforms",vi:"Bao ve quyen so huu tri tue cua nen tang mang xa hoi"},{k:'C',en:"Making sure the social media platforms are compensated for data access",vi:"Dam bao nen tang duoc boi thuong cho viec truy cap du lieu"},{k:'D',en:"Ensuring that data is shared only with law enforcement and not third parties",vi:"Dam bao du lieu chi duoc chia se voi luc luong thuc thi phap luat"}],
+      ans:'A', exp:"Bai toan hoc bua: vua lay thong tin phuc vu dieu tra (<strong>an ninh</strong>), ma lai khong xam pham qua sau vao quyen rieng tu (<strong>privacy laws</strong>) cua nhung nguoi dung vo toi." },
 
     { en:"What does 'reputation' mean in a passing-off case?",
-      vi:"Trong vụ kiện passing-off, 'reputation' có ý nghĩa gì?",
-      opts:[{k:'A',en:"The business is well-known globally",vi:"Doanh nghiệp nổi tiếng toàn cầu"},{k:'B',en:"The business has specific goodwill among consumers in a certain territory",vi:"Doanh nghiệp có goodwill nhất định đối với người tiêu dùng trong một khu vực"},{k:'C',en:"The owner is a celebrity",vi:"Chủ sở hữu là người nổi tiếng"},{k:'D',en:"The business has many social media followers",vi:"Doanh nghiệp có nhiều người theo dõi trên mạng xã hội"}],
-      ans:'B', exp:`Không cần nổi tiếng toàn cầu. Chỉ cần ở <strong>khu vực kinh doanh cụ thể</strong>, khách hàng nhận ra và tin tưởng thương hiệu của bạn là đủ điều kiện kiện passing-off.` },
+      vi:"Trong vu kien passing-off, 'reputation' co y nghia gi?",
+      opts:[{k:'A',en:"The business is well-known globally",vi:"Doanh nghiep noi tieng toan cau"},{k:'B',en:"The business has specific goodwill among consumers in a certain territory",vi:"Doanh nghiep co goodwill nhat dinh doi voi nguoi tieu dung trong mot khu vuc"},{k:'C',en:"The owner is a celebrity",vi:"Chu so huu la nguoi noi tieng"},{k:'D',en:"The business has many social media followers",vi:"Doanh nghiep co nhieu nguoi theo doi tren mang xa hoi"}],
+      ans:'B', exp:"Khong can noi tieng toan cau. Chi can o <strong>khu vuc kinh doanh cu the</strong>, khach hang nhan ra va tin tuong thuong hieu cua ban la du dieu kien kien passing-off." },
 
     { en:"Which ethical issue arises when journalists use anonymous sources from social media?",
-      vi:"Vấn đề đạo đức nào nảy sinh khi nhà báo sử dụng nguồn tin ẩn danh từ mạng xã hội?",
-      opts:[{k:'A',en:"The lack of accountability and the risk of spreading unverified or false information",vi:"Sự thiếu trách nhiệm giải trình và nguy cơ lan truyền thông tin chưa được xác minh hoặc sai sự thật"},{k:'B',en:"It increases the article's word count",vi:"Nó làm tăng số lượng từ của bài báo"},{k:'C',en:"It violates the platform's terms of service",vi:"Nó vi phạm điều khoản dịch vụ của nền tảng"},{k:'D',en:"It generates more ad revenue",vi:"Nó tạo ra nhiều doanh thu quảng cáo hơn"}],
-      ans:'A', exp:`Trích dẫn tài khoản ẩn danh là canh bạc lớn: <strong>không thể quy trách nhiệm cho ai nếu thông tin là bịa đặt</strong>, dễ biến tờ báo thành công cụ lan truyền tin giả.` },
+      vi:"Van de dao duc nao nay sinh khi nha bao su dung nguon tin an danh tu mang xa hoi?",
+      opts:[{k:'A',en:"The lack of accountability and the risk of spreading unverified or false information",vi:"Su thieu trach nhiem giai trinh va nguy co lan truyen thong tin chua duoc xac minh hoac sai su that"},{k:'B',en:"It increases the article's word count",vi:"No lam tang so luong tu cua bai bao"},{k:'C',en:"It violates the platform's terms of service",vi:"No vi pham dieu khoan dich vu cua nen tang"},{k:'D',en:"It generates more ad revenue",vi:"No tao ra nhieu doanh thu quang cao hon"}],
+      ans:'A', exp:"Trich dan tai khoan an danh la canh bac lon: <strong>khong the quy trach nhiem cho ai neu thong tin la bia dat</strong>, de bien to bao thanh cong cu lan truyen tin gia." },
 
     { en:"What is the risk of not having a social media policy in a company?",
-      vi:"Rủi ro của việc không có chính sách mạng xã hội trong công ty là gì?",
-      opts:[{k:'A',en:"Fewer followers",vi:"Ít người theo dõi hơn"},{k:'B',en:"Loss of control over messaging, potential legal liability, and brand damage",vi:"Mất kiểm soát về thông điệp, nguy cơ chịu trách nhiệm pháp lý và tổn hại thương hiệu"},{k:'C',en:"Lower ad revenue",vi:"Doanh thu quảng cáo thấp hơn"},{k:'D',en:"More customer complaints",vi:"Nhiều khiếu nại của khách hàng hơn"}],
-      ans:'B', exp:`Không có chính sách rõ ràng, nhân viên có thể vô tình phát ngôn sai lệch, làm rò rỉ bí mật công ty, hoặc gây <strong>rắc rối pháp lý nghiêm trọng và sụp đổ hình ảnh thương hiệu</strong>.` },
+      vi:"Rui ro cua viec khong co chinh sach mang xa hoi trong cong ty la gi?",
+      opts:[{k:'A',en:"Fewer followers",vi:"It nguoi theo doi hon"},{k:'B',en:"Loss of control over messaging, potential legal liability, and brand damage",vi:"Mat kiem soat ve thong diep, nguy co chiu trach nhiem phap ly va ton hai thuong hieu"},{k:'C',en:"Lower ad revenue",vi:"Doanh thu quang cao thap hon"},{k:'D',en:"More customer complaints",vi:"Nhieu khieu nai cua khach hang hon"}],
+      ans:'B', exp:"Khong co chinh sach ro rang, nhan vien co the vo tinh phat ngon sai lech, lam ro ri bi mat cong ty, hoac gay <strong>rac roi phap ly nghiem trong va sup do hinh anh thuong hieu</strong>." },
 
     { en:"What is the main objective of a social media policy in a corporate environment?",
-      vi:"Mục tiêu chính của chính sách mạng xã hội trong doanh nghiệp là gì?",
-      opts:[{k:'A',en:"To restrict personal internet use",vi:"Để hạn chế việc sử dụng internet cá nhân"},{k:'B',en:"To provide guidelines on acceptable behavior, protect brand reputation, and manage legal risks",vi:"Để cung cấp hướng dẫn về hành vi có thể chấp nhận, bảo vệ danh tiếng thương hiệu và quản lý rủi ro pháp lý"},{k:'C',en:"To promote the company's products",vi:"Để quảng bá sản phẩm của công ty"},{k:'D',en:"To monitor employee emails",vi:"Để giám sát email của nhân viên"}],
-      ans:'B', exp:`Chính sách MXH tốt <strong>vẽ ra "vùng an toàn"</strong>, chỉ dẫn nhân viên cách hành xử chuyên nghiệp, vừa bảo vệ hình ảnh thương hiệu vừa triệt tiêu các rủi ro pháp lý.` },
+      vi:"Muc tieu chinh cua chinh sach mang xa hoi trong doanh nghiep la gi?",
+      opts:[{k:'A',en:"To restrict personal internet use",vi:"De han che viec su dung internet ca nhan"},{k:'B',en:"To provide guidelines on acceptable behavior, protect brand reputation, and manage legal risks",vi:"De cung cap huong dan ve hanh vi co the chap nhan, bao ve danh tieng thuong hieu va quan ly rui ro phap ly"},{k:'C',en:"To promote the company's products",vi:"De quang ba san pham cua cong ty"},{k:'D',en:"To monitor employee emails",vi:"De giam sat email cua nhan vien"}],
+      ans:'B', exp:"Chinh sach MXH tot <strong>ve ra 'vung an toan'</strong>, chi dan nhan vien cach hanh xu chuyen nghiep, vua bao ve hinh anh thuong hieu vua triet tieu cac rui ro phap ly." },
 
     { en:"What is the consequence of failing to establish an employer-employee relationship regarding a created work?",
-      vi:"Hậu quả của việc không thiết lập được mối quan hệ người sử dụng lao động - nhân viên đối với tác phẩm được tạo ra là gì?",
-      opts:[{k:'A',en:"The employer automatically owns it",vi:"Người sử dụng lao động tự động sở hữu nó"},{k:'B',en:"The employee may retain the copyright as an independent contractor",vi:"Người lao động có thể giữ lại bản quyền với tư cách là nhà thầu độc lập"},{k:'C',en:"The work becomes public domain",vi:"Tác phẩm trở thành tài sản công cộng"},{k:'D',en:"The government claims it",vi:"Chính phủ đòi lại nó"}],
-      ans:'B', exp:`Nếu công ty thuê bạn thiết kế mà không ký hợp đồng rõ ràng (biến bạn thành "freelancer"), luật đứng về phía bạn: <strong>BẠN là tác giả và BẠN giữ bản quyền</strong>.` },
+      vi:"Hau qua cua viec khong thiet lap duoc moi quan he nguoi su dung lao dong - nhan vien doi voi tac pham duoc tao ra la gi?",
+      opts:[{k:'A',en:"The employer automatically owns it",vi:"Nguoi su dung lao dong tu dong so huu no"},{k:'B',en:"The employee may retain the copyright as an independent contractor",vi:"Nguoi lao dong co the giu lai ban quyen voi tu cach la nha thau doc lap"},{k:'C',en:"The work becomes public domain",vi:"Tac pham tro thanh tai san cong cong"},{k:'D',en:"The government claims it",vi:"Chinh phu doi lai no"}],
+      ans:'B', exp:"Neu cong ty thue ban thiet ke ma khong ky hop dong ro rang (bien ban thanh 'freelancer'), luat dung ve phia ban: <strong>BAN la tac gia va BAN giu ban quyen</strong>." },
 
     { en:"How can businesses demonstrate transparent communication on social media?",
-      vi:"Làm thế nào doanh nghiệp có thể thể hiện sự giao tiếp minh bạch trên mạng xã hội?",
-      opts:[{k:'A',en:"By ignoring negative comments",vi:"Bằng cách phớt lờ các bình luận tiêu cực"},{k:'B',en:"By sharing only positive reviews",vi:"Bằng cách chỉ chia sẻ những đánh giá tích cực"},{k:'C',en:"By being open about their practices and addressing issues publicly",vi:"Bằng cách cởi mở về hoạt động và giải quyết công khai các vấn đề"},{k:'D',en:"By using automated responses for all inquiries",vi:"Bằng cách sử dụng câu trả lời tự động cho mọi thắc mắc"}],
-      ans:'C', exp:`Sự minh bạch không phải là che giấu cái xấu, mà là <strong>thái độ cởi mở, trung thực, đối mặt và xử lý công khai</strong> khi gặp sự cố hay khiếu nại.` },
+      vi:"Lam the nao doanh nghiep co the the hien su giao tiep minh bach tren mang xa hoi?",
+      opts:[{k:'A',en:"By ignoring negative comments",vi:"Bang cach phot lo cac binh luan tieu cuc"},{k:'B',en:"By sharing only positive reviews",vi:"Bang cach chi chia se nhung danh gia tich cuc"},{k:'C',en:"By being open about their practices and addressing issues publicly",vi:"Bang cach co mo ve hoat dong va giai quyet cong khai cac van de"},{k:'D',en:"By using automated responses for all inquiries",vi:"Bang cach su dung cau tra loi tu dong cho moi thac mac"}],
+      ans:'C', exp:"Su minh bach khong phai la che giau cai xau, ma la <strong>thai do co mo, trung thuc, doi mat va xu ly cong khai</strong> khi gap su co hay khieu nai." },
 
     { en:"Why is it ethically important to disclose AI-generated content in journalism?",
-      vi:"Tại sao việc công khai nội dung do AI tạo ra lại quan trọng về mặt đạo đức trong báo chí?",
-      opts:[{k:'A',en:"To show off technology",vi:"Để phô diễn công nghệ"},{k:'B',en:"To maintain transparency and prevent misleading the audience about the source of information",vi:"Để duy trì tính minh bạch và ngăn chặn việc lừa dối khán giả về nguồn thông tin"},{k:'C',en:"To reduce the need for editors",vi:"Để giảm nhu cầu về biên tập viên"},{k:'D',en:"To comply with software licenses",vi:"Để tuân thủ các giấy phép phần mềm"}],
-      ans:'B', exp:`Khán giả có quyền được biết thông tin là do con người viết hay do máy tổng hợp. <strong>Minh bạch về nguồn gốc AI</strong> bảo vệ uy tín tờ báo và ngăn chặn tin giả.` },
+      vi:"Tai sao viec cong khai noi dung do AI tao ra lai quan trong ve mat dao duc trong bao chi?",
+      opts:[{k:'A',en:"To show off technology",vi:"De pho dien cong nghe"},{k:'B',en:"To maintain transparency and prevent misleading the audience about the source of information",vi:"De duy tri tinh minh bach va ngan chan viec lua doi khan gia ve nguon thong tin"},{k:'C',en:"To reduce the need for editors",vi:"De giam nhu cau ve bien tap vien"},{k:'D',en:"To comply with software licenses",vi:"De tuan thu cac giay phep phan mem"}],
+      ans:'B', exp:"Khan gia co quyen duoc biet thong tin la do con nguoi viet hay do may tong hop. <strong>Minh bach ve nguon goc AI</strong> bao ve uy tin to bao va ngan chan tin gia." },
   ],
 };
 
 // ============================================================
-// TRẠNG THÁI
+// TRANG THAI
 // ============================================================
 const state = {};
 Object.keys(QDB).forEach(t => {
@@ -612,10 +606,11 @@ Object.keys(QDB).forEach(t => {
 });
 
 // ============================================================
-// TỔNG QUAN
+// TONG QUAN
 // ============================================================
 function buildOverview() {
   const grid = document.getElementById('overview-grid');
+  if (!grid) return;
   grid.innerHTML = '';
   Object.entries(TOPICS).forEach(([id, info]) => {
     const qs   = QDB[id];
@@ -625,153 +620,259 @@ function buildOverview() {
     const scoreText = done > 0 ? Math.round(s.correct / done * 100) + '%' : '--';
     const card = document.createElement('div');
     card.className = 'ov-card';
-    card.onclick   = () => switchTab(id);
-    card.innerHTML = `
-      <div class="ov-icon">${info.icon}</div>
-      <div class="ov-name" style="color:${info.color}">${info.name}</div>
-      <div class="ov-vi">${info.vi}</div>
-      <div class="ov-bar"><div class="ov-fill" style="width:${pct}%;background:${info.color}"></div></div>
-      <div class="ov-stats">
-        <span>${qs.length} câu hỏi</span>
-        <span class="${done > 0 ? 'done' : ''}">${done > 0 ? scoreText + ' đúng' : 'Chưa làm'}</span>
-      </div>`;
+    card.onclick   = function() { switchTab(id); };
+    card.innerHTML =
+      '<div class="ov-icon" style="font-family:var(--mono);font-size:13px;font-weight:700;color:' + info.color + ';margin-bottom:10px;">' + info.icon + '</div>' +
+      '<div class="ov-name" style="color:' + info.color + '">' + info.name + '</div>' +
+      '<div class="ov-vi">' + info.vi + '</div>' +
+      '<div class="ov-bar"><div class="ov-fill" style="width:' + pct + '%;background:' + info.color + '"></div></div>' +
+      '<div class="ov-stats"><span>' + qs.length + ' cau hoi</span><span class="' + (done > 0 ? 'done' : '') + '">' + (done > 0 ? scoreText + ' dung' : 'Chua lam') + '</span></div>';
     grid.appendChild(card);
   });
 }
 
 // ============================================================
-// CHUYỂN TAB
+// CHUYEN TAB
 // ============================================================
 function switchTab(id) {
-  document.querySelectorAll('.topic-page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
-  const btn = document.querySelector(`[onclick="switchTab('${id}')"]`);
-  if (btn) btn.classList.add('active');
-  if (id !== 'home') loadQ(id);
-  else buildOverview();
+  // An tat ca trang
+  var pages = document.querySelectorAll('.topic-page');
+  for (var i = 0; i < pages.length; i++) {
+    pages[i].classList.remove('active');
+  }
+  // Bo active tat ca tab buttons
+  var tabs = document.querySelectorAll('.tab-btn');
+  for (var j = 0; j < tabs.length; j++) {
+    tabs[j].classList.remove('active');
+  }
+  // Hien trang dung
+  var page = document.getElementById('page-' + id);
+  if (page) page.classList.add('active');
+
+  // Tim va active dung button (theo onclick attribute)
+  for (var k = 0; k < tabs.length; k++) {
+    var onclickVal = tabs[k].getAttribute('onclick') || '';
+    if (onclickVal.indexOf("'" + id + "'") !== -1) {
+      tabs[k].classList.add('active');
+      break;
+    }
+  }
+
+  if (id !== 'home') {
+    loadQ(id);
+  } else {
+    buildOverview();
+  }
   window.scrollTo(0, 0);
 }
 
 // ============================================================
-// TẢI CÂU HỎI
+// TAI CAU HOI
 // ============================================================
 function loadQ(t) {
-  const s  = state[t];
-  const qs = QDB[t];
+  var s  = state[t];
+  var qs = QDB[t];
+
+  if (!qs || qs.length === 0) return;
   if (s.cur >= qs.length) { showFinal(t); return; }
+
   s.answered = false;
-  const q = qs[s.cur];
+  var q = qs[s.cur];
 
-  document.getElementById('cnt-'   + t).textContent = qs.length;
-  document.getElementById('sr-'    + t).textContent = qs.length - s.cur;
-  document.getElementById('ptext-' + t).textContent = `Câu ${s.cur + 1} / ${qs.length}`;
-  const pct = Math.round(s.cur / qs.length * 100);
-  document.getElementById('ppct-'  + t).textContent = pct + '%';
-  document.getElementById('pfill-' + t).style.width = pct + '%';
-  document.getElementById('qnum-'  + t).textContent = `CÂU ${String(s.cur + 1).padStart(2,'0')}`;
-  document.getElementById('qen-'   + t).textContent = q.en;
-  document.getElementById('qvi-'   + t).textContent = q.vi;
+  // Cap nhat count va sr
+  var cntEl = document.getElementById('cnt-' + t);
+  if (cntEl) cntEl.textContent = qs.length;
+  var srEl = document.getElementById('sr-' + t);
+  if (srEl) srEl.textContent = qs.length - s.cur;
 
-  const optEl = document.getElementById('opts-' + t);
+  // Progress
+  var pct = Math.round(s.cur / qs.length * 100);
+  var ptextEl = document.getElementById('ptext-' + t);
+  if (ptextEl) ptextEl.textContent = 'Cau ' + (s.cur + 1) + ' / ' + qs.length;
+  var ppctEl = document.getElementById('ppct-' + t);
+  if (ppctEl) ppctEl.textContent = pct + '%';
+  var pfillEl = document.getElementById('pfill-' + t);
+  if (pfillEl) pfillEl.style.width = pct + '%';
+
+  // So cau
+  var qnumEl = document.getElementById('qnum-' + t);
+  if (qnumEl) qnumEl.textContent = 'CAU ' + String(s.cur + 1).padStart(2, '0');
+
+  // Cau hoi
+  var qenEl = document.getElementById('qen-' + t);
+  if (qenEl) qenEl.textContent = q.en;
+  var qviEl = document.getElementById('qvi-' + t);
+  if (qviEl) qviEl.textContent = q.vi;
+
+  // Dap an
+  var optEl = document.getElementById('opts-' + t);
+  if (!optEl) return;
   optEl.innerHTML = '';
-  q.opts.forEach(o => {
-    const btn = document.createElement('button');
+  q.opts.forEach(function(o) {
+    var btn = document.createElement('button');
     btn.className = 'opt-btn';
     btn.setAttribute('data-key', o.k);
-    btn.onclick = () => selectA(t, o.k);
-    btn.innerHTML = `<div class="opt-key">${o.k}</div><div class="opt-text"><div class="opt-en">${o.en}</div><div class="opt-vi">${o.vi}</div></div>`;
+    btn.innerHTML =
+      '<div class="opt-key">' + o.k + '</div>' +
+      '<div class="opt-text">' +
+        '<div class="opt-en">' + o.en + '</div>' +
+        '<div class="opt-vi">' + o.vi + '</div>' +
+      '</div>';
+    btn.onclick = function() { selectA(t, o.k); };
     optEl.appendChild(btn);
   });
 
-  document.getElementById('rb-' + t).className = 'result-box';
-  document.getElementById('nb-' + t).classList.remove('show');
+  // Reset result box
+  var rbEl = document.getElementById('rb-' + t);
+  if (rbEl) rbEl.className = 'result-box';
 
-  const card = document.getElementById('card-' + t);
-  card.style.animation = 'none'; card.offsetHeight;
-  card.style.animation = 'cardIn 0.35s cubic-bezier(.4,0,.2,1)';
-  card.style.display = '';
-  document.getElementById('fin-' + t).classList.remove('show');
+  // An nut next
+  var nbEl = document.getElementById('nb-' + t);
+  if (nbEl) nbEl.classList.remove('show');
+
+  // Animation card
+  var cardEl = document.getElementById('card-' + t);
+  if (cardEl) {
+    cardEl.style.display = '';
+    cardEl.style.animation = 'none';
+    void cardEl.offsetHeight; // reflow
+    cardEl.style.animation = 'cardIn 0.35s cubic-bezier(.4,0,.2,1)';
+  }
+
+  // An final screen
+  var finEl = document.getElementById('fin-' + t);
+  if (finEl) finEl.classList.remove('show');
 }
 
 // ============================================================
-// CHỌN ĐÁP ÁN
+// CHON DAP AN
 // ============================================================
 function selectA(t, key) {
-  const s = state[t];
+  var s = state[t];
   if (s.answered) return;
   s.answered = true;
-  const q    = QDB[t][s.cur];
-  const isOK = key === q.ans;
+
+  var q    = QDB[t][s.cur];
+  var isOK = (key === q.ans);
   if (isOK) s.correct++; else s.wrong++;
 
-  document.getElementById('sc-' + t).textContent = s.correct;
-  document.getElementById('sw-' + t).textContent = s.wrong;
-  const done = s.correct + s.wrong;
-  document.getElementById('score-' + t).textContent = Math.round(s.correct / done * 100) + '%';
+  // Cap nhat so dung/sai
+  var scEl = document.getElementById('sc-' + t);
+  if (scEl) scEl.textContent = s.correct;
+  var swEl = document.getElementById('sw-' + t);
+  if (swEl) swEl.textContent = s.wrong;
 
-  document.querySelectorAll(`#opts-${t} .opt-btn`).forEach(b => {
-    b.disabled = true;
-    const k = b.getAttribute('data-key');
-    if (k === q.ans) b.classList.add('correct');
-    else if (k === key && !isOK) b.classList.add('wrong');
-    else b.classList.add('dimmed');
-  });
+  var done = s.correct + s.wrong;
+  var scoreEl = document.getElementById('score-' + t);
+  if (scoreEl) scoreEl.textContent = Math.round(s.correct / done * 100) + '%';
 
-  const rb  = document.getElementById('rb-'  + t);
-  const rbt = document.getElementById('rbt-' + t);
-  const rbe = document.getElementById('rbe-' + t);
-  if (isOK) { rb.className = 'result-box rb-correct show'; rbt.textContent = 'CHÍNH XÁC'; }
-  else       { rb.className = 'result-box rb-wrong show';   rbt.textContent = `SAI — Đáp án đúng là ${q.ans}`; }
-  rbe.innerHTML = q.exp;
+  // To mau cac lua chon
+  var btns = document.querySelectorAll('#opts-' + t + ' .opt-btn');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].disabled = true;
+    var k = btns[i].getAttribute('data-key');
+    if (k === q.ans) {
+      btns[i].classList.add('correct');
+    } else if (k === key && !isOK) {
+      btns[i].classList.add('wrong');
+    } else {
+      btns[i].classList.add('dimmed');
+    }
+  }
 
-  const nb = document.getElementById('nb-' + t);
-  nb.textContent = s.cur < QDB[t].length - 1 ? 'Câu tiếp theo →' : 'Xem kết quả';
-  nb.classList.add('show');
+  // Hien result box
+  var rbEl  = document.getElementById('rb-'  + t);
+  var rbtEl = document.getElementById('rbt-' + t);
+  var rbeEl = document.getElementById('rbe-' + t);
+  if (rbEl && rbtEl && rbeEl) {
+    if (isOK) {
+      rbEl.className = 'result-box rb-correct show';
+      rbtEl.textContent = 'CHINH XAC';
+    } else {
+      rbEl.className = 'result-box rb-wrong show';
+      rbtEl.textContent = 'SAI - Dap an dung la ' + q.ans;
+    }
+    rbeEl.innerHTML = q.exp;
+  }
+
+  // Hien nut tiep theo
+  var nbEl = document.getElementById('nb-' + t);
+  if (nbEl) {
+    nbEl.textContent = s.cur < QDB[t].length - 1 ? 'Cau tiep theo' : 'Xem ket qua';
+    nbEl.classList.add('show');
+  }
 }
 
 // ============================================================
-// CÂU TIẾP THEO
+// CAU TIEP THEO
 // ============================================================
-function nextQ(t) { state[t].cur++; loadQ(t); }
-
-// ============================================================
-// MÀN HÌNH KẾT QUẢ
-// ============================================================
-function showFinal(t) {
-  document.getElementById('card-' + t).style.display = 'none';
-  const s = state[t]; const total = QDB[t].length;
-  const pct = Math.round(s.correct / total * 100);
-  document.getElementById('pfill-' + t).style.width = '100%';
-  document.getElementById('ppct-'  + t).textContent = '100%';
-  document.getElementById('fg-'    + t).textContent = pct + '%';
-  document.getElementById('fsc-'   + t).textContent = s.correct;
-  document.getElementById('fsw-'   + t).textContent = s.wrong;
-  let msg = pct === 100 ? 'Xuất sắc! Nắm vững hoàn toàn.' : pct >= 70 ? 'Tốt! Ôn lại phần còn sai.' : 'Cần ôn lại. Hãy thử lại!';
-  document.getElementById('fm-' + t).textContent = msg;
-  document.getElementById('fin-' + t).classList.add('show');
-  buildOverview();
-}
-
-// ============================================================
-// LÀM LẠI
-// ============================================================
-function restartTopic(t) {
-  state[t] = { cur: 0, correct: 0, wrong: 0, answered: false };
-  document.getElementById('sc-'    + t).textContent = '0';
-  document.getElementById('sw-'    + t).textContent = '0';
-  document.getElementById('score-' + t).textContent = '-';
-  document.getElementById('card-'  + t).style.display = '';
+function nextQ(t) {
+  state[t].cur++;
   loadQ(t);
 }
 
 // ============================================================
-// KHỞI TẠO
+// MAN HINH KET QUA
 // ============================================================
-Object.keys(QDB).forEach(t => {
-  const cnt = document.getElementById('cnt-' + t);
-  const sr  = document.getElementById('sr-'  + t);
-  if (cnt) cnt.textContent = QDB[t].length;
-  if (sr)  sr.textContent  = QDB[t].length;
+function showFinal(t) {
+  var cardEl = document.getElementById('card-' + t);
+  if (cardEl) cardEl.style.display = 'none';
+
+  var s     = state[t];
+  var total = QDB[t].length;
+  var pct   = Math.round(s.correct / total * 100);
+
+  var pfillEl = document.getElementById('pfill-' + t);
+  if (pfillEl) pfillEl.style.width = '100%';
+  var ppctEl = document.getElementById('ppct-' + t);
+  if (ppctEl) ppctEl.textContent = '100%';
+
+  var fgEl = document.getElementById('fg-' + t);
+  if (fgEl) fgEl.textContent = pct + '%';
+  var fscEl = document.getElementById('fsc-' + t);
+  if (fscEl) fscEl.textContent = s.correct;
+  var fswEl = document.getElementById('fsw-' + t);
+  if (fswEl) fswEl.textContent = s.wrong;
+
+  var msg = pct === 100 ? 'Xuat sac! Nam vung hoan toan.' :
+            pct >= 70   ? 'Tot! On lai phan con sai.' :
+                          'Can on lai. Hay thu lai!';
+  var fmEl = document.getElementById('fm-' + t);
+  if (fmEl) fmEl.textContent = msg;
+
+  var finEl = document.getElementById('fin-' + t);
+  if (finEl) finEl.classList.add('show');
+
+  buildOverview();
+}
+
+// ============================================================
+// LAM LAI
+// ============================================================
+function restartTopic(t) {
+  state[t] = { cur: 0, correct: 0, wrong: 0, answered: false };
+  var scEl = document.getElementById('sc-' + t);
+  if (scEl) scEl.textContent = '0';
+  var swEl = document.getElementById('sw-' + t);
+  if (swEl) swEl.textContent = '0';
+  var scoreEl = document.getElementById('score-' + t);
+  if (scoreEl) scoreEl.textContent = '-';
+  var cardEl = document.getElementById('card-' + t);
+  if (cardEl) cardEl.style.display = '';
+  loadQ(t);
+}
+
+// ============================================================
+// KHOI TAO
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+  // Set count cho tat ca topic
+  Object.keys(QDB).forEach(function(t) {
+    var cntEl = document.getElementById('cnt-' + t);
+    if (cntEl) cntEl.textContent = QDB[t].length;
+    var srEl = document.getElementById('sr-' + t);
+    if (srEl) srEl.textContent = QDB[t].length;
+  });
+  // Build overview
+  buildOverview();
 });
-buildOverview();

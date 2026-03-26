@@ -19,6 +19,7 @@
   <button class="tab-btn" onclick="switchTab('sm')"  id="tab-sm">Mạng Xã Hội      <span class="count" id="cnt-sm">0</span></button>
   <button class="tab-btn" onclick="switchTab('li')"  id="tab-li">Cấp Phép         <span class="count" id="cnt-li">0</span></button>
   <button class="tab-btn" onclick="switchTab('pr')"  id="tab-pr">Quyền Riêng Tư   <span class="count" id="cnt-pr">0</span></button>
+  <button class="tab-btn" onclick="switchTab('la')"  id="tab-la">Lập Luận Pháp Lý <span class="count" id="cnt-la">0</span></button>
 </nav>
 
 <div class="main">
@@ -157,6 +158,24 @@
       <button class="next-btn" id="nb-pr" onclick="nextQ('pr')"></button>
     </div>
     <div class="final-screen" id="fin-pr"><div class="final-card"><div class="final-grade" id="fg-pr" style="background:linear-gradient(135deg,var(--green),#f75f5f);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></div><div class="final-msg" id="fm-pr"></div><div class="final-stats"><div class="fs-item fg"><div class="n" id="fsc-pr">0</div><div class="t">Đúng</div></div><div class="fs-item fr"><div class="n" id="fsw-pr">0</div><div class="t">Sai</div></div></div><button class="restart-btn" onclick="restartTopic('pr')">Làm Lại</button></div></div>
+  </div>
+
+  <!-- LA -->
+  <div class="topic-page" id="page-la">
+    <div class="topic-header">
+      <div class="topic-icon" style="background:rgba(192,132,252,0.12);">&#9878;</div>
+      <div class="topic-info"><h2 style="color:#c084fc;">Legal Arguments &amp; Ethics</h2><p>Lập Luận Pháp Lý, Đạo Đức &amp; Chính Sách Truyền Thông</p></div>
+      <div class="topic-stats"><div class="topic-score" id="score-la" style="color:#c084fc;">-</div><div class="topic-score-label">điểm</div></div>
+    </div>
+    <div class="progress-wrap"><div class="progress-info"><span id="ptext-la">Câu 1</span><span id="ppct-la">0%</span></div><div class="progress-track"><div class="progress-fill" id="pfill-la" style="width:0%;background:linear-gradient(90deg,#c084fc,#7c5af0)"></div></div></div>
+    <div class="score-row"><div class="score-badge sc"><div class="num" id="sc-la">0</div><div class="lbl">Đúng</div></div><div class="score-badge sw"><div class="num" id="sw-la">0</div><div class="lbl">Sai</div></div><div class="score-badge sr"><div class="num" id="sr-la">-</div><div class="lbl">Còn Lại</div></div></div>
+    <div class="quiz-card" id="card-la">
+      <div class="card-top"><div class="q-meta"><span class="q-num" id="qnum-la"></span><span class="q-tag" style="background:rgba(192,132,252,0.1);color:#c084fc;">LEGAL &amp; ETHICS</span></div><div class="q-en" id="qen-la"></div><div class="q-vi" id="qvi-la"></div></div>
+      <div class="options" id="opts-la"></div>
+      <div class="result-box" id="rb-la"><div class="rb-title" id="rbt-la"></div><div class="rb-explain" id="rbe-la"></div></div>
+      <button class="next-btn" id="nb-la" onclick="nextQ('la')"></button>
+    </div>
+    <div class="final-screen" id="fin-la"><div class="final-card"><div class="final-grade" id="fg-la" style="background:linear-gradient(135deg,var(--green),#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></div><div class="final-msg" id="fm-la"></div><div class="final-stats"><div class="fs-item fg"><div class="n" id="fsc-la">0</div><div class="t">Đúng</div></div><div class="fs-item fr"><div class="n" id="fsw-la">0</div><div class="t">Sai</div></div></div><button class="restart-btn" onclick="restartTopic('la')">Làm Lại</button></div></div>
   </div>
 
 </div><!-- /.main -->
